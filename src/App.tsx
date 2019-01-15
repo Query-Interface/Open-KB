@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Layout, Menu, Icon } from 'antd';
-import {SiderSubMenu} from './components/SiderSubMenu';
+import {SiderSubMenu} from './components/SiderSubMenu/SiderSubMenu';
+import {Board} from './components/Board/Board';
 
 const { Header, Content, Footer, Sider } = Layout;
 //const { SubMenu } = Menu;
@@ -63,7 +64,7 @@ export class App extends React.Component {
             margin: '24px 16px', padding: 24, background: '#fff', minHeight: 280,
             }}
             >
-            My board
+                <Board id="test" title="Kanban" description="My First board" lists={[{id:"1", "title":"Open"},{id:"2", "title":"In Process"},{id:"3", "title":"Blocked"},{id:"4", "title":"Closed"}]}></Board>
             </Content>
             <Footer style={{ textAlign: 'center' }}>
                 Ant Design ©2018 Created by Ant UED

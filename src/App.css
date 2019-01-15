@@ -24,3 +24,66 @@
     height: 100%;
     overflow: hidden;
 }
+.push-left {
+    float: left;
+}
+.content-wrapper {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+.board-header {
+    flex: none;
+    padding: 8px;
+    position: relative;
+}
+.board-container {
+    position: relative;
+    flex-grow: 1;
+}
+#board {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+    overflow-x: auto;
+}
+.list-container {
+    width:280px;
+    margin: 0 4 px;
+    vertical-align: top;
+    display: inline-block;
+}
+.list-container:first-child {
+    margin-left: 12px;
+}
+.list {
+    display: flex;
+    flex-direction: column;
+    max-height: 100%;
+}
+.list-header {
+    padding: 10px;
+    min-height: 20px;
+}
+.list-cards {
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin: 0 4px;
+    padding: 0 4px;
+}
+.card-details {
+    overflow: hidden;
+    padding: 6px;
+}
+.list-footer {
+    display: block;
+    padding: 8px;
+}
