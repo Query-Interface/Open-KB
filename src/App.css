@@ -66,24 +66,44 @@
     margin-left: 12px;
 }
 .list-container {
-    min-height: 100px;
+    /*min-height: 100px;*/
     background-color: #d9d9d9;
 }
-.add-list {
+.add-button {
     cursor: pointer;
     background-color: rgba(0,0,0,.12);
     color: white;
     text-align: center;
 }
-.add-list:hover {
+.add-button:hover {
     background-color: rgba(0, 0, 0, 0.32);
+}
+.new-list {
+    padding: 8px;
 }
 .list {
     max-height: 100%;
 }
 .list-header {
+    position: relative;
     padding: 10px;
     min-height: 20px;
+    cursor: pointer;
+}
+.list-header-menu {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    border-radius: 4px;
+    height: 32px;
+    width: 32px;
+    text-align: center;
+    padding-top: 2px;
+    font-weight: bold;
+    font-size: large;
+}
+.list-header-menu:hover {
+    background-color: rgba(0, 0, 0, 0.32);
 }
 .list-cards {
     overflow-x: hidden;
@@ -94,6 +114,7 @@
 .card-details {
     overflow: hidden;
     padding: 6px;
+    min-height: 60px;
 }
 .list-footer {
     display: block;

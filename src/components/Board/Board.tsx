@@ -57,10 +57,41 @@ export class Board extends React.Component<BoardProps, {}> {
 
     renderLists() {
         let lists = this.props.lists? this.props.lists : [];
-        let domElements = lists.map(function(item) {
-            return <div className="list-column"><div className="list-container"><span>{item.title}</span></div></div>
-        });
-        domElements.push(<div className="list-column"><div className="list-container add-list"><span><Icon type="plus" /><span> Add another list</span></span></div></div>);
+        let domElements = lists.map(function(this:Board, item) {
+            let cards = item.tasks? item.tasks : [];
+            return <div className="list-column">
+                <div className="list-container">
+                    <div className="list-header">
+                        <span>{item.title}</span>
+                        <div className="list-header-menu"><span><Icon type="ellipsis" /></span></div>
+                    </div>
+                    <div className="list-content">
+                        {this.renderCards(cards)}
+                    </div>
+                    <div className="list-footer add-button">
+                        <span><Icon type="plus" /><span> Add another card</span></span>
+                    </div>
+                </div>
+            </div>
+        }, this);
+        domElements.push(
+            <div className="list-column">
+                <div className="list-container">
+                    <div className="new-list add-button">
+                        <span><Icon type="plus" /><span> Add another list</span></span>
+                    </div>
+                </div>
+            </div>);
         return domElements;
+    }
+
+    renderCards(cards: Array<CardProps>) {
+        if (cards.length != 0) {
+            return <div className="list-cards">
+                
+            </div>
+        } else {
+            return <div></div>;
+        }
     }
 }
