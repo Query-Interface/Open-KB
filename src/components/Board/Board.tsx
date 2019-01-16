@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {Icon} from 'antd';
 
 export interface BoardProps {
     id: string;
@@ -56,8 +57,10 @@ export class Board extends React.Component<BoardProps, {}> {
 
     renderLists() {
         let lists = this.props.lists? this.props.lists : [];
-        return lists.map(function(item) {
-            return <div className="list-container"><span>{item.title}</span></div>
+        let domElements = lists.map(function(item) {
+            return <div className="list-column"><div className="list-container"><span>{item.title}</span></div></div>
         });
+        domElements.push(<div className="list-column"><div className="list-container add-list"><span><Icon type="plus" /><span> Add another list</span></span></div></div>);
+        return domElements;
     }
 }

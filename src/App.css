@@ -54,23 +54,31 @@
     padding-right: 12px;
     overflow: hidden;
 }
-.list-container {
+.list-column {
     width:280px;
     margin: 0 4px;
     vertical-align: top;
-	background-color: lightcoral;
 	flex-grow: 0;
 	flex-shrink: 0;
 	flex-basis: 280px;
 }
-.list-container:first-child {
+.list-column:first-child {
     margin-left: 12px;
 }
-.list-container:last-child {
-    margin-right: 12px;
+.list-container {
+    min-height: 100px;
+    background-color: #d9d9d9;
+}
+.add-list {
+    cursor: pointer;
+    background-color: rgba(0,0,0,.12);
+    color: white;
+    text-align: center;
+}
+.add-list:hover {
+    background-color: rgba(0, 0, 0, 0.32);
 }
 .list {
-    
     max-height: 100%;
 }
 .list-header {
