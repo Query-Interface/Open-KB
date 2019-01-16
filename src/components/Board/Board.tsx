@@ -46,7 +46,7 @@ export class Board extends React.Component<BoardProps, {}> {
             <div className="board-header">
                 <span>{this.props.title}</span>
             </div>
-            <div id="board">
+            <div className="board-overflow">
                 <div className="board-container">
                     {this.renderLists()}
                 </div>

@@ -4,7 +4,7 @@ import {SiderSubMenu} from './components/SiderSubMenu/SiderSubMenu';
 import {Board} from './components/Board/Board';
 
 const { Header, Content, Footer, Sider } = Layout;
-//const { SubMenu } = Menu;
+const PRODUCT_NAME: string = "Open Trello";
 
 const boards = [
     {"id": 12, "title": "Backlog Items", "icon": "project"},
@@ -30,13 +30,13 @@ export class App extends React.Component {
 
     render() {
       return (
-        <Layout style={{ minHeight: '100vh' }}>
+        <Layout style={{ minHeight: '100vh'}}>
             <Sider
             collapsible
             collapsed={this.state.collapsed}
             trigger={null}
             >
-                <div className="logo" style={{color:'white'}}>OPEN TRELLO</div>
+                <div className="logo" style={{color:'white', textTransform:'uppercase'}}>{PRODUCT_NAME}</div>
                     <SiderSubMenu id="subBoards" title="Boards" icon="project" menuEntries={boards} />
             </Sider>
         <Layout>
@@ -61,13 +61,11 @@ export class App extends React.Component {
                 </div>
             </Header>
             <Content style={{
-            margin: '24px 16px', padding: 24, background: '#fff', minHeight: 280,
-            }}
-            >
+                margin: '24px 16px', padding: 24, background: '#fff', minHeight: 280, position:'relative'}} >
                 <Board id="test" title="Kanban" description="My First board" lists={[{id:"1", "title":"Open"},{id:"2", "title":"In Process"},{id:"3", "title":"Blocked"},{id:"4", "title":"Closed"}]}></Board>
             </Content>
             <Footer style={{ textAlign: 'center' }}>
-                Ant Design ©2018 Created by Ant UED
+                {PRODUCT_NAME} ©2018 Created by Query-Interface
             </Footer>
         </Layout>
       </Layout>
