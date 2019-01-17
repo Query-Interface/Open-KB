@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Icon} from 'antd';
 
 export interface BoardProps {
-    id: string;
+    id: number;
     title: string;
     description?: string;
     lists?: Array<ListProps>;
@@ -11,7 +11,7 @@ export interface BoardProps {
 export interface ListProps {
     id: string;
     title: string;
-    tasks?: Array<CardProps>;
+    cards?: Array<CardProps>;
 }
 
 export interface CardProps {
@@ -58,7 +58,7 @@ export class Board extends React.Component<BoardProps, {}> {
     renderLists() {
         let lists = this.props.lists? this.props.lists : [];
         let domElements = lists.map(function(this:Board, item) {
-            let cards = item.tasks? item.tasks : [];
+            let cards = item.cards? item.cards : [];
             return <div className="list-column">
                 <div className="list-container">
                     <div className="list-header">
@@ -88,7 +88,11 @@ export class Board extends React.Component<BoardProps, {}> {
     renderCards(cards: Array<CardProps>) {
         if (cards.length != 0) {
             return <div className="list-cards">
-                
+                {cards.map(function(this:CardProps, card) {
+                    return <div className="card-details">
+                            <div>{card.title}</div>
+                        </div>
+                }, this)}
             </div>
         } else {
             return <div></div>;

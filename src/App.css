@@ -15,7 +15,7 @@
     cursor: pointer;
     transition: color .3s;
   }
-  
+
 .trigger:hover {
     color: #1890ff;
 }
@@ -115,6 +115,8 @@
     overflow: hidden;
     padding: 6px;
     min-height: 60px;
+    background-color: white;
+    margin-bottom: 4px;
 }
 .list-footer {
     display: block;

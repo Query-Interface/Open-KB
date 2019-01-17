@@ -7,9 +7,17 @@ const { Header, Content, Footer, Sider } = Layout;
 const PRODUCT_NAME: string = "Open Trello";
 
 const boards = [
+    {"id": 10, "title": "Kanban", "icon": "project",
+        lists:
+        [{id:"1", "title":"Open", cards:[{id:"1", "title":"Finalize cards"},{id:"2", "title":"Add events for button"}]},
+        {id:"2", "title":"In Process", cards:[{id:"3", "title":"Cards rendering"}]},
+        {id:"3", "title":"Blocked"},
+        {id:"4", "title":"Closed", cards:[{id:"4", "title":"List rendering"},{id:"5", "title":"Basic Board layout"}]}]
+    },
     {"id": 12, "title": "Backlog Items", "icon": "project"},
     {"id": 13, "title": "Todos", "icon": "book"}
 ];
+
 /*const subMenu1 = {
     "id": "subBoards",
     "menuEntries":boards,
@@ -62,7 +70,7 @@ export class App extends React.Component {
             </Header>
             <Content style={{
                 margin: '24px 16px', padding: 24, background: '#fff', minHeight: 280, position:'relative'}} >
-                <Board id="test" title="Kanban" description="My First board" lists={[{id:"1", "title":"Open"},{id:"2", "title":"In Process"},{id:"3", "title":"Blocked"},{id:"4", "title":"Closed"}]}></Board>
+                <Board id={boards[0].id} title={boards[0].title} description="My First board" lists={boards[0].lists}></Board>
             </Content>
             <Footer style={{ textAlign: 'center' }}>
                 {PRODUCT_NAME} ©2018 Created by Query-Interface
