@@ -77,7 +77,7 @@ export class Board extends React.Component<BoardProps, {}> {
         domElements.push(
             <div className="list-column">
                 <div className="list-container">
-                    <div className="new-list add-button">
+                    <div className="new-list add-button" onClick={e => this.handleAddList(e)}>
                         <span><Icon type="plus" /><span> Add another list</span></span>
                     </div>
                 </div>
@@ -97,5 +97,16 @@ export class Board extends React.Component<BoardProps, {}> {
         } else {
             return <div></div>;
         }
+    }
+
+    handleAddList(event: React.MouseEvent) {
+        if (this.props.lists != null) {
+            this.props.lists.push({"id": this.props.lists.length.toString(), "title": "new list", "cards": []});
+        }
+    }
+
+    handleAddCard(event: React.MouseEvent) {
+        let target = event.target;
+        console.log(target);
     }
 }
