@@ -15,12 +15,7 @@ export class Board extends React.Component<BoardProps, BoardState> {
     }
 
     componentDidMount() {
-        this.setState({
-            lists: this.fetchLists(this.props.id)
-        });
-    }
-
-    fetchLists(boardId: number): Array<ListProps> {
-        return DataSource.getLists(boardId);
+        DataSource.getLists(this.props.id).then(
+            value => this.setState({ lists : value}));
     }
 }

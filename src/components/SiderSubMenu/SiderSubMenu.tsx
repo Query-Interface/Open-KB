@@ -16,21 +16,25 @@ export interface SiderMenuProps {
 }
 
 export class SiderSubMenu extends React.Component<SiderMenuProps, {}> {
-    
+
     constructor (props: SiderMenuProps){
         super(props);
     }
 
     render() {
-        return <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+        var defaultKey : any = "";
+        if (this.props.menuEntries.length > 0) {
+            defaultKey = this.props.menuEntries[0].id;
+        }
+        return <Menu theme="dark" defaultSelectedKeys={[defaultKey]} mode="inline">
             <SubMenu key={this.props.id}
-            title={<span><Icon type={this.props.icon} /><span>{this.props.title}</span></span>}>
-            {this.props.menuEntries.map(function(item) {
-                return <Menu.Item key={item.id}>
-                {item.title}
-                </Menu.Item>
-            })
-            }
+                title={<span><Icon type={this.props.icon} /><span>{this.props.title}</span></span>} >
+                {this.props.menuEntries.map(function(item) {
+                    return <Menu.Item key={item.id} >
+                    {item.title}
+                    </Menu.Item>
+                })
+                }
             </SubMenu>
         </Menu>
     }

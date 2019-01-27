@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {Icon} from 'antd';
+import { DataSource } from '../../services/DataSource';
 
 export interface BoardProps {
     id: number;
@@ -41,7 +42,24 @@ export interface CheckListItemProps {
     completed: boolean;
 }
 
-export class Board extends React.Component<BoardProps, {}> {
+export interface BoardState {
+    lists: Array<ListProps>;
+}
+
+export class Board extends React.Component<BoardProps, BoardState> {
+
+    constructor(props: BoardProps) {
+        super(props);
+        this.state = {
+            lists: []
+        }
+    }
+
+    componentDidMount() {
+        DataSource.getLists(this.props.id).then(
+            value => this.setState({ lists : value}));
+    }
+
     render() {
         return  <div className="content-wrapper">
             <div className="board-header">
@@ -55,11 +73,11 @@ export class Board extends React.Component<BoardProps, {}> {
         </div>;
     }
 
-    renderLists() {
-        let lists = this.props.lists? this.props.lists : [];
+    private renderLists() {
+        let lists = this.state.lists? this.state.lists : [];
         let domElements = lists.map(function(this:Board, item) {
             let cards = item.cards? item.cards : [];
-            return <div className="list-column">
+            return <div className="list-column" key={item.id} >
                 <div className="list-container">
                     <div className="list-header">
                         <span>{item.title}</span>
@@ -85,11 +103,11 @@ export class Board extends React.Component<BoardProps, {}> {
         return domElements;
     }
 
-    renderCards(cards: Array<CardProps>) {
+    private renderCards(cards: Array<CardProps>) {
         if (cards.length != 0) {
             return <div className="list-cards">
                 {cards.map(function(this:CardProps, card) {
-                    return <div className="card-details">
+                    return <div className="card-details" key={card.id} >
                             <div>{card.title}</div>
                         </div>
                 }, this)}

@@ -1,12 +1,13 @@
 import * as React from "react";
 import { Layout, Menu, Icon } from 'antd';
 import {SiderSubMenu} from './components/SiderSubMenu/SiderSubMenu';
-import {Board} from './components/Board/Board';
+import {Board, BoardProps} from './components/Board/Board';
+import { DataSource } from "./services/DataSource";
 
 const { Header, Content, Footer, Sider } = Layout;
 const PRODUCT_NAME: string = "Open Trello";
 
-const boards = [
+/*const test_boards = [
     {"id": 10, "title": "Kanban", "icon": "project",
         lists:
         [{id:"1", "title":"Open", cards:[{id:"1", "title":"Finalize cards"},{id:"2", "title":"Add events for button"}]},
@@ -16,24 +17,40 @@ const boards = [
     },
     {"id": 12, "title": "Backlog Items", "icon": "project"},
     {"id": 13, "title": "Todos", "icon": "book"}
-];
+];*/
 
-/*const subMenu1 = {
-    "id": "subBoards",
-    "menuEntries":boards,
-    "icon": "project",
-    "title": "Boards"
-};*/
+export interface AppState {
+    collapsed: boolean,
+    boards: Array<BoardProps>
+}
 
-export class App extends React.Component {
-    state = {
-        collapsed: false,
-    };
+export class App extends React.Component<{}, AppState> {
+    state : AppState;
+
+    constructor(props: {}) {
+        super(props);
+        this.state = {
+            collapsed: false,
+            boards : []
+        };
+    }
 
     toggle = () => {
         this.setState({
           collapsed: !this.state.collapsed,
         });
+    }
+
+    componentDidMount() {
+        DataSource.getBoards().then(
+            (data) => {
+                this.setState({
+                    boards: data
+                });
+                console.log('data:' + data);
+                console.log('store.data' + this.state.boards);
+            }
+        );
     }
 
     render() {
@@ -45,7 +62,7 @@ export class App extends React.Component {
             trigger={null}
             >
                 <div className="logo" style={{color:'white', textTransform:'uppercase'}}>{PRODUCT_NAME}</div>
-                    <SiderSubMenu id="subBoards" title="Boards" icon="project" menuEntries={boards} />
+                    <SiderSubMenu id="subBoards" title="Boards" icon="project" menuEntries={this.state.boards} />
             </Sider>
         <Layout>
             <Header style={{ background: '#fff', padding: 0 }}>
@@ -70,7 +87,7 @@ export class App extends React.Component {
             </Header>
             <Content style={{
                 margin: '24px 16px', padding: 24, background: '#fff', minHeight: 280, position:'relative'}} >
-                <Board id={boards[0].id} title={boards[0].title} description="My First board" lists={boards[0].lists}></Board>
+                    {this.renderBoard()}
             </Content>
             <Footer style={{ textAlign: 'center' }}>
                 {PRODUCT_NAME} ©2018 Created by Query-Interface
@@ -78,5 +95,12 @@ export class App extends React.Component {
         </Layout>
       </Layout>
       );
+   }
+
+   renderBoard() {
+        if (this.state.boards.length > 0) {
+            return <Board id={this.state.boards[0].id} title={this.state.boards[0].title} description={this.state.boards[0].description}></Board>
+        }
+        return <div>&nbsp;</div>
    }
 }
