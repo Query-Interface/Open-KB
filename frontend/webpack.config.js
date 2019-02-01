@@ -9,13 +9,13 @@ module.exports = (env) => {
         plugins.push(new webpack.NamedModulesPlugin());
         plugins.push(new webpack.HotModuleReplacementPlugin());
 
-        mapType = 'cheap-module-eval-source-map';
-        //inline-source-map
+        //mapType = 'cheap-module-eval-source-map';
+        mapType = 'inline-source-map';
     }
 
   return {
     entry: './src/index.ts',
-    devtool: mapType,
+    devtool:'inline-source-map',
     module: {
       rules: [
         {

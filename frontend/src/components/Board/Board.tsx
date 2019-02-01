@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {Icon} from 'antd';
+import {Card} from './Card';
 import { DataSource } from '../../services/DataSource';
 
 export interface BoardProps {
@@ -106,11 +107,9 @@ export class Board extends React.Component<BoardProps, BoardState> {
     private renderCards(cards: Array<CardProps>) {
         if (cards.length != 0) {
             return <div className="list-cards">
-                {cards.map(function(this:CardProps, card) {
-                    return <div className="card-details" key={card.id} >
-                            <div>{card.title}</div>
-                        </div>
-                }, this)}
+                {cards.map(function(card) {
+                    return <Card id={card.id} title={card.title} />
+                })}
             </div>
         } else {
             return <div></div>;

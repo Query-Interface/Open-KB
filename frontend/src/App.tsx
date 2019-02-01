@@ -88,7 +88,8 @@ export class App extends React.Component<{}, AppState> {
 
    renderBoard() {
         if (this.state.boards.length > 0) {
-            return <Board id={this.state.boards[0].id} title={this.state.boards[0].title} description={this.state.boards[0].description}></Board>
+            return <Board id={this.state.boards[0].id} title={this.state.boards[0].title}
+                description={this.state.boards[0].description}></Board>
         }
         return <div>&nbsp;</div>
    }
