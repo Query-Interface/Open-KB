@@ -47,6 +47,7 @@ steps:
     rootFolderOrFile: '$(System.DefaultWorkingDirectory)/dist'
 
 - task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: drop'
+  displayName: 'Publish Artifact: Open-KB-Front-Drop'
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    artifactName: Open-KB-Front-Drop
