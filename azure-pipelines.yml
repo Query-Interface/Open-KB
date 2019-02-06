@@ -45,6 +45,7 @@ steps:
   displayName: 'Archive $(System.DefaultWorkingDirectory)/dist'
   inputs:
     rootFolderOrFile: '$(System.DefaultWorkingDirectory)/dist'
+    includeRootFolder: false
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: Open-KB-Front-Drop'
