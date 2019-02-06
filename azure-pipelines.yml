@@ -21,13 +21,32 @@ steps:
   displayName: 'npm install and build'
   workingDirectory: 'frontend'
 
+- script: |
+   echo "Copy dependencies to dist"
+   cd frontend
+   mkdir src/dist
+   mkdir src/dist/lib
+   mv node_modules/antd/dist/antd.min.css src/dist/lib/antd.min.css
+   mv node_modules/react/umd/react.production.min.js src/dist/lib/react.development.js
+   mv node_modules/react-dom/umd/react-dom.production.min.js src/dist/lib/react-dom.development.js
+  displayName: 'Command Line Script'
+
 - task: CopyFiles@2
+  displayName: 'Copy File to: $(TargetFolder)'
   inputs:
     SourceFolder: '$(System.DefaultWorkingDirectory)/frontend/src'
     Contents: |
-      dist/**/*
-      index.html
-      src/App.css
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+     dist/**/*
+     index.html
+     App.css
+    TargetFolder: '$(System.DefaultWorkingDirectory)/public'
+
+- task: ArchiveFiles@2
+  displayName: 'Archive $(System.DefaultWorkingDirectory)/public'
+  inputs:
+    rootFolderOrFile: '$(System.DefaultWorkingDirectory)/public'
 
 - task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: drop'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
