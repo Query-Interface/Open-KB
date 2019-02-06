@@ -6,7 +6,7 @@ import { DataSource } from "./services/DataSource";
 //import { hot } from 'react-hot-loader';
 
 const { Header, Content, Footer, Sider } = Layout;
-const PRODUCT_NAME: string = "Open Trello";
+const PRODUCT_NAME: string = "Open KB";
 
 export interface AppState {
     collapsed: boolean,
