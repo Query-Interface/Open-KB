@@ -39,12 +39,12 @@ steps:
      dist/**/*
      index.html
      App.css
-    TargetFolder: '$(System.DefaultWorkingDirectory)/public'
+    TargetFolder: '$(System.DefaultWorkingDirectory)/dist'
 
 - task: ArchiveFiles@2
-  displayName: 'Archive $(System.DefaultWorkingDirectory)/public'
+  displayName: 'Archive $(System.DefaultWorkingDirectory)/dist'
   inputs:
-    rootFolderOrFile: '$(System.DefaultWorkingDirectory)/public'
+    rootFolderOrFile: '$(System.DefaultWorkingDirectory)/dist'
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: drop'
