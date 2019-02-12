@@ -9,7 +9,7 @@ export class Card extends React.Component<CardProps> {
     }
 
     render() {
-        return <div className="card-details" key={this.props.id} >
+        return <div className="card-details" key={this.props.id}>
                 <div>{this.props.title}</div>
             </div>;
     }

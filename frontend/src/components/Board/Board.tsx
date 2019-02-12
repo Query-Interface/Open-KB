@@ -1,7 +1,6 @@
 import * as React from 'react';
-import {Icon} from 'antd';
-import {Card} from './Card';
 import { DataSource } from '../../services/DataSource';
+import { Lists } from './Lists';
 
 export interface BoardProps {
     id: number;
@@ -14,6 +13,7 @@ export interface ListProps {
     id: string;
     title: string;
     cards?: Array<CardProps>;
+    onAddCard?: (event: React.MouseEvent, loadId:string) => void;
 }
 
 export interface CardProps {
@@ -54,6 +54,8 @@ export class Board extends React.Component<BoardProps, BoardState> {
         this.state = {
             lists: []
         }
+        this.handleAddCard = this.handleAddCard.bind(this);
+        this.handleAddList = this.handleAddList.bind(this);
     }
 
     componentDidMount() {
@@ -76,54 +78,22 @@ export class Board extends React.Component<BoardProps, BoardState> {
 
     private renderLists() {
         let lists = this.state.lists? this.state.lists : [];
-        let domElements = lists.map(function(this:Board, item) {
-            let cards = item.cards? item.cards : [];
-            return <div className="list-column" key={item.id} >
-                <div className="list-container">
-                    <div className="list-header">
-                        <span>{item.title}</span>
-                        <div className="list-header-menu"><span><Icon type="ellipsis" /></span></div>
-                    </div>
-                    <div className="list-content">
-                        {this.renderCards(cards)}
-                    </div>
-                    <div className="list-footer add-button">
-                        <span><Icon type="plus" /><span> Add another card</span></span>
-                    </div>
-                </div>
-            </div>
-        }, this);
-        domElements.push(
-            <div className="list-column">
-                <div className="list-container">
-                    <div className="new-list add-button" onClick={e => this.handleAddList(e)}>
-                        <span><Icon type="plus" /><span> Add another list</span></span>
-                    </div>
-                </div>
-            </div>);
-        return domElements;
-    }
-
-    private renderCards(cards: Array<CardProps>) {
-        if (cards.length != 0) {
-            return <div className="list-cards">
-                {cards.map(function(card) {
-                    return <Card id={card.id} title={card.title} />
-                })}
-            </div>
-        } else {
-            return <div></div>;
-        }
+        return <Lists lists={lists} onAddCard={this.handleAddCard} onAddList={this.handleAddList} />
     }
 
     handleAddList(event: React.MouseEvent) {
-        if (this.props.lists != null) {
-            this.props.lists.push({"id": this.props.lists.length.toString(), "title": "new list", "cards": []});
-        }
+        let lists = this.state.lists.slice();
+        lists.push({"id": lists.length.toString(), "title": "new list", "cards": []});
+        this.setState({ lists : lists});
+        event.preventDefault();
     }
 
-    handleAddCard(event: React.MouseEvent) {
-        let target = event.target;
-        console.log(target);
+    handleAddCard(event: React.MouseEvent, listId: string) {
+        let lists = this.state.lists.slice();
+        let cards = (lists.filter(l => l.id === listId)[0].cards || []).slice();
+        cards.push({"id": cards.length.toString(), "title": "My new card", "description": "A new default card. You can edit its content."});
+        lists.filter(l => l.id === listId)[0].cards = cards;
+        this.setState({lists : lists});
+        event.preventDefault();
     }
 }

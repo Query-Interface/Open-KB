@@ -50,7 +50,7 @@ export class App extends React.Component<{}, AppState> {
             collapsed={this.state.collapsed}
             trigger={null}
             >
-                <div className="logo" style={{color:'white', textTransform:'uppercase'}}>{PRODUCT_NAME}</div>
+                <div className="logo" >{PRODUCT_NAME}</div>
                     <SiderSubMenu id="subBoards" title="Boards" icon="project" menuEntries={this.state.boards} />
             </Sider>
         <Layout>
