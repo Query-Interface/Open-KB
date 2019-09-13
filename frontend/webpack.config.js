@@ -1,46 +1,68 @@
 const path = require('path');
 const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = (env) => {
-  const isDevelopment = env.NODE_ENV === 'development';
+  const isDevelopment = env.BUILD_MODE === 'development';
   const plugins = [];
-  let mapType = 'hidden-source-map';
-    if (isDevelopment) {
-        plugins.push(new webpack.NamedModulesPlugin());
-        plugins.push(new webpack.HotModuleReplacementPlugin());
-
-        //mapType = 'cheap-module-eval-source-map';
-        mapType = 'inline-source-map';
-    }
+  let mode = 'production';
+  let mapType = false;
+  if (isDevelopment) {
+    mode = 'development';
+    plugins.push(new webpack.NamedModulesPlugin());
+    plugins.push(new webpack.HotModuleReplacementPlugin());
+    mapType = 'inline-source-map';
+  }
+  plugins.push(new HtmlWebpackPlugin({ template: 'src/index.html'}));
 
   return {
     entry: './src/index.ts',
-    devtool:'inline-source-map',
+    mode: mode,
+    devtool: mapType,
     module: {
       rules: [
         {
           test: /\.tsx?$/,
           loader: 'babel-loader',
           exclude: /node_modules/
+        },
+        {
+          test: /\.css$/,
+          loader: ['style-loader', 'css-loader']
         }
       ]
     },
     resolve: {
-      extensions: [ '.tsx', '.ts', '.js' ]
+      extensions: [ '.tsx', '.ts', '.js' ],
+      alias: {
+        "@ant-design/icons/lib/dist$": path.resolve(__dirname, "./src/icons.js")
+      }
     },
     output: {
-      filename: 'bundle.js',
-      path: path.resolve(__dirname, 'src/dist')
+      path: path.resolve(__dirname, 'dist'),
+      filename: '[name].[hash].js',
     },
-    // avoid bundling the following libraries
-    externals: {
-      "react": "React",
-      "react-dom": "ReactDOM"
+    optimization: {
+      runtimeChunk: 'single',
+        splitChunks: {
+          chunks: 'all',
+          maxInitialRequests: Infinity,
+          minSize: 0,
+          cacheGroups: {
+            reactVendor: {
+              test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+              name: "reactVendor"
+            },
+            antdVendor: {
+              test: /[\\/]node_modules[\\/](antd)[\\/]/,
+              name: "antdVendor"
+            },
+          },
+        },
     },
+
     devServer: {
-      contentBase: path.resolve(__dirname, 'src'),
-      publicPath: '/dist/',
-      //hotOnly: true,
+      contentBase: path.resolve(__dirname, 'dist'),
       headers: {
         "Access-Control-Allow-Origin": "http://localhost:8080",
         "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
