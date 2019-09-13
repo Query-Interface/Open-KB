@@ -24,9 +24,9 @@ steps:
 - task: CopyFiles@2
   displayName: 'Copy File to: $(TargetFolder)'
   inputs:
-    SourceFolder: '$(System.DefaultWorkingDirectory)/frontend/src'
+    SourceFolder: '$(System.DefaultWorkingDirectory)/frontend/'
     Contents: |
-     dist/**/*
+     dist/*
     TargetFolder: '$(System.DefaultWorkingDirectory)/dist'
 
 - task: ArchiveFiles@2
