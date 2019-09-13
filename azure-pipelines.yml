@@ -21,24 +21,12 @@ steps:
   displayName: 'npm install and build'
   workingDirectory: 'frontend'
 
-- script: |
-   echo "Copy dependencies to dist"
-   cd frontend
-   mkdir src/dist
-   mkdir src/dist/lib
-   mv node_modules/antd/dist/antd.min.css src/dist/lib/antd.min.css
-   mv node_modules/react/umd/react.production.min.js src/dist/lib/react.development.js
-   mv node_modules/react-dom/umd/react-dom.production.min.js src/dist/lib/react-dom.development.js
-  displayName: 'Command Line Script'
-
 - task: CopyFiles@2
   displayName: 'Copy File to: $(TargetFolder)'
   inputs:
     SourceFolder: '$(System.DefaultWorkingDirectory)/frontend/src'
     Contents: |
      dist/**/*
-     index.html
-     App.css
     TargetFolder: '$(System.DefaultWorkingDirectory)/dist'
 
 - task: ArchiveFiles@2
