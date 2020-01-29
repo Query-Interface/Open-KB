@@ -1,8 +1,8 @@
 import * as React from "react";
 import { Layout, Menu, Icon } from 'antd';
-import {SiderSubMenu} from './components/SiderSubMenu/SiderSubMenu';
-import {Board, BoardProps} from './components/Board/Board';
-import { DataSource } from "./services/DataSource";
+import {SiderSubMenu} from '../components/SiderSubMenu/SiderSubMenu';
+import {Board, BoardProps} from '../components/Board/Board';
+import { DataSource } from "../services/DataSource";
 //import { hot } from 'react-hot-loader';
 
 const { Header, Content, Footer, Sider } = Layout;
