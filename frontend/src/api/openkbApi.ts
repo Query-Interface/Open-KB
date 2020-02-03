@@ -78,6 +78,19 @@ export async function getLists(boardId: number) : Promise<Array<List>> {
     return await getDataFromApi<Array<List>>(`http://localhost:8080/api/boards/${boardId}/lists`, lists);
 }
 
+export async function getList(boardId: number, listId: number) : Promise<List> {
+    const board = boards.filter(function (item) {
+        return item.id === boardId;
+    });
+    const lists = board[0].lists ?? [];
+    const listsFiltered = lists.filter(function (item) {
+        return item.id === listId;
+    });
+    let list = listsFiltered[0];
+
+    return await getDataFromApi<List>(`http://localhost:8080/api/boards/${boardId}/lists/${listId}`, list);
+}
+
 export async function addList(boardId: number, list: List) : Promise<List> {
     // TODO: implement API call
     let newList = {

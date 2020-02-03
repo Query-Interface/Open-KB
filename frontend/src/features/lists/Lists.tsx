@@ -26,20 +26,9 @@ export const BoardLists = ({boardId} : ListsProps) => {
         dispatch(createList(boardId, newList));
     };
 
-    const handleAddCard = (event: React.MouseEvent, listId: string) => {
-        /*
-        let lists = this.state.lists.slice();
-        let cards = (lists.filter(l => l.id === listId)[0].cards || []).slice();
-        cards.push({"id": cards.length.toString(), "title": "My new card", "description": "A new default card. You can edit its content."});
-        lists.filter(l => l.id === listId)[0].cards = cards;
-        this.setState({lists : lists});
-        */
-        event.preventDefault();
-    }
-
     const renderList = (list: List) => {
         let cards = list.cards? list.cards : [];
-        return <UIList id={list.id} title={list.title} cards={cards} />
+        return <UIList boardId={boardId} listId={list.id} />
     }
 
     let content : Array<JSX.Element> = [];
