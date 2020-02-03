@@ -16,7 +16,7 @@ module.exports = (env) => {
   plugins.push(new HtmlWebpackPlugin({ template: 'src/index.html'}));
 
   return {
-    entry: './src/index.ts',
+    entry: './src/index.tsx',
     mode: mode,
     devtool: mapType,
     module: {

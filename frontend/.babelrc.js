@@ -18,6 +18,7 @@ module.exports = {
 	'plugins': [
 		'react-hot-loader/babel',
 		'@babel/proposal-class-properties',
+		'@babel/plugin-proposal-optional-chaining',
 		['import', {
 			libraryName: 'antd',
 			style: 'css',

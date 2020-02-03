@@ -1,99 +1,50 @@
-import * as React from 'react';
-import { DataSource } from '../../services/DataSource';
-import { Lists } from './Lists';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchBoardDetails } from '../../features/board/boardsDetailSlice';
+import { RootState } from '../../app/rootReducer';
+import { Empty, Spin } from 'antd';
+import { BoardLists } from '../../features/lists/Lists';
 
-export interface BoardProps {
-    id: number;
-    title: string;
-    description?: string;
-    lists?: Array<ListProps>;
+interface BoardProps {
+    boardId: number
 }
 
-export interface ListProps {
-    id: string;
-    title: string;
-    cards?: Array<CardProps>;
-    onAddCard?: (event: React.MouseEvent, loadId:string) => void;
-}
+const Board = ({boardId} : BoardProps) => {
+    const dispatch = useDispatch();
+    const board = useSelector((state:RootState) => state.boards.boardsById[boardId]);
+    const isLoading = useSelector((state:RootState) => state.boards.isLoading);
 
-export interface CardProps {
-    id: string;
-    title: string;
-    description?: string;
-    comments?: Array<CommentProps>;
-    checklists?: Array<CheckListProps>;
-}
-
-export interface CommentProps {
-    id: string;
-    content: string;
-    created?: Date;
-    edited?: Date;
-}
-
-export interface CheckListProps {
-    id: string;
-    title: string;
-    items: Array<CheckListItemProps>;
-}
-
-export interface CheckListItemProps {
-    id: string;
-    content: string;
-    completed: boolean;
-}
-
-export interface BoardState {
-    lists: Array<ListProps>;
-}
-
-export class Board extends React.Component<BoardProps, BoardState> {
-
-    constructor(props: BoardProps) {
-        super(props);
-        this.state = {
-            lists: []
+    useEffect(() => {
+        if (!board) {
+            dispatch(fetchBoardDetails(boardId));
         }
-        this.handleAddCard = this.handleAddCard.bind(this);
-        this.handleAddList = this.handleAddList.bind(this);
-    }
 
-    componentDidMount() {
-        DataSource.getLists(this.props.id).then(
-            value => this.setState({ lists : value}));
-    }
+    }, [boardId, dispatch]);
 
-    render() {
-        return  <div className="content-wrapper">
-            <div className="board-header">
-                <span>{this.props.title}</span>
-            </div>
-            <div className="board-overflow">
-                <div className="board-container">
-                    {this.renderLists()}
+    function renderLists() {
+        return <BoardLists boardId={boardId} />;
+    };
+
+    let content;
+    if (!isLoading && board) {
+        content = <div className="content-wrapper">
+                <div className="board-header">
+                    <span>{board.title}</span>
                 </div>
-            </div>
+                <div className="board-overflow">
+                    <div className="board-container">
+                        {renderLists()}
+                    </div>
+                </div>
+            </div>;
+    } else if (isLoading) {
+        content = <div style={{textAlign:"center", marginTop:"250px"}}>
+            <Spin size="large" />
         </div>;
+    } else {
+        content = <Empty />;
     }
+    return content;
+};
 
-    private renderLists() {
-        let lists = this.state.lists? this.state.lists : [];
-        return <Lists lists={lists} onAddCard={this.handleAddCard} onAddList={this.handleAddList} />
-    }
-
-    handleAddList(event: React.MouseEvent) {
-        let lists = this.state.lists.slice();
-        lists.push({"id": lists.length.toString(), "title": "new list", "cards": []});
-        this.setState({ lists : lists});
-        event.preventDefault();
-    }
-
-    handleAddCard(event: React.MouseEvent, listId: string) {
-        let lists = this.state.lists.slice();
-        let cards = (lists.filter(l => l.id === listId)[0].cards || []).slice();
-        cards.push({"id": cards.length.toString(), "title": "My new card", "description": "A new default card. You can edit its content."});
-        lists.filter(l => l.id === listId)[0].cards = cards;
-        this.setState({lists : lists});
-        event.preventDefault();
-    }
-}
+export default Board;
