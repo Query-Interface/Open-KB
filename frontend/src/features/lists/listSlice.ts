@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AppThunk } from '../../app/store';
-import { Card, List, addCard, getList } from '../../api/openkbApi';
+import { Card, List, addCard, getList, getCards } from '../../api/openkbApi';
 import { addListFailed } from './listsSlice';
 
 interface ListDetailsState {
@@ -67,6 +67,7 @@ export const fetchList = (boardId: number, listId: number): AppThunk => async di
     try {
         dispatch(getListStart());
         const list = await getList(boardId, listId);
+        list.cards = await getCards(boardId, listId);
         dispatch(getListSuccess(list));
     } catch (err) {
         dispatch(getListFailed(err.toString()));

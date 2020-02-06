@@ -27,7 +27,7 @@ export const BoardLists = ({boardId} : ListsProps) => {
     };
 
     const renderList = (list: List) => {
-        let cards = list.cards? list.cards : [];
+        //let cards = list.cards? list.cards : [];
         return <UIList boardId={boardId} listId={list.id} />
     }
 
