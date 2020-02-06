@@ -1,18 +1,25 @@
 package com.queryinterface.opentrello.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import javax.persistence.*;
 import java.util.Optional;
 
 @Entity
 public class Card {
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
     private String description;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "card_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
+    private List list;
 
     Card() {
         // for JPA
@@ -33,6 +40,14 @@ public class Card {
 
     public Optional<String> getDescription() {
         return Optional.ofNullable(description);
+    }
+
+    public List getList() {
+        return list;
+    }
+
+    public void setList(List list) {
+        this.list = list;
     }
 
     @Override

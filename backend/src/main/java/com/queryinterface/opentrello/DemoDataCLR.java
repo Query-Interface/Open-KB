@@ -1,14 +1,15 @@
 package com.queryinterface.opentrello;
 
 import com.queryinterface.opentrello.model.Board;
+import com.queryinterface.opentrello.model.Card;
 import com.queryinterface.opentrello.model.List;
 import com.queryinterface.opentrello.repository.BoardRepository;
+import com.queryinterface.opentrello.repository.CardRepository;
 import com.queryinterface.opentrello.repository.ListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -19,6 +20,8 @@ public class DemoDataCLR implements CommandLineRunner {
     BoardRepository boardRepository;
     @Autowired
     ListRepository listRepository;
+    @Autowired
+    CardRepository cardRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -34,6 +37,28 @@ public class DemoDataCLR implements CommandLineRunner {
                         list.setBoard(board);
                         listRepository.save(list);
                     });
+            Board openBoard = boardRepository.findTopByTitle("Kanban").get();
+            Iterable<List> lists = listRepository.findAllByBoardId(openBoard.getId());
+            for (List list : lists) {
+                if (list.getTitle().equals("Open")) {
+                    final Card card1 = new Card("Finalize cards", "finalize cards implementation");
+                    card1.setList(list);
+                    cardRepository.save(card1);
+                    final Card card2 = new Card("Adds events", "Adds event handler on the following buttons: 'add List', 'add card'");
+                    card2.setList(list);
+                    cardRepository.save(card2);
+                } else if (list.getTitle().equals("In Process")) {
+                    final Card card3 = new Card("Add backend support for Cards", "Implement CRUD APIs for cards");
+                    card3.setList(list);
+                    cardRepository.save(card3);
+                } else if (list.getTitle().equals("Blocked")) {
+                    // nothing
+                } else {
+                    final Card card4 = new Card("Move to redux", "Implement redux-toolkit support in frontend");
+                    card4.setList(list);
+                    cardRepository.save(card4);
+                }
+            }
         }
 
         // confirm save with

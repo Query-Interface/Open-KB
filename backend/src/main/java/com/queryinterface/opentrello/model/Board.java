@@ -14,8 +14,6 @@ public class Board {
     private Long id;
     private String title;
     private String description;
-//    @OneToMany(mappedBy = "board")
-//    private final java.util.List<List> lists = new ArrayList<>();
 
     Board() {
         // for JPA.
