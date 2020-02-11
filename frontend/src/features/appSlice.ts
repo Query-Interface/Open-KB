@@ -4,6 +4,7 @@ import { AppThunk } from '../app/store';
 
 interface CurrentDisplayState {
     sliderCollapsed: boolean;
+    editPanelCollapsed: boolean;
     boards: Array<BoardDetails>;
     boardId: number | null;
     error: string | null;
@@ -11,6 +12,7 @@ interface CurrentDisplayState {
 
 let initialState : CurrentDisplayState = {
     sliderCollapsed: false,
+    editPanelCollapsed: true,
     boardId: null,
     boards: [],
     error: null
@@ -25,6 +27,9 @@ const appDisplaySlice = createSlice({
         },
         toggleSlider(state) {
             state.sliderCollapsed = !state.sliderCollapsed;
+        },
+        toggleEditPanel(state) {
+            state.editPanelCollapsed = !state.editPanelCollapsed;
         },
         getBoardsSuccess(state, action: PayloadAction<Array<BoardDetails>>) {
             state.boards = action.payload;
@@ -42,7 +47,8 @@ export const {
     setCurrentBoard,
     toggleSlider,
     getBoardsSuccess,
-    getBoardsFailed
+    getBoardsFailed,
+    toggleEditPanel
   } = appDisplaySlice.actions;
 
 export default appDisplaySlice.reducer;

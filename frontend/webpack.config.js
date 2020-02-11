@@ -11,7 +11,7 @@ module.exports = (env) => {
     mode = 'development';
     plugins.push(new webpack.NamedModulesPlugin());
     plugins.push(new webpack.HotModuleReplacementPlugin());
-    mapType = 'inline-source-map';
+    mapType = 'source-map';
   }
   plugins.push(new HtmlWebpackPlugin({ template: 'src/index.html'}));
 

@@ -7,6 +7,7 @@ import  Board  from '../components/Board/Board';
 import {
     setCurrentBoard,
     toggleSlider,
+    toggleEditPanel,
     fetchBoards
   } from '../features/appSlice';
 import { BoardDetails } from '../api/openkbApi';
@@ -17,6 +18,7 @@ const PRODUCT_NAME: string = "Open KB";
 const App: React.FC = () => {
     const dispatch = useDispatch();
     const collapsed = useSelector((state:RootState) => state.appDisplay.sliderCollapsed);
+    const editPanelVisible = useSelector((state:RootState) => state.appDisplay.editPanelCollapsed);
     const boardSelected = useSelector((state:RootState) => state.appDisplay.boardId);
     const boards = useSelector((state:RootState) => state.appDisplay.boards);
 
@@ -24,9 +26,12 @@ const App: React.FC = () => {
         dispatch(fetchBoards());
     }, [dispatch]);
 
-    const toggle= () => {
+    const toggleMenu = () => {
         dispatch(toggleSlider());
     };
+    const toggleRightPane = () => {
+        dispatch(toggleEditPanel());
+    }
     const setBoard = (boardId: number) => {
         dispatch(setCurrentBoard(boardId));
     };
@@ -59,7 +64,7 @@ const App: React.FC = () => {
                     <Icon
                         className="trigger"
                         type={collapsed ? 'menu-unfold' : 'menu-fold'}
-                        onClick={toggle}
+                        onClick={toggleMenu}
                     />
                     <Menu
                         theme="light"
@@ -70,20 +75,32 @@ const App: React.FC = () => {
                     >
                         <Menu.Item key="1">nav 1</Menu.Item>
                         <Menu.Item key="2">nav 2</Menu.Item>
-                        <Menu.Item key="3">nav 3</Menu.Item>
+                        <Menu.Item key="3" onClick={toggleRightPane}>nav 3</Menu.Item>
                     </Menu>
                 </div>
             </Header>
-            <Content style={{
-                margin: '24px 16px', padding: 24, background: '#fff', minHeight: 280, position:'relative'}} >
-                    {renderBoard(boards)}
-            </Content>
-            <Footer style={{ textAlign: 'center' }}>
-                {PRODUCT_NAME} ©2020 Created by Query-Interface
-            </Footer>
+            <Layout>
+                <Content style={{
+                    marginTop:'24px', background: '#fff', minHeight: 280, position:'relative'}} >
+                        {renderBoard(boards)}
+                </Content>
+                <Sider className="editPanel"
+                    width={400}
+                    trigger={null}
+                    collapsedWidth={0}
+                    collapsible
+                    collapsed={editPanelVisible}>
+
+                    <h1>Put controls here</h1>
+                </Sider>
+            </Layout>
+
         </Layout>
       </Layout>
     );
+    /*<Footer style={{ textAlign: 'center' }}>
+                {PRODUCT_NAME} ©2020 Created by Query-Interface
+            </Footer>*/
 }
 
 export default App;

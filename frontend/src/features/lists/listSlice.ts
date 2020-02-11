@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AppThunk } from '../../app/store';
 import { Card, List, addCard, getList, getCards } from '../../api/openkbApi';
 import { addListFailed } from './listsSlice';
+import { reorder } from './reorder';
 
 interface ListDetailsState {
     listsById: Record<number, List>;
@@ -48,6 +49,35 @@ const listDetails = createSlice({
       },
       addCardFailed(state, action: PayloadAction<string>) {
         state.error = action.payload;
+      },
+      updateCardOrderSuccess(state, action: PayloadAction<MoveCardResponse>) {
+        state.isLoading = false;
+        state.error = null;
+        const list = state.listsById[action.payload.listId];
+        if (list) {
+          const cards = (list.cards??[]).slice();
+          list.cards = reorder(cards, action.payload.startIndex, action.payload.endIndex);
+          state.listsById[action.payload.listId] = list;
+        }
+      },
+      swapCardSuccess(state, action: PayloadAction<SwapCardResponse>) {
+        state.isLoading = false;
+        state.error = null;
+        const sourceList = state.listsById[action.payload.sourceListId];
+        if (sourceList) {
+          const cards = (sourceList.cards??[]).slice();
+          const [moved] = cards.splice(action.payload.startIndex, 1);
+          sourceList.cards = cards;
+          state.listsById[action.payload.sourceListId] = sourceList;
+
+          const destList = state.listsById[action.payload.destinationListId];
+          if (destList) {
+            const destCards = (destList.cards??[]).slice();
+            destCards.splice(action.payload.endIndex, 0, moved);
+            destList.cards = destCards;
+            state.listsById[action.payload.destinationListId] = destList;
+          }
+        }
       }
     }
 });
@@ -58,7 +88,9 @@ export const {
     getListFailed,
     addCardStart,
     addCardSuccess,
-    addCardFailed
+    addCardFailed,
+    updateCardOrderSuccess,
+    swapCardSuccess
 } = listDetails.actions;
 
 export default listDetails.reducer;
@@ -75,9 +107,9 @@ export const fetchList = (boardId: number, listId: number): AppThunk => async di
 };
 
 interface AddCardResponse {
-    boardId: number;
-    listId: number;
-    card: Card;
+  boardId: number;
+  listId: number;
+  card: Card;
 }
 
 export const createCard = (boardId: number, listId: number, card: Card): AppThunk => async dispatch => {
@@ -88,4 +120,35 @@ export const createCard = (boardId: number, listId: number, card: Card): AppThun
     } catch (err) {
         dispatch(addListFailed(err));
     }
+};
+
+interface MoveCardResponse {
+  listId: number;
+  startIndex: number;
+  endIndex: number;
+};
+
+export const updateCardOrder = (boardId: number, listId: number, startIndex: number, endIndex: number): AppThunk => async dispatch => {
+  try {
+    dispatch(updateCardOrderSuccess({listId, startIndex, endIndex}));
+    // TODO update backend asynchronously
+  } catch (err) {
+    // TODO handle error.
+  }
+};
+
+interface SwapCardResponse {
+  sourceListId: number;
+  destinationListId: number;
+  startIndex: number;
+  endIndex: number;
+}
+
+export const moveCard = (boardId: number, sourceListId: number, destinationListId: number, startIndex: number, endIndex: number): AppThunk => async dispatch => {
+  try {
+    dispatch(swapCardSuccess({sourceListId, destinationListId, startIndex, endIndex}));
+    // TODO update backend asynchronously
+  } catch (err) {
+    // TODO handle error.
+  }
 };

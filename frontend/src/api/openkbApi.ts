@@ -8,6 +8,7 @@ export interface BoardDetails {
 export interface List {
     id: number;
     title: string;
+    index: number;
     cards?: Array<Card>;
 }
 

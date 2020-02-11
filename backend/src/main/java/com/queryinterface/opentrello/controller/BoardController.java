@@ -65,4 +65,9 @@ public class BoardController {
         return new ResponseEntity<>(cards, HttpStatus.OK);
     }
 
+    @RequestMapping(method = RequestMethod.PUT, path = "/boards/{boardId}/lists/{listId}/cards/{cardId}")
+    public ResponseEntity<Card> updateCard(final @PathVariable Long boardId, final @PathVariable Long listId, final @PathVariable Long cardId, final @RequestBody Card card) {
+        // TODO save to DB
+        return new ResponseEntity<>(card, HttpStatus.OK);
+    }
 }

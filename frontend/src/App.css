@@ -42,7 +42,8 @@
 	flex-wrap: nowrap;
 	flex-direction: row;
 	height:100%;
-	overflow-x: auto;
+    overflow-x: auto;
+    overflow-y: hidden;
 }
 .board-overflow {
     position: absolute;
@@ -60,13 +61,14 @@
     vertical-align: top;
 	flex-grow: 0;
 	flex-shrink: 0;
-	flex-basis: 280px;
+    flex-basis: 280px;
+    overflow-y: auto;
 }
 .list-column:first-child {
     margin-left: 12px;
 }
 .list-container {
-    /*min-height: 100px;*/
+    min-height: 250px;
     background-color: #d9d9d9;
 }
 .add-button {
@@ -110,6 +112,7 @@
     overflow-y: auto;
     margin: 0 4px;
     padding: 0 4px;
+    min-height: 32px;
 }
 .card-details {
     overflow: hidden;
@@ -121,4 +124,7 @@
 .list-footer {
     display: block;
     padding: 8px;
+}
+.editPanel {
+    width: 300px;
 }

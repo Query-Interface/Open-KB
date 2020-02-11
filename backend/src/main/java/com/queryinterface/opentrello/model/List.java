@@ -14,6 +14,8 @@ public class List {
 
     private String title;
 
+    private int index;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "board_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -42,6 +44,14 @@ public class List {
 
     public void setBoard(final Board board) {
         this.board = board;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     @Override

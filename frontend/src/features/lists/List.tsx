@@ -5,13 +5,15 @@ import { Icon } from 'antd';
 import { Card } from './Card';
 import { List as ModelList, Card as ModelCard } from '../../api/openkbApi';
 import { fetchList, createCard } from './listSlice';
+import { Draggable, DraggableProvided, DraggableStateSnapshot, Droppable, DroppableProvided } from 'react-beautiful-dnd';
 
 interface ListProps {
     boardId: number;
     listId: number;
+    index: number;
 }
 
-export const List = ({boardId, listId} : ListProps) => {
+export const List = ({boardId, listId, index} : ListProps) => {
 
     const dispatch = useDispatch();
     const list = useSelector((state: RootState) => state.listDetails.listsById[listId]);
@@ -23,43 +25,60 @@ export const List = ({boardId, listId} : ListProps) => {
 
     }, [boardId, listId, dispatch]);
 
-    const renderCards = (cards: Array<ModelCard>) => {
-        if (cards.length != 0) {
-            return <div className="list-cards">
-                {cards.map(function(card) {
-                    return <Card id={card.id} title={card.title} />
-                })}
-            </div>
-        } else {
-            return <div></div>;
-        }
-    }
+    const renderCardsWithDnd = (cards: Array<ModelCard>) => {
+        return <Droppable
+             droppableId={`list-drop-${listId}`}
+             type="CARD"
+             direction="vertical"
+             ignoreContainerClipping={false}
+             isCombineEnabled={false}>
+             {(provided: DroppableProvided) => (
+                 <div className="list-cards"
+                    ref={provided.innerRef} {...provided.droppableProps}>
+                    {cards.map(function(card: ModelCard, index: number) {
+                        return <Card card={card} index={index} />
+                    })}
+                    {provided.placeholder}
+                 </div>
+             )}
+         </Droppable>;
+     }
 
     const onAddCard = (event: React.MouseEvent, carId: number) => {
-        const newCard = {id: -1, title: "my card"};
+        const newCard = {id: -1, title: "my card", index: list.cards?.length ?? 1};
         dispatch(createCard(boardId, listId, newCard));
     }
 
+    const renderColumnWithDnD = (list: ModelList) => {
+        return <Draggable draggableId={`list-drag-${list.id}`} key={list.id} index={index}>
+            {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
+                <div className="list-column"
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}>
+                    <div className="list-container">
+                        <div className="list-header" {...provided.dragHandleProps} >
+                            <span>{list.title}</span>
+                            <div className="list-header-menu"><span><Icon type="ellipsis" /></span></div>
+                        </div>
+                        <div className="list-content">
+                            {renderCardsWithDnd(list.cards || [])}
+                        </div>
+                        <div className="list-footer add-button"
+                            onClick={e => {
+                                if (onAddCard)
+                                    onAddCard(e, list.id);
+                                }}>
+                            <span><Icon type="plus" /><span> Add another card</span></span>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </Draggable>
+    };
+
     let content = <div className="list-column" key={listId} ></div>;
     if (list) {
-        content = <div className="list-column" key={listId} >
-            <div className="list-container">
-                <div className="list-header">
-                    <span>{list.title}</span>
-                    <div className="list-header-menu"><span><Icon type="ellipsis" /></span></div>
-                </div>
-                <div className="list-content">
-                    {renderCards(list.cards || [])}
-                </div>
-                <div className="list-footer add-button"
-                    onClick={e => {
-                        if (onAddCard)
-                            onAddCard(e, list.id);
-                        }}>
-                    <span><Icon type="plus" /><span> Add another card</span></span>
-                </div>
-            </div>
-        </div>;
+        content = renderColumnWithDnD(list);
     }
     return content;
 };
