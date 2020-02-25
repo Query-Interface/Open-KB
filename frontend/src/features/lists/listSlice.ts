@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AppThunk } from '../../app/store';
-import { Card, List, addCard, getList, getCards } from '../../api/openkbApi';
+import { Card, List, addCard, getList, getCards, updateCardIndexInTheSameList, updateCardIndexAndChangeList } from '../../api/openkbApi';
 import { addListFailed } from './listsSlice';
 import { reorder } from './reorder';
 
@@ -128,12 +128,14 @@ interface MoveCardResponse {
   endIndex: number;
 };
 
-export const updateCardOrder = (boardId: number, listId: number, startIndex: number, endIndex: number): AppThunk => async dispatch => {
+export const updateCardOrder = (boardId: number, listId: number, cardId: number, startIndex: number, endIndex: number): AppThunk => async dispatch => {
   try {
     dispatch(updateCardOrderSuccess({listId, startIndex, endIndex}));
+    updateCardIndexInTheSameList(boardId, listId, cardId, startIndex, endIndex);
     // TODO update backend asynchronously
   } catch (err) {
     // TODO handle error.
+    console.log(err);
   }
 };
 
@@ -144,11 +146,13 @@ interface SwapCardResponse {
   endIndex: number;
 }
 
-export const moveCard = (boardId: number, sourceListId: number, destinationListId: number, startIndex: number, endIndex: number): AppThunk => async dispatch => {
+export const moveCard = (boardId: number, sourceListId: number, destinationListId: number, cardId: number, startIndex: number, endIndex: number): AppThunk => async dispatch => {
   try {
     dispatch(swapCardSuccess({sourceListId, destinationListId, startIndex, endIndex}));
-    // TODO update backend asynchronously
+    // update backend asynchronously
+    updateCardIndexAndChangeList(boardId, sourceListId, destinationListId, cardId, startIndex, endIndex);
   } catch (err) {
+    console.log(err);
     // TODO handle error.
   }
 };

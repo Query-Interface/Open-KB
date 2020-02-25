@@ -92,7 +92,7 @@
     min-height: 20px;
     cursor: pointer;
 }
-.list-header-menu {
+.list-header-menu, .list-header-add {
     position: absolute;
     top: 4px;
     right: 4px;
@@ -104,7 +104,10 @@
     font-weight: bold;
     font-size: large;
 }
-.list-header-menu:hover {
+.list-header-add {
+    right: 38px;
+}
+.list-header-menu:hover, .list-header-add:hover {
     background-color: rgba(0, 0, 0, 0.32);
 }
 .list-cards {
@@ -113,6 +116,7 @@
     margin: 0 4px;
     padding: 0 4px;
     min-height: 32px;
+    padding-bottom: 24px;
 }
 .card-details {
     overflow: hidden;

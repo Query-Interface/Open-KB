@@ -8,7 +8,7 @@ export interface BoardDetails {
 export interface List {
     id: number;
     title: string;
-    index: number;
+    //index: number;
     cards?: Array<Card>;
 }
 
@@ -105,6 +105,61 @@ export async function addCard(boardId: number, listId: number, card: Card) : Pro
         description: card.description
     };
     return Promise.resolve(newCard);
+}
+
+export async function updateListIndex(boardId: number, listId: number, startIndex: number, endIndex: number) : Promise<any> {
+    const url = `http://localhost:8080/api/boards/${boardId}/lists/swapper`;
+    const action = {
+        list: listId,
+        from: startIndex,
+        to: endIndex
+    };
+    return fetch(url, {
+        method: 'PUT',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(action)
+    });
+}
+
+export async function updateCardIndexInTheSameList(boardId: number, listId: number, cardId: number, startIndex: number, endIndex: number) : Promise<Response> {
+    const url = `http://localhost:8080/api/boards/${boardId}/cards/swapper`;
+    const action = {
+        fromList: listId,
+        toList: listId,
+        card: cardId,
+        from: startIndex,
+        to: endIndex
+    };
+    return fetch(url, {
+        method: 'PUT',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(action)
+    });
+}
+
+export async function updateCardIndexAndChangeList(boardId: number, sourceListId: number, destinationListId: number, cardId: number, startIndex: number, endIndex: number) : Promise<Response> {
+    const url = `http://localhost:8080/api/boards/${boardId}/cards/swapper`;
+    const action = {
+        fromList: sourceListId,
+        toList: destinationListId,
+        card: cardId,
+        from: startIndex,
+        to: endIndex
+    };
+    return fetch(url, {
+        method: 'PUT',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(action)
+    });
 }
 
 /*************** SAMPLE Handling **************************/

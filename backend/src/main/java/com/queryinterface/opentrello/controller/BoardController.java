@@ -4,6 +4,8 @@ import com.queryinterface.opentrello.exception.ResourceNotFound;
 import com.queryinterface.opentrello.model.Board;
 import com.queryinterface.opentrello.model.Card;
 import com.queryinterface.opentrello.model.List;
+import com.queryinterface.opentrello.model.MoveListAction;
+import com.queryinterface.opentrello.model.MoveCardAction;
 import com.queryinterface.opentrello.repository.BoardRepository;
 import com.queryinterface.opentrello.repository.CardRepository;
 import com.queryinterface.opentrello.repository.ListRepository;
@@ -41,7 +43,7 @@ public class BoardController {
 
     @RequestMapping(method= RequestMethod.GET, path = "/boards/{boardId}/lists")
     public ResponseEntity<Iterable<List>> getLists(final @PathVariable Long boardId) {
-        final Iterable<List> lists = listRepository.findAllByBoardId(boardId);
+        final Iterable<List> lists = listRepository.findAllByBoardIdOrderByIndex(boardId);
         return new ResponseEntity<>(lists, HttpStatus.OK);
     }
 
@@ -61,7 +63,7 @@ public class BoardController {
 
     @RequestMapping(method = RequestMethod.GET, path = "/boards/{boardId}/lists/{listId}/cards")
     public ResponseEntity<Iterable<Card>> getCards(final @PathVariable Long boardId, final @PathVariable Long listId) {
-        Iterable<Card> cards = cardRepository.findAllByListId(listId);
+        Iterable<Card> cards = cardRepository.findAllByListIdOrderByIndex(listId);
         return new ResponseEntity<>(cards, HttpStatus.OK);
     }
 
@@ -69,5 +71,21 @@ public class BoardController {
     public ResponseEntity<Card> updateCard(final @PathVariable Long boardId, final @PathVariable Long listId, final @PathVariable Long cardId, final @RequestBody Card card) {
         // TODO save to DB
         return new ResponseEntity<>(card, HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, path = "/boards/{boardId}/lists/swapper")
+    public ResponseEntity swapLists(final @PathVariable Long boardId, final @RequestBody MoveListAction moveListAction) {
+        listRepository.updateIndexOfList(boardId, moveListAction.getList(), moveListAction.getFrom(), moveListAction.getTo());
+        return ResponseEntity.ok().build();
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, path = "/boards/{boardId}/cards/swapper")
+    public ResponseEntity swapCardsInList(final @PathVariable Long boardId, final @RequestBody MoveCardAction moveCardAction) {
+        if (moveCardAction.getFromList() == moveCardAction.getToList()) {
+            cardRepository.updateIndexOfCardInList(moveCardAction.getFromList(), moveCardAction.getCard(), moveCardAction.getFrom(), moveCardAction.getTo());
+        } else {
+            cardRepository.updateIndexAndMoveCard(moveCardAction.getToList(), moveCardAction.getCard(), moveCardAction.getTo());
+        }
+        return ResponseEntity.ok().build();
     }
 }

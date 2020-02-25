@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AppThunk } from '../../app/store';
-import { List, getLists, addList } from '../../api/openkbApi';
+import { List, getLists, addList, updateListIndex } from '../../api/openkbApi';
 import { reorder } from './reorder';
 
 interface ListsDetailsState {
@@ -79,9 +79,12 @@ export const createList = (boardId: number, list: List): AppThunk => async dispa
 
 export const updateListOrder = (boardId: number, lists: Array<List>, startIndex: number, endIndex: number): AppThunk => async dispatch => {
   try {
+      const movedList = lists[startIndex];
       const reordered = reorder(lists, startIndex, endIndex);
       dispatch(updateListOrderSuccess(reordered));
-      // TODO update backend asynchronously
+      // update backend asynchronously
+      updateListIndex(boardId, movedList.id, startIndex, endIndex);
+
   } catch (err) {
       //dispatch(addListFailed(err));
   }

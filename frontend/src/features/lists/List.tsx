@@ -42,12 +42,13 @@ export const List = ({boardId, listId, index} : ListProps) => {
                  </div>
              )}
          </Droppable>;
-     }
+    };
+
 
     const onAddCard = (event: React.MouseEvent, carId: number) => {
         const newCard = {id: -1, title: "my card", index: list.cards?.length ?? 1};
         dispatch(createCard(boardId, listId, newCard));
-    }
+    };
 
     const renderColumnWithDnD = (list: ModelList) => {
         return <Draggable draggableId={`list-drag-${list.id}`} key={list.id} index={index}>
@@ -59,22 +60,17 @@ export const List = ({boardId, listId, index} : ListProps) => {
                         <div className="list-header" {...provided.dragHandleProps} >
                             <span>{list.title}</span>
                             <div className="list-header-menu"><span><Icon type="ellipsis" /></span></div>
+                            <div className="list-header-add" onClick={e => onAddCard(e, list.id)}><span><Icon type="plus" /></span></div>
                         </div>
                         <div className="list-content">
                             {renderCardsWithDnd(list.cards || [])}
-                        </div>
-                        <div className="list-footer add-button"
-                            onClick={e => {
-                                if (onAddCard)
-                                    onAddCard(e, list.id);
-                                }}>
-                            <span><Icon type="plus" /><span> Add another card</span></span>
                         </div>
                     </div>
                 </div>
             )}
         </Draggable>
     };
+
 
     let content = <div className="list-column" key={listId} ></div>;
     if (list) {

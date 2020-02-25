@@ -7,7 +7,7 @@ import { fetchLists, createList, updateListOrder } from '../../features/lists/li
 import { updateCardOrder, moveCard } from '../../features/lists/listSlice';
 import { List } from '../../api/openkbApi';
 import { List as UIList } from '../../features/lists/List';
-import { Droppable, DroppableProvided, DragDropContext, DropResult } from 'react-beautiful-dnd';
+import { Droppable, DroppableProvided, DragDropContext, DropResult, DraggableId, DroppableId } from 'react-beautiful-dnd';
 
 interface BoardProps {
     boardId: number
@@ -35,18 +35,19 @@ const Board = ({boardId} : BoardProps) => {
           return;
         }
         if (result.type === "CARD") {
+            const cardId = getCardIdByDraggableId(result.draggableId);
             if (result.source.droppableId === result.destination.droppableId) {
                 // case 1: move card in the same list (simple swapping of items)
                 const list = getListByDroppableId(lists ?? [], result.source.droppableId);
-                if (list) {
-                    dispatch(updateCardOrder(boardId, list.id, result.source?.index, result.destination?.index));
+                if (list && cardId) {
+                    dispatch(updateCardOrder(boardId, list.id, cardId, result.source?.index, result.destination?.index));
                 }
             } else {
                 // case 2: move card into another list (need to remove card from source list, then add to destination list)
                 const listSource = getListByDroppableId(lists ?? [], result.source.droppableId);
                 const listDestination = getListByDroppableId(lists ?? [], result.destination.droppableId);
-                if (listSource && listDestination) {
-                    dispatch(moveCard(boardId, listSource.id, listDestination.id, result.source.index, result.destination.index));
+                if (listSource && listDestination && cardId) {
+                    dispatch(moveCard(boardId, listSource.id, listDestination.id, cardId, result.source.index, result.destination.index));
                 }
             }
         } else if (result.type === "LIST") {
@@ -56,13 +57,24 @@ const Board = ({boardId} : BoardProps) => {
         }
     };
 
-    const getListByDroppableId = (lists: Array<List>, dropId: string) : List | undefined => {
+    const getListByDroppableId = (lists: Array<List>, dropId: DroppableId) : List | undefined => {
         let result : List | undefined;
         if (dropId) {
             result = lists.find( l => dropId === `list-drop-${l.id}`);
         }
         return result;
     }
+
+    const getCardIdByDraggableId = (dragId: DraggableId) : number  | undefined => {
+        let result : number | undefined;
+        if (dragId) {
+            const sId = dragId.substring('card-'.length);
+            if (sId) {
+                result = Number.parseInt(sId);
+            }
+        }
+        return result;
+    };
 
 
     const onAddList = (event: React.MouseEvent) => {
@@ -111,7 +123,7 @@ const Board = ({boardId} : BoardProps) => {
     if (!isLoading && board) {
         content = <div className="content-wrapper">
                 <div className="board-header">
-                    <span>{board.title}</span>
+                    <h1>{board.title}</h1>
                 </div>
                 <div className="board-overflow">
                     {renderBoardWithDnd()}
