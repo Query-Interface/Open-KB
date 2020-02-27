@@ -35,6 +35,15 @@ services:
     ports:
       - '18080:8080'
   openkb-back:
-    build: './backend'
+    build:
+      context: './backend'
+      args:
+        springprofile: 'docker'
+    depends_on:
+      - openkb-db
+    environment:
+      DB_URI: 'jdbc:postgresql://openkb-db:5432/postgres'
+      DB_USER: 'postgres'
+      DB_PASSWORD: 'Password1'
     ports:
       - '8080:8080'
