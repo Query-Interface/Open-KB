@@ -1,0 +1,40 @@
+version: '3'
+volumes:
+  openkb-db-data:
+services:
+  openkb-db:
+    image: postgres:11.5-alpine
+    restart: unless-stopped
+    ports:
+      - '15432:5432'
+    environment:
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'Password1'
+      POSTGRES_DB: 'postgres'
+      TZ: Europe/Paris
+    volumes:
+      - openkb-db-data:/var/lib/postgresql/data
+    command: postgres -c max_connections=20 -c shared_buffers=1GB
+  
+  pgadmin4:
+    image: dpage/pgadmin4:latest
+    depends_on:
+        - openkb-db
+    restart: unless-stopped
+    ports:
+      - '15050:80'
+    environment:
+      PGADMIN_DEFAULT_EMAIL: 'queryinterface@mail.com'
+      PGADMIN_DEFAULT_PASSWORD: 'Password1'
+      TZ: Europe/Paris
+    logging:
+      driver: none
+  
+  openkb-front:
+    build: './frontend'
+    ports:
+      - '18080:8080'
+  openkb-back:
+    build: './backend'
+    ports:
+      - '8080:8080'
