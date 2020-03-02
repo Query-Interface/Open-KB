@@ -1,11 +1,11 @@
 - [x] implement interactivity with redux
 - [x] integrate react-beautiful-dnd, cf. sample https://github.com/atlassian/react-beautiful-dnd/blob/master/stories/src/board/board.jsx and https://codesandbox.io/s/simple-virtual-list-board-vgvzt
 - [x] add sync with backend for drap and drop (modify code to retrieve items ordered by index)
-- [] add a database support for postgresql
+- [x] add database support for postgresql
 - [x] a docker-compose file to begin use of the tool
 - [] add a way to create/edit list
+- [] add controls to handle empty board / no boards case (starting page)
 - [] use side panel to create/edit cards
 - [] refactor for introducing meaningful waiting panel
 - [] add more settings to Board component such as background image,...
-- [] introduce ListSummary, ListDetailed interfaces to differentiate behavior between pages 
 - [] add support for login screen / user handling
