@@ -7,18 +7,19 @@ import  Board  from '../components/Board/Board';
 import {
     setCurrentBoard,
     toggleSlider,
-    toggleEditPanel,
     fetchBoards
   } from '../features/appSlice';
+import { toggleEditPanel } from '../features/editPanel/editPanelSlice';
 import { BoardDetails } from '../api/openkbApi';
+import EditPanel from '../features/editPanel/EditPanel';
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Header, Content, Sider } = Layout;
 const PRODUCT_NAME: string = "Open KB";
 
 const App: React.FC = () => {
     const dispatch = useDispatch();
     const collapsed = useSelector((state:RootState) => state.appDisplay.sliderCollapsed);
-    const editPanelVisible = useSelector((state:RootState) => state.appDisplay.editPanelCollapsed);
+    const editPanelVisible = useSelector((state:RootState) => state.editPanel.editPanelCollapsed);
     const boardSelected = useSelector((state:RootState) => state.appDisplay.boardId);
     const boards = useSelector((state:RootState) => state.appDisplay.boards);
 
@@ -56,7 +57,7 @@ const App: React.FC = () => {
             trigger={null}
             >
                 <div className="logo" >{PRODUCT_NAME}</div>
-                    <SiderSubMenu id="subBoards" title="Boards" icon="project" menuEntries={boards} selected={boardSelected} />
+                    <SiderSubMenu id="subBoards" title="Boards" icon="project" menuEntries={boards} selected={boardSelected??undefined} />
             </Sider>
         <Layout>
             <Header style={{ background: '#fff', padding: 0 }}>
@@ -84,14 +85,12 @@ const App: React.FC = () => {
                     marginTop:'24px', background: '#fff', minHeight: 280, position:'relative'}} >
                         {renderBoard(boards)}
                 </Content>
-                <Sider className="editPanel"
-                    width={400}
+                <Sider width={400}
                     trigger={null}
                     collapsedWidth={0}
                     collapsible
                     collapsed={editPanelVisible}>
-
-                    <h1>Put controls here</h1>
+                        <EditPanel />
                 </Sider>
             </Layout>
 

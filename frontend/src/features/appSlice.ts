@@ -28,9 +28,6 @@ const appDisplaySlice = createSlice({
         toggleSlider(state) {
             state.sliderCollapsed = !state.sliderCollapsed;
         },
-        toggleEditPanel(state) {
-            state.editPanelCollapsed = !state.editPanelCollapsed;
-        },
         getBoardsSuccess(state, action: PayloadAction<Array<BoardDetails>>) {
             state.boards = action.payload;
             state.boardId = state.boards.length > 0 ? state.boards[0].id : -1;
@@ -47,8 +44,7 @@ export const {
     setCurrentBoard,
     toggleSlider,
     getBoardsSuccess,
-    getBoardsFailed,
-    toggleEditPanel
+    getBoardsFailed
   } = appDisplaySlice.actions;
 
 export default appDisplaySlice.reducer;
@@ -61,4 +57,4 @@ export const fetchBoards = (): AppThunk => async dispatch => {
     } catch (err) {
       dispatch(getBoardsFailed(err.toString()))
     }
-}
+};
