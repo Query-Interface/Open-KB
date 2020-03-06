@@ -33,10 +33,7 @@ module.exports = (env) => {
       ]
     },
     resolve: {
-      extensions: [ '.tsx', '.ts', '.js' ],
-      alias: {
-        "@ant-design/icons/lib/dist$": path.resolve(__dirname, "./src/icons.js")
-      }
+      extensions: [ '.tsx', '.ts', '.js' ]
     },
     output: {
       path: path.resolve(__dirname, 'dist'),

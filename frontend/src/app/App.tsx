@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from './rootReducer';
-import { Layout, Menu, Icon } from 'antd';
+import { Layout, Menu } from 'antd';
+import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import { SiderSubMenu } from '../components/SiderSubMenu/SiderSubMenu';
 import  Board  from '../components/Board/Board';
 import {
@@ -61,11 +62,10 @@ const App: React.FC = () => {
         <Layout>
             <Header style={{ background: '#fff', padding: 0 }}>
                 <div>
-                    <Icon
-                        className="trigger"
-                        type={collapsed ? 'menu-unfold' : 'menu-fold'}
-                        onClick={toggleMenu}
-                    />
+                    {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+                    className: 'trigger',
+                    onClick: toggleMenu,
+                    })}
                     <Menu
                         theme="light"
                         mode="horizontal"

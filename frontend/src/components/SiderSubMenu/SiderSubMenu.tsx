@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Menu, Icon } from 'antd';
+import { Menu } from 'antd';
+import { ProjectOutlined } from '@ant-design/icons';
 const { SubMenu } = Menu;
 
 export interface MenuProps {
@@ -26,7 +27,7 @@ export class SiderSubMenu extends React.Component<SiderMenuProps, {}> {
         const selectedKey = [this.props.selected?.toString()??""];
         return <Menu theme="dark" selectedKeys={selectedKey} defaultOpenKeys={[this.props.id]} mode="inline">
             <SubMenu key={this.props.id}
-                title={<span><Icon type={this.props.icon} /><span>{this.props.title}</span></span>} >
+                title={<span>{this.getIcon(this.props.icon)}<span>{this.props.title}</span></span>} >
                 {this.props.menuEntries.map(function(item) {
                     return <Menu.Item key={item.id} >
                     {item.title}
@@ -36,4 +37,16 @@ export class SiderSubMenu extends React.Component<SiderMenuProps, {}> {
             </SubMenu>
         </Menu>
     }
+
+    private getIcon(name?: string) : React.ReactElement | null {
+        if (name) {
+            switch (name) {
+                case 'project':
+                    return <ProjectOutlined />
+                default:
+                    return null;
+            }
+        }
+        return null;
+    };
 }

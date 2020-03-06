@@ -2,12 +2,13 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchBoardDetails } from '../../features/board/boardsDetailSlice';
 import { RootState } from '../../app/rootReducer';
-import { Empty, Spin, Icon } from 'antd';
+import { Empty, Spin } from 'antd';
 import { fetchLists, createList, updateListOrder } from '../../features/lists/listsSlice';
 import { updateCardOrder, moveCard } from '../../features/lists/listSlice';
 import { List } from '../../api/openkbApi';
 import { List as UIList } from '../../features/lists/List';
 import { Droppable, DroppableProvided, DragDropContext, DropResult, DraggableId, DroppableId } from 'react-beautiful-dnd';
+import { PlusOutlined } from '@ant-design/icons';
 
 interface BoardProps {
     boardId: number
@@ -109,7 +110,7 @@ const Board = ({boardId} : BoardProps) => {
                     <div className="list-column">
                         <div className="list-container">
                             <div className="new-list add-button" onClick={e => onAddList(e)}>
-                                <span><Icon type="plus" /><span> Add another list</span></span>
+                                <span><PlusOutlined /><span> Add another list</span></span>
                             </div>
                         </div>
                     </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { displayEditCardPanel } from '../editPanel/editPanelSlice';
-import { Icon } from 'antd';
+import { EditOutlined } from '@ant-design/icons';
 import { Card as ModelCard } from '../../api/openkbApi';
 import { Draggable, DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
 
@@ -25,7 +25,7 @@ export const Card = ({card, index}: CardProps) => {
             {...provided.draggableProps}>
             <div {...provided.dragHandleProps}>{card.title}</div>
             <div style={{position: "relative"}}>
-                <div className="btn btn-card-edit" onClick={(e) => onEditCard(e)}><span><Icon type="edit" /></span></div>
+                <div className="btn btn-card-edit" onClick={(e) => onEditCard(e)}><span><EditOutlined /></span></div>
             </div>
         </div>
     )}

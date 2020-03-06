@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../app/rootReducer';
-import { Icon } from 'antd';
 import { Card } from './Card';
 import { List as ModelList, Card as ModelCard } from '../../api/openkbApi';
 import { fetchList, createCard } from './listSlice';
 import { Draggable, DraggableProvided, DraggableStateSnapshot, Droppable, DroppableProvided } from 'react-beautiful-dnd';
+import { EllipsisOutlined, PlusOutlined, SmallDashOutlined } from '@ant-design/icons';
 
 interface ListProps {
     boardId: number;
@@ -58,10 +58,10 @@ export const List = ({boardId, listId, index} : ListProps) => {
                     {...provided.draggableProps}>
                     <div className="list-container">
                         <div className="list-header" {...provided.dragHandleProps} >
-                            <span className="drag-handle"><Icon type="small-dash" rotate="90" /></span>
+                            <span className="drag-handle"><SmallDashOutlined rotate={90} /></span>
                             <span>{list.title}</span>
-                            <div className="btn btn-list-menu"><span><Icon type="ellipsis" /></span></div>
-                            <div className="btn btn-list-add" onClick={e => onAddCard(e, list.id)}><span><Icon type="plus" /></span></div>
+                            <div className="btn btn-list-menu"><span><EllipsisOutlined /></span></div>
+                            <div className="btn btn-list-add" onClick={e => onAddCard(e, list.id)}><span><PlusOutlined /></span></div>
                         </div>
                         <div className="list-content">
                             {renderCardsWithDnd(list.cards || [])}
