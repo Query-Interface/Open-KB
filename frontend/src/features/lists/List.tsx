@@ -58,9 +58,10 @@ export const List = ({boardId, listId, index} : ListProps) => {
                     {...provided.draggableProps}>
                     <div className="list-container">
                         <div className="list-header" {...provided.dragHandleProps} >
+                            <span className="drag-handle"><Icon type="small-dash" rotate="90" /></span>
                             <span>{list.title}</span>
-                            <div className="list-header-menu"><span><Icon type="ellipsis" /></span></div>
-                            <div className="list-header-add" onClick={e => onAddCard(e, list.id)}><span><Icon type="plus" /></span></div>
+                            <div className="btn btn-list-menu"><span><Icon type="ellipsis" /></span></div>
+                            <div className="btn btn-list-add" onClick={e => onAddCard(e, list.id)}><span><Icon type="plus" /></span></div>
                         </div>
                         <div className="list-content">
                             {renderCardsWithDnd(list.cards || [])}

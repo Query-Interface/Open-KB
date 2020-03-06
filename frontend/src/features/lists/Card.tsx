@@ -25,7 +25,7 @@ export const Card = ({card, index}: CardProps) => {
             {...provided.draggableProps}>
             <div {...provided.dragHandleProps}>{card.title}</div>
             <div style={{position: "relative"}}>
-                <div className="card-edit" onClick={(e) => onEditCard(e)}><span><Icon type="edit" /></span></div>
+                <div className="btn btn-card-edit" onClick={(e) => onEditCard(e)}><span><Icon type="edit" /></span></div>
             </div>
         </div>
     )}

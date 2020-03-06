@@ -19,7 +19,6 @@ const PRODUCT_NAME: string = "Open KB";
 const App: React.FC = () => {
     const dispatch = useDispatch();
     const collapsed = useSelector((state:RootState) => state.appDisplay.sliderCollapsed);
-    const editPanelVisible = useSelector((state:RootState) => state.editPanel.editPanelCollapsed);
     const boardSelected = useSelector((state:RootState) => state.appDisplay.boardId);
     const boards = useSelector((state:RootState) => state.appDisplay.boards);
 
@@ -85,21 +84,15 @@ const App: React.FC = () => {
                     marginTop:'24px', background: '#fff', minHeight: 280, position:'relative'}} >
                         {renderBoard(boards)}
                 </Content>
-                <Sider width={400}
-                    trigger={null}
-                    collapsedWidth={0}
-                    collapsible
-                    collapsed={editPanelVisible}>
-                        <EditPanel />
-                </Sider>
+                <EditPanel />
             </Layout>
 
         </Layout>
       </Layout>
     );
     /*<Footer style={{ textAlign: 'center' }}>
-                {PRODUCT_NAME} ©2020 Created by Query-Interface
-            </Footer>*/
+        {PRODUCT_NAME} ©2020 Created by Query-Interface
+    </Footer>*/
 }
 
 export default App;

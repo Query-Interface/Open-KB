@@ -19,3 +19,6 @@ export {
 export {
     default as EditOutline
 } from '@ant-design/icons/lib/outline/EditOutline';
+export {
+    default as SmallDashOutline
+} from '@ant-design/icons/lib/outline/SmallDashOutline';

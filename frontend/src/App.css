@@ -15,7 +15,6 @@
     cursor: pointer;
     transition: color .3s;
   }
-
 .trigger:hover {
     color: #1890ff;
 }
@@ -55,6 +54,11 @@
     padding-right: 12px;
     overflow: hidden;
 }
+.drag-handle {
+    font-size: large;
+    margin-left: -0.5em;
+    margin-right: 0.25em;
+}
 .list-column {
     width:280px;
     margin: 0 4px;
@@ -90,30 +94,33 @@
     position: relative;
     padding: 10px;
     min-height: 20px;
-    cursor: pointer;
 }
-.list-header-menu, .list-header-add, .card-edit {
-    position: absolute;
-    top: 4px;
-    right: 4px;
+.btn {
     border-radius: 4px;
     height: 32px;
     width: 32px;
     text-align: center;
-    padding-top: 2px;
+    padding-top: 4px;
     font-weight: bold;
     font-size: large;
+    cursor: pointer;
 }
-.card-edit {
+.btn:hover {
+    background-color: rgba(0, 0, 0, 0.32);
+}
+.btn-list-menu, .btn-list-add, .btn-card-edit {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+}
+.btn-card-edit {
+    position: absolute;
     top: 0px;
     right: 0px;
     bottom: 4px;
 }
-.list-header-add {
+.btn-list-add {
     right: 38px;
-}
-.list-header-menu:hover, .list-header-add:hover, .card-edit:hover {
-    background-color: rgba(0, 0, 0, 0.32);
 }
 .list-cards {
     overflow-x: hidden;
