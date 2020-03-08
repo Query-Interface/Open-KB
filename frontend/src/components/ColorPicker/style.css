@@ -1,0 +1,28 @@
+.picker {
+    display: flex;
+	flex-wrap: nowrap;
+    flex-direction: column;
+    height: 60px;
+    border: 1px solid black;
+    width: 142px;
+}
+.picker-color-row {
+    display: flex;
+    flex-grow: 0;
+	flex-shrink: 0;
+    flex-basis: 24px;
+    flex-direction: row;
+}
+.picker-color-box {
+    display:flex;
+    flex-grow: 0;
+	flex-shrink: 0;
+    flex-basis: 20px;
+    height: 20px;
+    margin:4px;
+    cursor: pointer;
+    border: 1px none black;
+}
+.picker-color-box:hover {
+    border: 1px solid black;
+}
