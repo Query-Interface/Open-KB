@@ -2,8 +2,8 @@ import React from 'react';
 import './style.css';
 
 interface ColorPickerProps {
-    selected: string;
-    onSelectColor: (color: Colors) => void;
+    selected?: string;
+    onSelectColor?: (color: Colors) => void;
 }
 
 const ColorPicker = ({selected, onSelectColor} : ColorPickerProps) => {
@@ -11,12 +11,20 @@ const ColorPicker = ({selected, onSelectColor} : ColorPickerProps) => {
         <div className="picker-color-row">
             {Object.keys(Colors).slice(0, 5).map(
                 (color) => <div className="picker-color-box" key={color}
-                style={{backgroundColor:Colors[color]}} onClick={(e) => onSelectColor(Colors[color])} />)}
+                style={{backgroundColor:Colors[color]}} onClick={(e) => {
+                    if (onSelectColor) {
+                        onSelectColor(Colors[color])}
+                    }
+                } />)}
         </div>
         <div className="picker-color-row">
             {Object.keys(Colors).slice(5, 10).map(
                 (color) => <div className="picker-color-box" key={color}
-                style={{backgroundColor:Colors[color]}} onClick={(e) => onSelectColor(Colors[color])} />)}
+                style={{backgroundColor:Colors[color]}} onClick={(e) => {
+                    if (onSelectColor) {
+                        onSelectColor(Colors[color])}
+                    }
+                } />)}
         </div>
     </div>
 };
@@ -35,4 +43,3 @@ export enum Colors {
 }
 
 export default ColorPicker;
-

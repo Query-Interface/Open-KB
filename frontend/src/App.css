@@ -97,10 +97,9 @@
 }
 .btn {
     border-radius: 4px;
-    height: 32px;
-    width: 32px;
+    height: 28px;
+    width: 28px;
     text-align: center;
-    padding-top: 4px;
     font-weight: bold;
     font-size: large;
     cursor: pointer;
@@ -140,12 +139,4 @@
 .list-footer {
     display: block;
     padding: 8px;
-}
-.edit-panel {
-    color: white;
-    padding: 4px;
-}
-.edit-panel-header {
-    background-color: #1890ff;
-    height: 30px;
 }

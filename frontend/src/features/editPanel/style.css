@@ -1,0 +1,27 @@
+.edit-panel {
+    background-color: #d9d9d9;
+    height: 100%;
+}
+.edit-panel-header {
+    position: relative;
+    background-color: #1890ff;
+    padding-left: 16px;
+    padding-top: 6px;
+    height: 36px;
+    color: white;
+    font-weight: bold;
+}
+.edit-panel-section-header {
+    border-left: 4px solid #1890ff;
+    padding-left: 4px;
+    font-weight: bold;
+}
+.btn-close-panel {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+}
+.btn-section-panel {
+    margin-top: 2px;
+    margin-right: 8px;
+}
