@@ -2,9 +2,8 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/rootReducer';
 import { Content } from './content';
-import { Collapse, Layout }  from 'antd';
+import { Collapse, Layout, Empty }  from 'antd';
 import { toggleEditPanel } from './editPanelSlice';
-import { PanelSection } from './PanelSection';
 import { CloseOutlined } from '@ant-design/icons';
 import { EditArea } from './EditArea';
 import './style.css';
@@ -19,15 +18,20 @@ export const EditPanel = () => {
     const card = useSelector((state: RootState) => state.editPanel.selectedCard);
 
     const renderEditPanelContent = () => {
-        let content: Array<JSX.Element> = [];
+        let content:React.ReactElement;
         switch (panelContent) {
             case Content.EditCard:
-                content.push(<PanelSection content={<span>{card?.title}</span>} title="Title" pkey="1" />);
+                content = renderEditCard();
                 break;
             default:
-                content.push(<span>Put some content</span>);
+                content = <Empty />
                 break;
         }
+
+        return content;
+    };
+
+    const renderEditCard = () : React.ReactElement => {
         return <Collapse defaultActiveKey={['1', '2']} expandIconPosition="right">
             <Panel header={<div className="edit-panel-section-header">Title</div>} key="1">
                 <span>{card?.title}</span>
@@ -36,7 +40,7 @@ export const EditPanel = () => {
                 <EditArea content={card?.description??""} />
             </Panel>
         </Collapse>;
-    };
+    }
 
     const onCancel = (e: React.MouseEvent) =>  {
         dispatch(toggleEditPanel());
