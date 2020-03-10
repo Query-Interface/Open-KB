@@ -27,7 +27,8 @@
     "moduleResolution": "node",            /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */
     //"baseUrl": "./",                       /* Base directory to resolve non-absolute module names. */
     "typeRoots": [
-      "node_modules/antd/lib/index.d.ts"
+      "node_modules/antd/lib/index.d.ts",
+      "node_modules/@ant-design/icons/lib/index.d.ts"
     ],                       /* List of folders to include type definitions from. */
     // "types": [],                           /* Type declaration files to be included in compilation. */
     "allowSyntheticDefaultImports": true,  /* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */

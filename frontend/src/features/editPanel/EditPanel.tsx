@@ -34,10 +34,10 @@ export const EditPanel = () => {
     const renderEditCard = () : React.ReactElement => {
         return <Collapse defaultActiveKey={['1', '2']} expandIconPosition="right">
             <Panel header={<div className="edit-panel-section-header">Title</div>} key="1">
-                <span>{card?.title}</span>
+                <EditArea content={card?.title??""} key={`title-${card?.id}`}/>
             </Panel>
             <Panel header={<div className="edit-panel-section-header">Description</div>} key="2">
-                <EditArea content={card?.description??""} />
+                <EditArea content={card?.description??""} key={`desc-${card?.id}`} />
             </Panel>
         </Collapse>;
     }
