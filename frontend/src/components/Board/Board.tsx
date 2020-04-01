@@ -87,7 +87,7 @@ const Board = ({boardId} : BoardProps) => {
         let content: Array<JSX.Element> = [];
         if (lists) {
             content = lists.map(function(item: List, index: number) {
-                return <UIList boardId={boardId} listId={item.id} index={index}/>;
+                return <UIList boardId={boardId} listId={item.id} key={`list-${item.id}`} index={index}/>;
             })
         }
         return content;

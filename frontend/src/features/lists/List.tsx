@@ -36,7 +36,7 @@ export const List = ({boardId, listId, index} : ListProps) => {
                  <div className="list-cards"
                     ref={provided.innerRef} {...provided.droppableProps}>
                     {cards.map(function(card: ModelCard, index: number) {
-                        return <Card card={Object.assign({}, card, {parentList: listId})} index={index} />
+                        return <Card card={Object.assign({}, card, {parentList: listId})} index={index} key={`card-${card.id}`} />
                     })}
                     {provided.placeholder}
                  </div>

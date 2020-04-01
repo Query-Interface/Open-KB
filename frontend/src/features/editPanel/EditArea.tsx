@@ -39,8 +39,8 @@ export const EditArea = ({content, placeholder, saveCallback}:EditAreaProps) => 
     } else {
         elements.push(<Input defaultValue={text} placeholder={placeholder}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => setText(event.target.value)} />);
-        elements.push(<Button className="btn-section-panel" type="primary" onClick={(e)=>save(e)}>Save</Button>);
-        elements.push(<Button className="btn-section-panel" type="default" shape="circle" icon={<CloseOutlined />} onClick={(e)=>cancel(e)} />);
+        elements.push(<Button className="btn-section-panel" type="primary" onClick={(e)=>save(e)} key="bt-save">Save</Button>);
+        elements.push(<Button className="btn-section-panel" type="default" shape="circle" key="bt-cancel" icon={<CloseOutlined /> } onClick={(e)=>cancel(e)} />);
     }
 
     return <React.Fragment>
