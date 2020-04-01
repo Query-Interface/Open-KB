@@ -1,4 +1,4 @@
-package com.queryinterface.opentrello.model;
+package com.queryinterface.opentrello.card;
 
 public class MoveCardAction {
     private long fromList;

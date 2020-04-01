@@ -1,4 +1,4 @@
-package com.queryinterface.opentrello.model;
+package com.queryinterface.opentrello.list;
 
 public class MoveListAction {
 

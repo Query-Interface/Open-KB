@@ -1,6 +1,6 @@
-package com.queryinterface.opentrello.repository;
+package com.queryinterface.opentrello.board;
 
-import com.queryinterface.opentrello.model.Board;
+import com.queryinterface.opentrello.board.Board;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;

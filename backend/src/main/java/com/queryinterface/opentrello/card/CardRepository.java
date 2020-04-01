@@ -1,6 +1,5 @@
-package com.queryinterface.opentrello.repository;
+package com.queryinterface.opentrello.card;
 
-import com.queryinterface.opentrello.model.Card;
 import org.springframework.data.repository.CrudRepository;
 
 public interface CardRepository extends CrudRepository<Card, Long>, CardRepositoryCustom {

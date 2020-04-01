@@ -78,6 +78,19 @@ const listDetails = createSlice({
             state.listsById[action.payload.destinationListId] = destList;
           }
         }
+      },
+      editCardSuccess(state, action: PayloadAction<Card>) {
+        if (action.payload.parentList) {
+          const list = state.listsById[action.payload.parentList];
+          const cards = (list.cards??[]).slice();
+          const index = cards.findIndex(c => c.id === action.payload.id);
+          if (index !== -1) {
+            const cardToUpdate = cards[index];
+            cards[index] = Object.assign(cardToUpdate, {title: action.payload.title, description: action.payload.description});
+            list.cards = cards;
+            state.listsById[action.payload.parentList] = list;
+          }
+        }
       }
     }
 });
@@ -90,7 +103,8 @@ export const {
     addCardSuccess,
     addCardFailed,
     updateCardOrderSuccess,
-    swapCardSuccess
+    swapCardSuccess,
+    editCardSuccess
 } = listDetails.actions;
 
 export default listDetails.reducer;
@@ -115,7 +129,7 @@ interface AddCardResponse {
 export const createCard = (boardId: number, listId: number, card: Card): AppThunk => async dispatch => {
     try {
         dispatch(addCardStart());
-        const newCard = await addCard(boardId, listId, card);
+        const newCard = await addCard(listId, card);
         dispatch(addCardSuccess({boardId, listId, card: newCard}));
     } catch (err) {
         dispatch(addListFailed(err));
@@ -131,8 +145,8 @@ interface MoveCardResponse {
 export const updateCardOrder = (boardId: number, listId: number, cardId: number, startIndex: number, endIndex: number): AppThunk => async dispatch => {
   try {
     dispatch(updateCardOrderSuccess({listId, startIndex, endIndex}));
+    // update backend asynchronously
     updateCardIndexInTheSameList(boardId, listId, cardId, startIndex, endIndex);
-    // TODO update backend asynchronously
   } catch (err) {
     // TODO handle error.
     console.log(err);

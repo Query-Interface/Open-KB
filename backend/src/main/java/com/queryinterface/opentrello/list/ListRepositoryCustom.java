@@ -1,4 +1,4 @@
-package com.queryinterface.opentrello.repository;
+package com.queryinterface.opentrello.list;
 
 public interface ListRepositoryCustom {
 

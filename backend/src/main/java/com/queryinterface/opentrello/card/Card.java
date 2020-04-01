@@ -1,33 +1,35 @@
-package com.queryinterface.opentrello.model;
+package com.queryinterface.opentrello.card;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.queryinterface.opentrello.list.List;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.util.Optional;
 
 @Entity
-public class List {
+public class Card {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String title;
-
     private int index;
+    private String title;
+    private String description;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "board_id", nullable = false)
+    @JoinColumn(name = "list_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
-    private Board board;
+    private List list;
 
-    List() {
+    Card() {
         // for JPA
     }
 
-    public List(final String title) {
+    public Card(final String title, final String description) {
         this.title = title;
+        this.description = description;
     }
 
     public Long getId() {
@@ -38,12 +40,24 @@ public class List {
         return title;
     }
 
-    public Board getBoard() {
-        return board;
+    public void setTitle(final String title) {
+        this.title = title;
     }
 
-    public void setBoard(final Board board) {
-        this.board = board;
+    public Optional<String> getDescription() {
+        return Optional.ofNullable(description);
+    }
+
+    public void setDescription(final String desc) {
+        this.description = desc;
+    }
+
+    public List getList() {
+        return list;
+    }
+
+    public void setList(List list) {
+        this.list = list;
     }
 
     public int getIndex() {
@@ -56,9 +70,10 @@ public class List {
 
     @Override
     public String toString() {
-        return "List{" +
+        return "Card{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
                 '}';
     }
 }

@@ -36,7 +36,7 @@ export const List = ({boardId, listId, index} : ListProps) => {
                  <div className="list-cards"
                     ref={provided.innerRef} {...provided.droppableProps}>
                     {cards.map(function(card: ModelCard, index: number) {
-                        return <Card card={card} index={index} />
+                        return <Card card={Object.assign({}, card, {parentList: listId})} index={index} />
                     })}
                     {provided.placeholder}
                  </div>
@@ -46,7 +46,7 @@ export const List = ({boardId, listId, index} : ListProps) => {
 
 
     const onAddCard = (event: React.MouseEvent, carId: number) => {
-        const newCard = {id: -1, title: "my card", index: list.cards?.length ?? 1};
+        const newCard = {id: -1, title: "New card", index: list.cards?.length ?? 1};
         dispatch(createCard(boardId, listId, newCard));
     };
 

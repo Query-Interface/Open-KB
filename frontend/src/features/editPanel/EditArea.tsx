@@ -5,9 +5,11 @@ import './style.css';
 
 interface EditAreaProps {
     content: string;
+    placeholder: string;
+    saveCallback: (newValue: string) => void;
 }
 
-export const EditArea = ({content}:EditAreaProps) => {
+export const EditArea = ({content, placeholder, saveCallback}:EditAreaProps) => {
     const [editMode, setEditMode] = useState(false);
     const originalContent = content;
     const [text, setText] = useState(content);
@@ -18,7 +20,7 @@ export const EditArea = ({content}:EditAreaProps) => {
         e.preventDefault();
     }
     const save = (e: React.MouseEvent) => {
-        // TODO save
+        saveCallback(text);
         setEditMode(false);
         e.preventDefault();
     };
@@ -29,9 +31,13 @@ export const EditArea = ({content}:EditAreaProps) => {
     }
 
     if (!editMode) {
-        elements.push(<div style={{width:"100%"}} onClick={(e)=>edit(e)} key="contentEdited">{text}</div>);
+        if (text) {
+            elements.push(<div style={{width:"100%"}} onClick={(e)=>edit(e)} key="contentEdited">{text}</div>);
+        } else {
+            elements.push(<div style={{width:"100%", opacity:"0.5"}} onClick={(e)=>edit(e)} key="contentEdited">{placeholder}</div>);
+        }
     } else {
-        elements.push(<Input defaultValue={text} 
+        elements.push(<Input defaultValue={text} placeholder={placeholder}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => setText(event.target.value)} />);
         elements.push(<Button className="btn-section-panel" type="primary" onClick={(e)=>save(e)}>Save</Button>);
         elements.push(<Button className="btn-section-panel" type="default" shape="circle" icon={<CloseOutlined />} onClick={(e)=>cancel(e)} />);

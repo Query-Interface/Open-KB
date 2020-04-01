@@ -1,4 +1,4 @@
-package com.queryinterface.opentrello.model;
+package com.queryinterface.opentrello.board;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

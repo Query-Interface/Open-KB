@@ -1,6 +1,5 @@
-package com.queryinterface.opentrello.repository;
+package com.queryinterface.opentrello.list;
 
-import com.queryinterface.opentrello.model.List;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 

@@ -1,14 +1,12 @@
-package com.queryinterface.opentrello.controller;
+package com.queryinterface.opentrello.board;
 
 import com.queryinterface.opentrello.exception.ResourceNotFound;
-import com.queryinterface.opentrello.model.Board;
-import com.queryinterface.opentrello.model.Card;
-import com.queryinterface.opentrello.model.List;
-import com.queryinterface.opentrello.model.MoveListAction;
-import com.queryinterface.opentrello.model.MoveCardAction;
-import com.queryinterface.opentrello.repository.BoardRepository;
-import com.queryinterface.opentrello.repository.CardRepository;
-import com.queryinterface.opentrello.repository.ListRepository;
+import com.queryinterface.opentrello.card.Card;
+import com.queryinterface.opentrello.list.List;
+import com.queryinterface.opentrello.list.MoveListAction;
+import com.queryinterface.opentrello.card.MoveCardAction;
+import com.queryinterface.opentrello.card.CardRepository;
+import com.queryinterface.opentrello.list.ListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,30 +45,12 @@ public class BoardController {
         return new ResponseEntity<>(lists, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/boards/{boardId}/lists/{listId}")
-    public ResponseEntity<List> getList(final @PathVariable Long boardId, final @PathVariable Long listId) {
-        final List list = listRepository.findById(listId).orElseThrow(ResourceNotFound::new);
-        return new ResponseEntity<>(list, HttpStatus.OK);
-    }
-
     @RequestMapping(method = RequestMethod.POST, path = "/boards/{boardId}/lists")
     public ResponseEntity<List> addList(final @PathVariable Long boardId, final @RequestBody List list) {
         final Board board = boardRepository.findById(boardId).orElseThrow(ResourceNotFound::new);
         list.setBoard(board);
         final List newList = listRepository.save(list);
         return new ResponseEntity<>(newList, HttpStatus.OK);
-    }
-
-    @RequestMapping(method = RequestMethod.GET, path = "/boards/{boardId}/lists/{listId}/cards")
-    public ResponseEntity<Iterable<Card>> getCards(final @PathVariable Long boardId, final @PathVariable Long listId) {
-        Iterable<Card> cards = cardRepository.findAllByListIdOrderByIndex(listId);
-        return new ResponseEntity<>(cards, HttpStatus.OK);
-    }
-
-    @RequestMapping(method = RequestMethod.PUT, path = "/boards/{boardId}/lists/{listId}/cards/{cardId}")
-    public ResponseEntity<Card> updateCard(final @PathVariable Long boardId, final @PathVariable Long listId, final @PathVariable Long cardId, final @RequestBody Card card) {
-        // TODO save to DB
-        return new ResponseEntity<>(card, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.PUT, path = "/boards/{boardId}/lists/swapper")

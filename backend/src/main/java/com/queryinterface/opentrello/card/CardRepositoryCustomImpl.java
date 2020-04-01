@@ -1,7 +1,6 @@
-package com.queryinterface.opentrello.repository;
+package com.queryinterface.opentrello.card;
 
-import com.queryinterface.opentrello.model.Card;
-import com.queryinterface.opentrello.model.List;
+import com.queryinterface.opentrello.list.List;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;

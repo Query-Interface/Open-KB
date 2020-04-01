@@ -1,4 +1,4 @@
-package com.queryinterface.opentrello.repository;
+package com.queryinterface.opentrello.card;
 
 public interface CardRepositoryCustom {
 
