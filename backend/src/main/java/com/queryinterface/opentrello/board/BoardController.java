@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api")
 public class BoardController {
@@ -34,37 +36,37 @@ public class BoardController {
     }
 
     @RequestMapping(method= RequestMethod.GET, path = "/boards/{boardId}")
-    public ResponseEntity<Board> getBoardById(final @PathVariable Long boardId) {
-        final Board board = boardRepository.findById(boardId).orElseThrow(ResourceNotFound::new);
+    public ResponseEntity<Board> getBoardById(final @PathVariable String boardId) {
+        final Board board = boardRepository.findById(UUID.fromString(boardId)).orElseThrow(ResourceNotFound::new);
         return new ResponseEntity<>(board, HttpStatus.OK);
     }
 
     @RequestMapping(method= RequestMethod.GET, path = "/boards/{boardId}/lists")
-    public ResponseEntity<Iterable<List>> getLists(final @PathVariable Long boardId) {
-        final Iterable<List> lists = listRepository.findAllByBoardIdOrderByIndex(boardId);
+    public ResponseEntity<Iterable<List>> getLists(final @PathVariable String boardId) {
+        final Iterable<List> lists = listRepository.findAllByBoardIdOrderByIndex(UUID.fromString(boardId));
         return new ResponseEntity<>(lists, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/boards/{boardId}/lists")
-    public ResponseEntity<List> addList(final @PathVariable Long boardId, final @RequestBody List list) {
-        final Board board = boardRepository.findById(boardId).orElseThrow(ResourceNotFound::new);
+    public ResponseEntity<List> addList(final @PathVariable String boardId, final @RequestBody List list) {
+        final Board board = boardRepository.findById(UUID.fromString(boardId)).orElseThrow(ResourceNotFound::new);
         list.setBoard(board);
         final List newList = listRepository.save(list);
         return new ResponseEntity<>(newList, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.PUT, path = "/boards/{boardId}/lists/swapper")
-    public ResponseEntity swapLists(final @PathVariable Long boardId, final @RequestBody MoveListAction moveListAction) {
-        listRepository.updateIndexOfList(boardId, moveListAction.getList(), moveListAction.getFrom(), moveListAction.getTo());
+    public ResponseEntity swapLists(final @PathVariable String boardId, final @RequestBody MoveListAction moveListAction) {
+        listRepository.updateIndexOfList(UUID.fromString(boardId), UUID.fromString(moveListAction.getList()), moveListAction.getFrom(), moveListAction.getTo());
         return ResponseEntity.ok().build();
     }
 
     @RequestMapping(method = RequestMethod.PUT, path = "/boards/{boardId}/cards/swapper")
-    public ResponseEntity swapCardsInList(final @PathVariable Long boardId, final @RequestBody MoveCardAction moveCardAction) {
-        if (moveCardAction.getFromList() == moveCardAction.getToList()) {
-            cardRepository.updateIndexOfCardInList(moveCardAction.getFromList(), moveCardAction.getCard(), moveCardAction.getFrom(), moveCardAction.getTo());
+    public ResponseEntity swapCardsInList(final @PathVariable String boardId, final @RequestBody MoveCardAction moveCardAction) {
+        if (moveCardAction.getFromList().equals(moveCardAction.getToList())) {
+            cardRepository.updateIndexOfCardInList(UUID.fromString(moveCardAction.getFromList()), UUID.fromString(moveCardAction.getCard()), moveCardAction.getFrom(), moveCardAction.getTo());
         } else {
-            cardRepository.updateIndexAndMoveCard(moveCardAction.getToList(), moveCardAction.getCard(), moveCardAction.getTo());
+            cardRepository.updateIndexAndMoveCard(UUID.fromString(moveCardAction.getToList()), UUID.fromString(moveCardAction.getCard()), moveCardAction.getTo());
         }
         return ResponseEntity.ok().build();
     }

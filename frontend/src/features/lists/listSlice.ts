@@ -5,7 +5,7 @@ import { addListFailed } from './listsSlice';
 import { reorder } from './reorder';
 
 interface ListDetailsState {
-    listsById: Record<number, List>;
+    listsById: Record<string, List>;
     isLoading: boolean;
     error: string | null;
 }
@@ -109,7 +109,7 @@ export const {
 
 export default listDetails.reducer;
 
-export const fetchList = (boardId: number, listId: number): AppThunk => async (dispatch): Promise<void> => {
+export const fetchList = (boardId: string, listId: string): AppThunk => async (dispatch): Promise<void> => {
     try {
         dispatch(getListStart());
         const list = await getList(boardId, listId);
@@ -121,12 +121,12 @@ export const fetchList = (boardId: number, listId: number): AppThunk => async (d
 };
 
 interface AddCardResponse {
-  boardId: number;
-  listId: number;
+  boardId: string;
+  listId: string;
   card: Card;
 }
 
-export const createCard = (boardId: number, listId: number, card: Card): AppThunk => async (dispatch): Promise<void> => {
+export const createCard = (boardId: string, listId: string, card: Card): AppThunk => async (dispatch): Promise<void> => {
     try {
         dispatch(addCardStart());
         const newCard = await addCard(listId, card);
@@ -137,12 +137,12 @@ export const createCard = (boardId: number, listId: number, card: Card): AppThun
 };
 
 interface MoveCardResponse {
-  listId: number;
+  listId: string;
   startIndex: number;
   endIndex: number;
 }
 
-export const updateCardOrder = (boardId: number, listId: number, cardId: number, startIndex: number, endIndex: number): AppThunk => async (dispatch): Promise<void> => {
+export const updateCardOrder = (boardId: string, listId: string, cardId: string, startIndex: number, endIndex: number): AppThunk => async (dispatch): Promise<void> => {
   try {
     dispatch(updateCardOrderSuccess({listId, startIndex, endIndex}));
     // update backend asynchronously
@@ -154,13 +154,13 @@ export const updateCardOrder = (boardId: number, listId: number, cardId: number,
 };
 
 interface SwapCardResponse {
-  sourceListId: number;
-  destinationListId: number;
+  sourceListId: string;
+  destinationListId: string;
   startIndex: number;
   endIndex: number;
 }
 
-export const moveCard = (boardId: number, sourceListId: number, destinationListId: number, cardId: number, startIndex: number, endIndex: number): AppThunk => async (dispatch): Promise<void> => {
+export const moveCard = (boardId: string, sourceListId: string, destinationListId: string, cardId: string, startIndex: number, endIndex: number): AppThunk => async (dispatch): Promise<void> => {
   try {
     dispatch(swapCardSuccess({sourceListId, destinationListId, startIndex, endIndex}));
     // update backend asynchronously

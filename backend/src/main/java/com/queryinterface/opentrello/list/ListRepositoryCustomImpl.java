@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
+import java.util.UUID;
 
 @Repository
 @Transactional
@@ -17,7 +18,7 @@ public class ListRepositoryCustomImpl implements ListRepositoryCustom {
 
     @Override
     @Modifying
-    public void updateIndexOfList(final long boardId, final long listId, final int startIndex, final int endIndex) {
+    public void updateIndexOfList(final UUID boardId, final UUID listId, final int startIndex, final int endIndex) {
         Query query;
         // updates indexes
         if (startIndex > endIndex) {
@@ -39,7 +40,7 @@ public class ListRepositoryCustomImpl implements ListRepositoryCustom {
     }
 
     @Override
-    public void updateIndexesAfterDelete(final long boardId, final int startIndex) {
+    public void updateIndexesAfterDelete(final UUID boardId, final int startIndex) {
         Query query = entityManager.createNativeQuery("UPDATE list SET index = index-1 WHERE board_id = ? AND index > ?");
         query.setParameter(1, boardId);
         query.setParameter(2, startIndex);

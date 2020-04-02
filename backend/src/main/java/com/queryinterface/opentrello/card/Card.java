@@ -2,17 +2,21 @@ package com.queryinterface.opentrello.card;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.queryinterface.opentrello.list.List;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.Optional;
+import java.util.UUID;
 
 @Entity
 public class Card {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
+    @Column(columnDefinition = "BINARY(16)")
+    private UUID id;
     private int index;
     private String title;
     private String description;
@@ -32,7 +36,7 @@ public class Card {
         this.description = description;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 

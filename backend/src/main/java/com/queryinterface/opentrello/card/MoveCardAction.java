@@ -1,9 +1,9 @@
 package com.queryinterface.opentrello.card;
 
 public class MoveCardAction {
-    private long fromList;
-    private long toList;
-    private long card;
+    private String fromList;
+    private String toList;
+    private String card;
     private int from;
     private int to;
 
@@ -11,7 +11,7 @@ public class MoveCardAction {
         //JSON
     }
 
-    public MoveCardAction(long fromList, long toList, long card, int from, int to) {
+    public MoveCardAction(String fromList, String toList, String card, int from, int to) {
         this.fromList = fromList;
         this.toList = toList;
         this.card = card;
@@ -19,15 +19,15 @@ public class MoveCardAction {
         this.to = to;
     }
 
-    public long getFromList() {
+    public String getFromList() {
         return fromList;
     }
 
-    public long getToList() {
+    public String getToList() {
         return toList;
     }
 
-    public long getCard() {
+    public String getCard() {
         return card;
     }
 

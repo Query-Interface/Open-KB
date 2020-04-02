@@ -1,12 +1,12 @@
 package com.queryinterface.opentrello.board;
 
-import com.queryinterface.opentrello.board.Board;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 
-public interface BoardRepository extends CrudRepository<Board, Long> {
+public interface BoardRepository extends CrudRepository<Board, UUID> {
 
     Iterable<Board> findAllByTitle(final String title);
 

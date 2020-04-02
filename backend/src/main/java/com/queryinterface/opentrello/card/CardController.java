@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api")
 public class CardController {
@@ -18,8 +20,8 @@ public class CardController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, path = "/cards/{cardId}")
-    public ResponseEntity<Card> updateCard(final @PathVariable Long cardId, final @RequestBody Card newCard) {
-        Card card = cardRepository.findById(cardId).orElseThrow(ResourceNotFound::new);
+    public ResponseEntity<Card> updateCard(final @PathVariable String cardId, final @RequestBody Card newCard) {
+        Card card = cardRepository.findById(UUID.fromString(cardId)).orElseThrow(ResourceNotFound::new);
         if (newCard.getDescription().isPresent()) {
             card.setDescription(newCard.getDescription().get());
         }

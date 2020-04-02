@@ -2,7 +2,9 @@ package com.queryinterface.opentrello.card;
 
 import org.springframework.data.repository.CrudRepository;
 
-public interface CardRepository extends CrudRepository<Card, Long>, CardRepositoryCustom {
+import java.util.UUID;
 
-    Iterable<Card> findAllByListIdOrderByIndex(Long listId);
+public interface CardRepository extends CrudRepository<Card, UUID>, CardRepositoryCustom {
+
+    Iterable<Card> findAllByListIdOrderByIndex(UUID listId);
 }

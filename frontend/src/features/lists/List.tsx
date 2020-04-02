@@ -8,8 +8,8 @@ import { Draggable, DraggableProvided, Droppable, DroppableProvided } from 'reac
 import { EllipsisOutlined, PlusOutlined, SmallDashOutlined } from '@ant-design/icons';
 
 interface ListProps {
-    boardId: number;
-    listId: number;
+    boardId: string;
+    listId: string;
     index: number;
 }
 
@@ -46,7 +46,7 @@ export const List: React.FC<ListProps> = ({boardId, listId, index}: ListProps) =
 
 
     const onAddCard = (event: React.MouseEvent): void => {
-        const newCard = {id: -1, title: "New card", index: list.cards?.length ?? 1};
+        const newCard = {id: '', title: "New card", index: list.cards?.length ?? 1};
         dispatch(createCard(boardId, listId, newCard));
         event.preventDefault();
     };

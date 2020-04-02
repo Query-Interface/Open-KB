@@ -6,7 +6,7 @@ interface CurrentDisplayState {
     sliderCollapsed: boolean;
     editPanelCollapsed: boolean;
     boards: Array<BoardDetails>;
-    boardId: number | null;
+    boardId: string | null;
     error: string | null;
 }
 
@@ -22,7 +22,7 @@ const appDisplaySlice = createSlice({
     name: 'appDisplay',
     initialState,
     reducers: {
-        setCurrentBoard(state, action: PayloadAction<number>): void {
+        setCurrentBoard(state, action: PayloadAction<string>): void {
             state.boardId = action.payload
         },
         toggleSlider(state): void {
@@ -30,7 +30,7 @@ const appDisplaySlice = createSlice({
         },
         getBoardsSuccess(state, action: PayloadAction<Array<BoardDetails>>): void {
             state.boards = action.payload;
-            state.boardId = state.boards.length > 0 ? state.boards[0].id : -1;
+            state.boardId = state.boards.length > 0 ? state.boards[0].id : '';
             state.error = null;
         },
         getBoardsFailed(state, action: PayloadAction<string>): void {

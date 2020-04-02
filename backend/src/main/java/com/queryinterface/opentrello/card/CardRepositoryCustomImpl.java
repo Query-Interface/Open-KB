@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
+import java.util.UUID;
 
 @Repository
 @Transactional
@@ -16,7 +17,7 @@ public class CardRepositoryCustomImpl implements CardRepositoryCustom {
     EntityManager entityManager;
 
     @Override
-    public void updateIndexOfCardInList(long listId, long cardId, int startIndex, int endIndex) {
+    public void updateIndexOfCardInList(UUID listId, UUID cardId, int startIndex, int endIndex) {
         Query query;
         // updates indexes
         if (startIndex > endIndex) {
@@ -38,7 +39,7 @@ public class CardRepositoryCustomImpl implements CardRepositoryCustom {
     }
 
     @Override
-    public void updateIndexAndMoveCard(final long listId, long cardId, final int endIndex) {
+    public void updateIndexAndMoveCard(final UUID listId, UUID cardId, final int endIndex) {
         Query query = entityManager.createNativeQuery("UPDATE card SET index = index+1 WHERE list_id = ? AND index >= ?");
         query.setParameter(1, listId);
         query.setParameter(2, endIndex);
@@ -52,7 +53,7 @@ public class CardRepositoryCustomImpl implements CardRepositoryCustom {
     }
 
     @Override
-    public void updateIndexesAfterDelete(final long listId, final int startIndex) {
+    public void updateIndexesAfterDelete(final UUID listId, final int startIndex) {
         Query query = entityManager.createNativeQuery("UPDATE card SET index = index-1 WHERE list_id = ? AND index > ?");
         query.setParameter(1, listId);
         query.setParameter(2, startIndex);

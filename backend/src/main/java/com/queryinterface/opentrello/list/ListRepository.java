@@ -2,8 +2,10 @@ package com.queryinterface.opentrello.list;
 
 import org.springframework.data.repository.CrudRepository;
 
-public interface ListRepository extends CrudRepository<List, Long>, ListRepositoryCustom {
+import java.util.UUID;
 
-    Iterable<List> findAllByBoardIdOrderByIndex(Long boardId);
+public interface ListRepository extends CrudRepository<List, UUID>, ListRepositoryCustom {
+
+    Iterable<List> findAllByBoardIdOrderByIndex(UUID boardId);
 
 }

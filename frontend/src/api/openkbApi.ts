@@ -1,21 +1,21 @@
 export interface BoardDetails {
-    id: number;
+    id: string;
     title: string;
     description?: string;
     lists?: Array<List>;
 }
 
 export interface List {
-    id: number;
+    id: string;
     title: string;
     cards?: Array<Card>;
 }
 
 export interface Card {
-    id: number;
+    id: string;
     title: string;
     description?: string;
-    parentList?: number;
+    parentList?: string;
 }
 
 const apiroot = 'http://localhost:8080';
@@ -44,14 +44,14 @@ export async function getBoards(): Promise<Array<BoardDetails>> {
     return data;
 }
 
-export async function getBoard(id: number): Promise<BoardDetails> {
-    return await getDataFromApi<BoardDetails>(`${apiroot}/api/boards/${id}`, {id:-1, title:'not found'});
+export async function getBoard(id: string): Promise<BoardDetails> {
+    return await getDataFromApi<BoardDetails>(`${apiroot}/api/boards/${id}`, {id:'', title:'not found'});
 }
 
 export async function addBoard(board: BoardDetails): Promise<BoardDetails> {
     const url = `${apiroot}/api/boards`;
     const newBoard = {
-        id: -1,
+        id: '',
         title: board.title,
         description: board.description
     }
@@ -70,24 +70,24 @@ export async function addBoard(board: BoardDetails): Promise<BoardDetails> {
     });
 }
 
-export async function getLists(boardId: number): Promise<Array<List>> {
+export async function getLists(boardId: string): Promise<Array<List>> {
     return await getDataFromApi<Array<List>>(`${apiroot}/api/boards/${boardId}/lists`, []);
 }
 
-export async function getList(boardId: number, listId: number): Promise<List> {
+export async function getList(boardId: string, listId: string): Promise<List> {
     const notFound = {id : listId, title : "not found list", cards: []};
 
     return await getDataFromApi<List>(`${apiroot}/api/lists/${listId}`, notFound);
 }
 
-export async function getCards(boardId: number, listId: number): Promise<Array<Card>> {
+export async function getCards(boardId: string, listId: string): Promise<Array<Card>> {
     return await getDataFromApi<Array<Card>>(`${apiroot}/api/lists/${listId}/cards`, []);
 }
 
-export async function addList(boardId: number, list: List): Promise<List> {
+export async function addList(boardId: string, list: List): Promise<List> {
     const url = `${apiroot}/api/boards/${boardId}/lists`;
     const newList = {
-        id: -1,
+        id: '',
         title: list.title
     };
     return fetch(url, {
@@ -122,10 +122,10 @@ export async function editList(list: List): Promise<List> {
     });
 }
 
-export async function addCard(listId: number, card: Card): Promise<Card> {
+export async function addCard(listId: string, card: Card): Promise<Card> {
     const url = `${apiroot}/api/lists/${listId}/cards`;
     const newCard = {
-        id: -1,
+        id: '',
         title: card.title,
         description: card.description
     };
@@ -161,7 +161,7 @@ export async function editCard(card: Card): Promise<Card> {
     });
 }
 
-export async function updateListIndex(boardId: number, listId: number, startIndex: number, endIndex: number): Promise<Response> {
+export async function updateListIndex(boardId: string, listId: string, startIndex: number, endIndex: number): Promise<Response> {
     const url = `${apiroot}/api/boards/${boardId}/lists/swapper`;
     const action = {
         list: listId,
@@ -178,7 +178,7 @@ export async function updateListIndex(boardId: number, listId: number, startInde
     });
 }
 
-export async function updateCardIndexInTheSameList(boardId: number, listId: number, cardId: number, startIndex: number, endIndex: number): Promise<Response> {
+export async function updateCardIndexInTheSameList(boardId: string, listId: string, cardId: string, startIndex: number, endIndex: number): Promise<Response> {
     const url = `${apiroot}/api/boards/${boardId}/cards/swapper`;
     const action = {
         fromList: listId,
@@ -197,7 +197,7 @@ export async function updateCardIndexInTheSameList(boardId: number, listId: numb
     });
 }
 
-export async function updateCardIndexAndChangeList(boardId: number, sourceListId: number, destinationListId: number, cardId: number, startIndex: number, endIndex: number): Promise<Response> {
+export async function updateCardIndexAndChangeList(boardId: string, sourceListId: string, destinationListId: string, cardId: string, startIndex: number, endIndex: number): Promise<Response> {
     const url = `${apiroot}/api/boards/${boardId}/cards/swapper`;
     const action = {
         fromList: sourceListId,

@@ -3,7 +3,7 @@ import { AppThunk } from '../../app/store';
 import { BoardDetails, getBoard } from '../../api/openkbApi';
 
 interface BoardDetailsState {
-  boardsById: Record<number, BoardDetails>;
+  boardsById: Record<string, BoardDetails>;
   isLoading: boolean;
   error: string | null;
 }
@@ -43,7 +43,7 @@ export const {
 
 export default boardDetails.reducer;
 
-export const fetchBoardDetails = (id: number): AppThunk => async (dispatch): Promise<void> => {
+export const fetchBoardDetails = (id: string): AppThunk => async (dispatch): Promise<void> => {
   try {
     dispatch(getBoardDetailStart());
     const boardDetails = await getBoard(id);

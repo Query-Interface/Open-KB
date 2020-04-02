@@ -1,8 +1,10 @@
 package com.queryinterface.opentrello.list;
 
+import java.util.UUID;
+
 public interface ListRepositoryCustom {
 
-    void updateIndexOfList(final long boardId, final long listId, final int startIndex, final int endIndex);
+    void updateIndexOfList(final UUID boardId, final UUID listId, final int startIndex, final int endIndex);
 
-    void updateIndexesAfterDelete(final long boardId, final int startIndex);
+    void updateIndexesAfterDelete(final UUID boardId, final int startIndex);
 }

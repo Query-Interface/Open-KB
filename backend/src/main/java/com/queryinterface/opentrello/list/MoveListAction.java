@@ -2,7 +2,7 @@ package com.queryinterface.opentrello.list;
 
 public class MoveListAction {
 
-    private long list;
+    private String list;
     private int from;
     private int to;
 
@@ -10,13 +10,13 @@ public class MoveListAction {
         // JSON
     }
 
-    public MoveListAction(long list, int from, int to) {
+    public MoveListAction(String list, int from, int to) {
         this.list = list;
         this.from = from;
         this.to = to;
     }
 
-    public long getList() {
+    public String getList() {
         return list;
     }
 

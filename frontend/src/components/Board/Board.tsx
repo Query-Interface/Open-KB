@@ -11,7 +11,7 @@ import { Droppable, DroppableProvided, DragDropContext, DropResult, DraggableId,
 import { PlusOutlined } from '@ant-design/icons';
 
 interface BoardProps {
-    boardId: number;
+    boardId: string;
 }
 
 const Board: React.FC<BoardProps> = ({boardId}: BoardProps) => {
@@ -38,13 +38,10 @@ const Board: React.FC<BoardProps> = ({boardId}: BoardProps) => {
         return result;
     }
 
-    const getCardIdByDraggableId = (dragId: DraggableId): number  | undefined => {
-        let result: number | undefined;
+    const getCardIdByDraggableId = (dragId: DraggableId): string  | undefined => {
+        let result: string | undefined;
         if (dragId) {
-            const sId = dragId.substring('card-'.length);
-            if (sId) {
-                result = Number.parseInt(sId);
-            }
+            result = dragId.substring('card-'.length);
         }
         return result;
     };
@@ -78,7 +75,7 @@ const Board: React.FC<BoardProps> = ({boardId}: BoardProps) => {
     };
 
     const onAddList = (event: React.MouseEvent): void => {
-        const newList = {id:-1, title: "new list", index:(lists?.length??0)+1, cards: []};
+        const newList = {id:'', title: "new list", index: (lists?.length??0)+1, cards: []};
         dispatch(createList(boardId, newList));
         event.preventDefault();
     };

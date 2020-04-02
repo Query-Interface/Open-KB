@@ -58,7 +58,7 @@ export const {
 
 export default listsDetails.reducer;
 
-export const fetchLists = (boardId: number): AppThunk => async (dispatch): Promise<void> => {
+export const fetchLists = (boardId: string): AppThunk => async (dispatch): Promise<void> => {
   try {
     dispatch(getListsStart());
     const lists = await getLists(boardId);
@@ -68,7 +68,7 @@ export const fetchLists = (boardId: number): AppThunk => async (dispatch): Promi
   }
 };
 
-export const createList = (boardId: number, list: List): AppThunk => async (dispatch): Promise<void> => {
+export const createList = (boardId: string, list: List): AppThunk => async (dispatch): Promise<void> => {
   try {
     const newList = await addList(boardId, list);
     dispatch(addListSuccess(newList));
@@ -77,7 +77,7 @@ export const createList = (boardId: number, list: List): AppThunk => async (disp
   }
 };
 
-export const updateListOrder = (boardId: number, lists: Array<List>, startIndex: number, endIndex: number): AppThunk => async (dispatch): Promise<void> => {
+export const updateListOrder = (boardId: string, lists: Array<List>, startIndex: number, endIndex: number): AppThunk => async (dispatch): Promise<void> => {
   try {
       const movedList = lists[startIndex];
       const reordered = reorder(lists, startIndex, endIndex);
