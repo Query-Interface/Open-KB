@@ -15,29 +15,30 @@ import { BoardDetails } from '../api/openkbApi';
 import EditPanel from '../features/editPanel/EditPanel';
 
 const { Header, Content, Sider } = Layout;
-const PRODUCT_NAME: string = "Open KB";
+const PRODUCT_NAME = "Open KB";
 
 const App: React.FC = () => {
     const dispatch = useDispatch();
-    const collapsed = useSelector((state:RootState) => state.appDisplay.sliderCollapsed);
-    const boardSelected = useSelector((state:RootState) => state.appDisplay.boardId);
-    const boards = useSelector((state:RootState) => state.appDisplay.boards);
+    const collapsed = useSelector((state: RootState) => state.appDisplay.sliderCollapsed);
+    const boardSelected = useSelector((state: RootState) => state.appDisplay.boardId);
+    const boards = useSelector((state: RootState) => state.appDisplay.boards);
 
     useEffect(() => {
         dispatch(fetchBoards());
     }, [dispatch]);
 
-    const toggleMenu = () => {
+    const toggleMenu = (): void => {
         dispatch(toggleSlider());
     };
-    const toggleRightPane = () => {
+    const toggleRightPane = (): void => {
         dispatch(toggleEditPanel());
     }
-    const setBoard = (boardId: number) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const setBoard = (boardId: number): void => {
         dispatch(setCurrentBoard(boardId));
     };
 
-    const renderBoard = (boards: Array<BoardDetails>) => {
+    const renderBoard = (boards: Array<BoardDetails>): JSX.Element => {
         if (boards.length > 0) {
             let selectedBoard = boards.filter(b => b.id === boardSelected).pop();
             if (!selectedBoard) {

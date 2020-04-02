@@ -6,7 +6,7 @@ import store from './app/store';
 import App from './app/App';
 import './App.css';
 
-const render = () => {
+const render = (): void => {
     ReactDOM.render(
         <Provider store={store}>
             <App />

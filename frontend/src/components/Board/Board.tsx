@@ -11,13 +11,13 @@ import { Droppable, DroppableProvided, DragDropContext, DropResult, DraggableId,
 import { PlusOutlined } from '@ant-design/icons';
 
 interface BoardProps {
-    boardId: number
+    boardId: number;
 }
 
-const Board = ({boardId} : BoardProps) => {
+const Board: React.FC<BoardProps> = ({boardId}: BoardProps) => {
     const dispatch = useDispatch();
-    const board = useSelector((state:RootState) => state.boards.boardsById[boardId]);
-    const isLoading = useSelector((state:RootState) => state.boards.isLoading);
+    const board = useSelector((state: RootState) => state.boards.boardsById[boardId]);
+    const isLoading = useSelector((state: RootState) => state.boards.isLoading);
     const lists = useSelector((state: RootState) => state.listsDetails.lists);
 
     useEffect(() => {
@@ -30,7 +30,26 @@ const Board = ({boardId} : BoardProps) => {
 
     }, [boardId, dispatch]);
 
-    const onDragEnd = (result: DropResult) => {
+    const getListByDroppableId = (lists: Array<List>, dropId: DroppableId): List | undefined => {
+        let result: List | undefined;
+        if (dropId) {
+            result = lists.find( l => dropId === `list-drop-${l.id}`);
+        }
+        return result;
+    }
+
+    const getCardIdByDraggableId = (dragId: DraggableId): number  | undefined => {
+        let result: number | undefined;
+        if (dragId) {
+            const sId = dragId.substring('card-'.length);
+            if (sId) {
+                result = Number.parseInt(sId);
+            }
+        }
+        return result;
+    };
+
+    const onDragEnd = (result: DropResult): void => {
         // dropped outside the list
         if (!result.destination) {
           return;
@@ -58,32 +77,13 @@ const Board = ({boardId} : BoardProps) => {
         }
     };
 
-    const getListByDroppableId = (lists: Array<List>, dropId: DroppableId) : List | undefined => {
-        let result : List | undefined;
-        if (dropId) {
-            result = lists.find( l => dropId === `list-drop-${l.id}`);
-        }
-        return result;
-    }
-
-    const getCardIdByDraggableId = (dragId: DraggableId) : number  | undefined => {
-        let result : number | undefined;
-        if (dragId) {
-            const sId = dragId.substring('card-'.length);
-            if (sId) {
-                result = Number.parseInt(sId);
-            }
-        }
-        return result;
-    };
-
-
-    const onAddList = (event: React.MouseEvent) => {
-        let newList = {id:-1, title: "new list", index:(lists?.length??0)+1, cards: []};
+    const onAddList = (event: React.MouseEvent): void => {
+        const newList = {id:-1, title: "new list", index:(lists?.length??0)+1, cards: []};
         dispatch(createList(boardId, newList));
+        event.preventDefault();
     };
 
-    const renderLists = (lists: Array<List>) : Array<JSX.Element> => {
+    const renderLists = (lists: Array<List>): Array<JSX.Element> => {
         let content: Array<JSX.Element> = [];
         if (lists) {
             content = lists.map(function(item: List, index: number) {
@@ -93,7 +93,7 @@ const Board = ({boardId} : BoardProps) => {
         return content;
     }
 
-    function renderBoardWithDnd() {
+    function renderBoardWithDnd(): JSX.Element {
        return  <DragDropContext onDragEnd={onDragEnd}>
        <Droppable
             droppableId="board"
@@ -102,14 +102,14 @@ const Board = ({boardId} : BoardProps) => {
             ignoreContainerClipping={false}
             isCombineEnabled={false}
         >
-            {(provided: DroppableProvided) => (
+            {(provided: DroppableProvided): JSX.Element => (
                 <div className="board-container"
                     ref={provided.innerRef} {...provided.droppableProps}>
                     {renderLists(lists ?? [])}
                     {provided.placeholder}
                     <div className="list-column">
                         <div className="list-container">
-                            <div className="new-list add-button" onClick={e => onAddList(e)}>
+                            <div className="new-list add-button" onClick={(event): void => onAddList(event)}>
                                 <span><PlusOutlined /><span> Add another list</span></span>
                             </div>
                         </div>

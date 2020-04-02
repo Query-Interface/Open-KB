@@ -18,17 +18,17 @@ const boardDetails = createSlice({
   name: 'boardDetails',
   initialState,
   reducers: {
-    getBoardDetailStart(state) {
+    getBoardDetailStart(state): void {
       state.isLoading = true;
       state.error = null;
     },
-    getBoardDetailsSuccess(state, action: PayloadAction<BoardDetails>) {
+    getBoardDetailsSuccess(state, action: PayloadAction<BoardDetails>): void {
       const {id} = action.payload;
       state.boardsById[id] = action.payload;
       state.isLoading = false;
       state.error = null;
     },
-    getBoardDetailsFailed(state, action: PayloadAction<string>) {
+    getBoardDetailsFailed(state, action: PayloadAction<string>): void {
       state.isLoading = false;
       state.error = action.payload;
     }
@@ -43,7 +43,7 @@ export const {
 
 export default boardDetails.reducer;
 
-export const fetchBoardDetails = (id: number): AppThunk => async dispatch => {
+export const fetchBoardDetails = (id: number): AppThunk => async (dispatch): Promise<void> => {
   try {
     dispatch(getBoardDetailStart());
     const boardDetails = await getBoard(id);

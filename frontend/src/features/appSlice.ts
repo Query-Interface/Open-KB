@@ -10,7 +10,7 @@ interface CurrentDisplayState {
     error: string | null;
 }
 
-let initialState : CurrentDisplayState = {
+const initialState: CurrentDisplayState = {
     sliderCollapsed: false,
     editPanelCollapsed: true,
     boardId: null,
@@ -22,18 +22,18 @@ const appDisplaySlice = createSlice({
     name: 'appDisplay',
     initialState,
     reducers: {
-        setCurrentBoard(state, action: PayloadAction<number>) {
+        setCurrentBoard(state, action: PayloadAction<number>): void {
             state.boardId = action.payload
         },
-        toggleSlider(state) {
+        toggleSlider(state): void {
             state.sliderCollapsed = !state.sliderCollapsed;
         },
-        getBoardsSuccess(state, action: PayloadAction<Array<BoardDetails>>) {
+        getBoardsSuccess(state, action: PayloadAction<Array<BoardDetails>>): void {
             state.boards = action.payload;
             state.boardId = state.boards.length > 0 ? state.boards[0].id : -1;
             state.error = null;
         },
-        getBoardsFailed(state, action: PayloadAction<string>) {
+        getBoardsFailed(state, action: PayloadAction<string>): void {
             state.error = action.payload;
             state.boards = [];
         }
@@ -50,7 +50,7 @@ export const {
 export default appDisplaySlice.reducer;
 
 // TODO: take into account current user / user: string
-export const fetchBoards = (): AppThunk => async dispatch => {
+export const fetchBoards = (): AppThunk => async (dispatch): Promise<void> => {
     try {
       const boards = await getBoards()
       dispatch(getBoardsSuccess(boards))

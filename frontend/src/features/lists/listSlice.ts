@@ -20,23 +20,23 @@ const listDetails = createSlice({
     name: 'listDetails',
     initialState,
     reducers: {
-      getListStart(state) {
+      getListStart(state): void {
         state.isLoading = true;
         state.error = null;
       },
-      getListSuccess(state, action: PayloadAction<List>) {
+      getListSuccess(state, action: PayloadAction<List>): void {
         state.isLoading = false;
         state.error = null;
         state.listsById[action.payload.id] = action.payload;
       },
-      getListFailed(state, action: PayloadAction<string>) {
+      getListFailed(state, action: PayloadAction<string>): void {
         state.isLoading = false;
         state.error = action.payload;
       },
-      addCardStart(state) {
+      addCardStart(state): void {
         state.error = null;
       },
-      addCardSuccess(state, action: PayloadAction<AddCardResponse>) {
+      addCardSuccess(state, action: PayloadAction<AddCardResponse>): void {
         state.error = null;
         const list = state.listsById[action.payload.listId];
         if (list && list.cards) {
@@ -47,10 +47,10 @@ const listDetails = createSlice({
             list.cards = [action.payload.card];
         }
       },
-      addCardFailed(state, action: PayloadAction<string>) {
+      addCardFailed(state, action: PayloadAction<string>): void {
         state.error = action.payload;
       },
-      updateCardOrderSuccess(state, action: PayloadAction<MoveCardResponse>) {
+      updateCardOrderSuccess(state, action: PayloadAction<MoveCardResponse>): void {
         state.isLoading = false;
         state.error = null;
         const list = state.listsById[action.payload.listId];
@@ -60,7 +60,7 @@ const listDetails = createSlice({
           state.listsById[action.payload.listId] = list;
         }
       },
-      swapCardSuccess(state, action: PayloadAction<SwapCardResponse>) {
+      swapCardSuccess(state, action: PayloadAction<SwapCardResponse>): void {
         state.isLoading = false;
         state.error = null;
         const sourceList = state.listsById[action.payload.sourceListId];
@@ -79,7 +79,7 @@ const listDetails = createSlice({
           }
         }
       },
-      editCardSuccess(state, action: PayloadAction<Card>) {
+      editCardSuccess(state, action: PayloadAction<Card>): void {
         if (action.payload.parentList) {
           const list = state.listsById[action.payload.parentList];
           const cards = (list.cards??[]).slice();
@@ -109,7 +109,7 @@ export const {
 
 export default listDetails.reducer;
 
-export const fetchList = (boardId: number, listId: number): AppThunk => async dispatch => {
+export const fetchList = (boardId: number, listId: number): AppThunk => async (dispatch): Promise<void> => {
     try {
         dispatch(getListStart());
         const list = await getList(boardId, listId);
@@ -126,7 +126,7 @@ interface AddCardResponse {
   card: Card;
 }
 
-export const createCard = (boardId: number, listId: number, card: Card): AppThunk => async dispatch => {
+export const createCard = (boardId: number, listId: number, card: Card): AppThunk => async (dispatch): Promise<void> => {
     try {
         dispatch(addCardStart());
         const newCard = await addCard(listId, card);
@@ -140,9 +140,9 @@ interface MoveCardResponse {
   listId: number;
   startIndex: number;
   endIndex: number;
-};
+}
 
-export const updateCardOrder = (boardId: number, listId: number, cardId: number, startIndex: number, endIndex: number): AppThunk => async dispatch => {
+export const updateCardOrder = (boardId: number, listId: number, cardId: number, startIndex: number, endIndex: number): AppThunk => async (dispatch): Promise<void> => {
   try {
     dispatch(updateCardOrderSuccess({listId, startIndex, endIndex}));
     // update backend asynchronously
@@ -160,7 +160,7 @@ interface SwapCardResponse {
   endIndex: number;
 }
 
-export const moveCard = (boardId: number, sourceListId: number, destinationListId: number, cardId: number, startIndex: number, endIndex: number): AppThunk => async dispatch => {
+export const moveCard = (boardId: number, sourceListId: number, destinationListId: number, cardId: number, startIndex: number, endIndex: number): AppThunk => async (dispatch): Promise<void> => {
   try {
     dispatch(swapCardSuccess({sourceListId, destinationListId, startIndex, endIndex}));
     // update backend asynchronously

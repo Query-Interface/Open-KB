@@ -11,27 +11,30 @@ import './style.css';
 const { Sider } = Layout;
 const { Panel } = Collapse;
 
-export const EditPanel = () => {
+export const EditPanel: React.FC = () => {
     const dispatch = useDispatch();
-    const editPanelVisible = useSelector((state:RootState) => state.editPanel.editPanelCollapsed);
-    const panelContent = useSelector((state:RootState) => state.editPanel.content);
+    const editPanelVisible = useSelector((state: RootState) => state.editPanel.editPanelCollapsed);
+    const panelContent = useSelector((state: RootState) => state.editPanel.content);
     const card = useSelector((state: RootState) => state.editPanel.selectedCard);
 
-    const renderEditPanelContent = () => {
-        let content:React.ReactElement;
-        switch (panelContent) {
-            case Content.EditCard:
-                content = renderEditCard();
-                break;
-            default:
-                content = <Empty />
-                break;
+    const onSaveTitle = (title: string): void => {
+        if (card) {
+            dispatch(editCardTitle(card, title));
         }
+    }
 
-        return content;
+    const onSaveDescription = (desc: string): void => {
+        if (card) {
+            dispatch(editCardDescription(card, desc));
+        }
+    }
+
+    const onCancel = (event: React.MouseEvent): void =>  {
+        dispatch(toggleEditPanel());
+        event.preventDefault();
     };
 
-    const renderEditCard = () : React.ReactElement => {
+    const renderEditCard = (): React.ReactElement => {
         return <Collapse defaultActiveKey={['1', '2']} expandIconPosition="right">
             <Panel header={<div className="edit-panel-section-header">Title</div>} key="1">
                 <EditArea content={card?.title??''} placeholder={'Set a title'} key={`title-${card?.id}`} saveCallback={onSaveTitle}/>
@@ -42,21 +45,17 @@ export const EditPanel = () => {
         </Collapse>;
     }
 
-    const onSaveTitle = (title: string) => {
-        if (card) {
-            dispatch(editCardTitle(card, title));
+    const renderEditPanelContent = (): React.ReactElement => {
+        let content: React.ReactElement;
+        switch (panelContent) {
+            case Content.EditCard:
+                content = renderEditCard();
+                break;
+            default:
+                content = <Empty />
+                break;
         }
-    }
-
-    const onSaveDescription = (desc: string) => {
-        if (card) {
-            dispatch(editCardDescription(card, desc));
-        }
-    }
-
-    const onCancel = (e: React.MouseEvent) =>  {
-        dispatch(toggleEditPanel());
-        e.preventDefault();
+        return content;
     };
 
     return <Sider width={400}
@@ -64,7 +63,7 @@ export const EditPanel = () => {
                     collapsedWidth={0}
                     collapsible
                     collapsed={editPanelVisible}>
-            <div className="edit-panel-header"><span>Edit panel title</span><div className="btn btn-close-panel"><CloseOutlined onClick={(e) => onCancel(e)}/></div></div>
+            <div className="edit-panel-header"><span>Edit panel title</span><div className="btn btn-close-panel"><CloseOutlined onClick={(event): void => onCancel(event)}/></div></div>
             <div className="edit-panel">
                 {renderEditPanelContent()}
 

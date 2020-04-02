@@ -3,4 +3,4 @@ export enum Content {
     EditCard,
     EditList,
     EditBoard
-};
+}

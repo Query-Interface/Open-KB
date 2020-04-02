@@ -10,7 +10,7 @@ interface EditPanelState {
     content: Content;
 }
 
-let initialState: EditPanelState = {
+const initialState: EditPanelState = {
     editPanelCollapsed: true,
     selectedCard: null,
     content : Content.None
@@ -20,14 +20,14 @@ const editPanelSlice = createSlice({
     name: 'editPanel',
     initialState,
     reducers: {
-        displayEditPanel(state, action: PayloadAction<Content>) {
+        displayEditPanel(state, action: PayloadAction<Content>): void {
             state.content = action.payload;
             state.editPanelCollapsed = false;
         },
-        setSelectedCard(state, action: PayloadAction<Card>) {
+        setSelectedCard(state, action: PayloadAction<Card>): void {
             state.selectedCard = action.payload;
         },
-        toggleEditPanel(state) {
+        toggleEditPanel(state): void {
             state.editPanelCollapsed = !state.editPanelCollapsed;
         }
     }
@@ -41,23 +41,23 @@ export const {
 
 export default editPanelSlice.reducer;
 
-export const displayEditCardPanel = (card: Card) : AppThunk => async dispatch => {
+export const displayEditCardPanel = (card: Card): AppThunk => async (dispatch): Promise<void> => {
     dispatch(setSelectedCard(card));
     dispatch(displayEditPanel(Content.EditCard));
 };
 
-export const editCardTitle = (card: Card, title: string) : AppThunk => async dispatch => {
+export const editCardTitle = (card: Card, title: string): AppThunk => async (dispatch): Promise<void> => {
     const newCard = Object.assign({}, card, {title:title});
     await(editCard(newCard));
     // TODO : add wait panel
-    // TODO : update card state when finalize to trigger a redraw
-    newCard.parentList = card.parentList;
+    // update card state when finalize to trigger a redraw
     dispatch(editCardSuccess(newCard));
 };
 
-export const editCardDescription = (card: Card, desc: string) : AppThunk => async dispatch => {
+export const editCardDescription = (card: Card, desc: string): AppThunk => async (dispatch): Promise<void> => {
     const newCard = Object.assign({}, card, {description:desc});
     await(editCard(newCard));
     // TODO : add wait panel
-    // TODO : update card state when finalize to trigger a redraw
+    // update card state when finalize to trigger a redraw
+    dispatch(editCardSuccess(newCard));
 };

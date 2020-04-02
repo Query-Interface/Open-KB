@@ -9,38 +9,38 @@ interface EditAreaProps {
     saveCallback: (newValue: string) => void;
 }
 
-export const EditArea = ({content, placeholder, saveCallback}:EditAreaProps) => {
+export const EditArea: React.FC<EditAreaProps> = ({content, placeholder, saveCallback}: EditAreaProps) => {
     const [editMode, setEditMode] = useState(false);
     const originalContent = content;
     const [text, setText] = useState(content);
-    let elements: Array<JSX.Element> = [];
+    const elements: Array<JSX.Element> = [];
 
-    const edit = (e: React.MouseEvent) => {
+    const edit = (event: React.MouseEvent): void => {
         setEditMode(true);
-        e.preventDefault();
+        event.preventDefault();
     }
-    const save = (e: React.MouseEvent) => {
+    const save = (event: React.MouseEvent): void => {
         saveCallback(text);
         setEditMode(false);
-        e.preventDefault();
+        event.preventDefault();
     };
-    const cancel = (e: React.MouseEvent) => {
+    const cancel = (event: React.MouseEvent): void => {
         setText(originalContent);
         setEditMode(false);
-        e.preventDefault();
+        event.preventDefault();
     }
 
     if (!editMode) {
         if (text) {
-            elements.push(<div style={{width:"100%"}} onClick={(e)=>edit(e)} key="contentEdited">{text}</div>);
+            elements.push(<div style={{width:"100%"}} onClick={(event): void => edit(event)} key="contentEdited">{text}</div>);
         } else {
-            elements.push(<div style={{width:"100%", opacity:"0.5"}} onClick={(e)=>edit(e)} key="contentEdited">{placeholder}</div>);
+            elements.push(<div style={{width:"100%", opacity:"0.5"}} onClick={(event): void => edit(event)} key="contentEdited">{placeholder}</div>);
         }
     } else {
         elements.push(<Input defaultValue={text} placeholder={placeholder}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => setText(event.target.value)} />);
-        elements.push(<Button className="btn-section-panel" type="primary" onClick={(e)=>save(e)} key="bt-save">Save</Button>);
-        elements.push(<Button className="btn-section-panel" type="default" shape="circle" key="bt-cancel" icon={<CloseOutlined /> } onClick={(e)=>cancel(e)} />);
+            onChange={(event: React.ChangeEvent<HTMLInputElement>): void => setText(event.target.value)} />);
+        elements.push(<Button className="btn-section-panel" type="primary" onClick={(event): void => save(event)} key="bt-save">Save</Button>);
+        elements.push(<Button className="btn-section-panel" type="default" shape="circle" key="bt-cancel" icon={<CloseOutlined /> } onClick={(event): void=>cancel(event)} />);
     }
 
     return <React.Fragment>

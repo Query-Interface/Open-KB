@@ -19,29 +19,29 @@ const listsDetails = createSlice({
   name: 'listsDetails',
   initialState,
   reducers: {
-    getListsStart(state) {
+    getListsStart(state): void {
       state.isLoading = true;
       state.error = null;
     },
-    getListsSuccess(state, action: PayloadAction<Array<List>>) {
+    getListsSuccess(state, action: PayloadAction<Array<List>>): void {
       state.lists = action.payload;
       state.isLoading = false;
       state.error = null;
     },
-    getListsFailed(state, action: PayloadAction<string>) {
+    getListsFailed(state, action: PayloadAction<string>): void {
       state.isLoading = false;
       state.error = action.payload;
     },
-    addListSuccess(state, action: PayloadAction<List>) {
+    addListSuccess(state, action: PayloadAction<List>): void {
       let lists = state.lists ?? [];
       lists = lists.slice();
       lists.push(action.payload);
       state.lists = lists;
     },
-    addListFailed(state, action: PayloadAction<string>) {
+    addListFailed(state, action: PayloadAction<string>): void {
       state.error = action.payload
     },
-    updateListOrderSuccess(state, action: PayloadAction<Array<List>>) {
+    updateListOrderSuccess(state, action: PayloadAction<Array<List>>): void {
       state.lists = action.payload;
     }
   }
@@ -58,7 +58,7 @@ export const {
 
 export default listsDetails.reducer;
 
-export const fetchLists = (boardId: number): AppThunk => async dispatch => {
+export const fetchLists = (boardId: number): AppThunk => async (dispatch): Promise<void> => {
   try {
     dispatch(getListsStart());
     const lists = await getLists(boardId);
@@ -68,7 +68,7 @@ export const fetchLists = (boardId: number): AppThunk => async dispatch => {
   }
 };
 
-export const createList = (boardId: number, list: List): AppThunk => async dispatch => {
+export const createList = (boardId: number, list: List): AppThunk => async (dispatch): Promise<void> => {
   try {
     const newList = await addList(boardId, list);
     dispatch(addListSuccess(newList));
@@ -77,7 +77,7 @@ export const createList = (boardId: number, list: List): AppThunk => async dispa
   }
 };
 
-export const updateListOrder = (boardId: number, lists: Array<List>, startIndex: number, endIndex: number): AppThunk => async dispatch => {
+export const updateListOrder = (boardId: number, lists: Array<List>, startIndex: number, endIndex: number): AppThunk => async (dispatch): Promise<void> => {
   try {
       const movedList = lists[startIndex];
       const reordered = reorder(lists, startIndex, endIndex);

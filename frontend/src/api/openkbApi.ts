@@ -20,7 +20,7 @@ export interface Card {
 
 const apiroot = 'http://localhost:8080';
 
-function getDataFromApi<T> (url: string, defaultValue: T) : Promise<T> {
+function getDataFromApi<T> (url: string, defaultValue: T): Promise<T> {
     return fetch(url).then(response => {
         if (response.ok) {
             return response.json() as Promise<T>;
@@ -31,26 +31,26 @@ function getDataFromApi<T> (url: string, defaultValue: T) : Promise<T> {
             }
             return Promise.resolve(defaultValue);
         }
-    }).catch( error => {
+    }).catch(error => {
         // for now I always want a response
-        console.log('unable to join api');
+        console.log('unable to join api' + error);
         return Promise.resolve(defaultValue);
     });
 }
 
-export async function getBoards() : Promise<Array<BoardDetails>> {
+export async function getBoards(): Promise<Array<BoardDetails>> {
     const url = `${apiroot}/api/boards`;
     const data = await getDataFromApi<Array<BoardDetails>>(url, []);
     return data;
 }
 
-export async function getBoard(id: number) : Promise<BoardDetails> {
+export async function getBoard(id: number): Promise<BoardDetails> {
     return await getDataFromApi<BoardDetails>(`${apiroot}/api/boards/${id}`, {id:-1, title:'not found'});
 }
 
-export async function addBoard(board: BoardDetails) : Promise<BoardDetails> {
+export async function addBoard(board: BoardDetails): Promise<BoardDetails> {
     const url = `${apiroot}/api/boards`;
-    let newBoard = {
+    const newBoard = {
         id: -1,
         title: board.title,
         description: board.description
@@ -70,23 +70,23 @@ export async function addBoard(board: BoardDetails) : Promise<BoardDetails> {
     });
 }
 
-export async function getLists(boardId: number) : Promise<Array<List>> {
+export async function getLists(boardId: number): Promise<Array<List>> {
     return await getDataFromApi<Array<List>>(`${apiroot}/api/boards/${boardId}/lists`, []);
 }
 
-export async function getList(boardId: number, listId: number) : Promise<List> {
+export async function getList(boardId: number, listId: number): Promise<List> {
     const notFound = {id : listId, title : "not found list", cards: []};
 
     return await getDataFromApi<List>(`${apiroot}/api/lists/${listId}`, notFound);
 }
 
-export async function getCards(boardId:number, listId:number): Promise<Array<Card>> {
+export async function getCards(boardId: number, listId: number): Promise<Array<Card>> {
     return await getDataFromApi<Array<Card>>(`${apiroot}/api/lists/${listId}/cards`, []);
 }
 
-export async function addList(boardId: number, list: List) : Promise<List> {
+export async function addList(boardId: number, list: List): Promise<List> {
     const url = `${apiroot}/api/boards/${boardId}/lists`;
-    let newList = {
+    const newList = {
         id: -1,
         title: list.title
     };
@@ -105,7 +105,7 @@ export async function addList(boardId: number, list: List) : Promise<List> {
     });
 }
 
-export async function editList(list: List) : Promise<List> {
+export async function editList(list: List): Promise<List> {
     const url = `${apiroot}/api/lists/${list.id}`;
     return fetch(url, {
         method: 'PUT',
@@ -122,9 +122,9 @@ export async function editList(list: List) : Promise<List> {
     });
 }
 
-export async function addCard(listId: number, card: Card) : Promise<Card> {
+export async function addCard(listId: number, card: Card): Promise<Card> {
     const url = `${apiroot}/api/lists/${listId}/cards`;
-    let newCard = {
+    const newCard = {
         id: -1,
         title: card.title,
         description: card.description
@@ -144,7 +144,7 @@ export async function addCard(listId: number, card: Card) : Promise<Card> {
     });
 }
 
-export async function editCard(card: Card) : Promise<Card> {
+export async function editCard(card: Card): Promise<Card> {
     const url = `${apiroot}/api/cards/${card.id}`;
     return fetch(url, {
         method: 'PUT',
@@ -161,7 +161,7 @@ export async function editCard(card: Card) : Promise<Card> {
     });
 }
 
-export async function updateListIndex(boardId: number, listId: number, startIndex: number, endIndex: number) : Promise<any> {
+export async function updateListIndex(boardId: number, listId: number, startIndex: number, endIndex: number): Promise<Response> {
     const url = `${apiroot}/api/boards/${boardId}/lists/swapper`;
     const action = {
         list: listId,
@@ -178,7 +178,7 @@ export async function updateListIndex(boardId: number, listId: number, startInde
     });
 }
 
-export async function updateCardIndexInTheSameList(boardId: number, listId: number, cardId: number, startIndex: number, endIndex: number) : Promise<Response> {
+export async function updateCardIndexInTheSameList(boardId: number, listId: number, cardId: number, startIndex: number, endIndex: number): Promise<Response> {
     const url = `${apiroot}/api/boards/${boardId}/cards/swapper`;
     const action = {
         fromList: listId,
@@ -197,7 +197,7 @@ export async function updateCardIndexInTheSameList(boardId: number, listId: numb
     });
 }
 
-export async function updateCardIndexAndChangeList(boardId: number, sourceListId: number, destinationListId: number, cardId: number, startIndex: number, endIndex: number) : Promise<Response> {
+export async function updateCardIndexAndChangeList(boardId: number, sourceListId: number, destinationListId: number, cardId: number, startIndex: number, endIndex: number): Promise<Response> {
     const url = `${apiroot}/api/boards/${boardId}/cards/swapper`;
     const action = {
         fromList: sourceListId,

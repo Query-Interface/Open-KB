@@ -4,9 +4,9 @@ import { ProjectOutlined } from '@ant-design/icons';
 const { SubMenu } = Menu;
 
 export interface MenuProps {
-    id: number,
-    icon?: string,
-    title: string
+    id: number;
+    icon?: string;
+    title: string;
 }
 
 export interface SiderMenuProps {
@@ -23,7 +23,7 @@ export class SiderSubMenu extends React.Component<SiderMenuProps, {}> {
         super(props);
     }
 
-    render() {
+    render(): JSX.Element {
         const selectedKey = [this.props.selected?.toString()??""];
         return <Menu theme="dark" selectedKeys={selectedKey} defaultOpenKeys={[this.props.id]} mode="inline">
             <SubMenu key={this.props.id}
@@ -38,7 +38,7 @@ export class SiderSubMenu extends React.Component<SiderMenuProps, {}> {
         </Menu>
     }
 
-    private getIcon(name?: string) : React.ReactElement | null {
+    private getIcon(name?: string): React.ReactElement | null {
         if (name) {
             switch (name) {
                 case 'project':
@@ -48,5 +48,5 @@ export class SiderSubMenu extends React.Component<SiderMenuProps, {}> {
             }
         }
         return null;
-    };
+    }
 }
