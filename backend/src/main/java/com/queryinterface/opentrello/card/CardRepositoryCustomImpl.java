@@ -39,14 +39,22 @@ public class CardRepositoryCustomImpl implements CardRepositoryCustom {
     }
 
     @Override
-    public void updateIndexAndMoveCard(final UUID listId, UUID cardId, final int endIndex) {
-        Query query = entityManager.createNativeQuery("UPDATE card SET index = index+1 WHERE list_id = ? AND index >= ?");
-        query.setParameter(1, listId);
-        query.setParameter(2, endIndex);
-        query.executeUpdate();
+    public void updateIndexAndMoveCard(final UUID fromListId, final UUID toListId, UUID cardId, final int startIndex, final int endIndex) {
+        // update destination list
+        Query updateDestinationQuery = entityManager.createNativeQuery("UPDATE card SET index = index+1 WHERE list_id = ? AND index >= ?");
+        updateDestinationQuery.setParameter(1, toListId);
+        updateDestinationQuery.setParameter(2, endIndex);
+        updateDestinationQuery.executeUpdate();
 
+        // update source list
+        Query updateSourceQuery = entityManager.createNativeQuery("UPDATE card SET index = index-1 WHERE list_id= ? AND index > ?");
+        updateSourceQuery.setParameter(1, fromListId);
+        updateSourceQuery.setParameter(2, startIndex);
+        updateSourceQuery.executeUpdate();
+
+        // update card parent
         Card toUpdate = entityManager.getReference(Card.class, cardId);
-        List newParentList = entityManager.getReference(List.class, listId);
+        List newParentList = entityManager.getReference(List.class, toListId);
         toUpdate.setList(newParentList);
         toUpdate.setIndex(endIndex);
         entityManager.merge(toUpdate);

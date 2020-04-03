@@ -4,7 +4,7 @@
 - [x] add database support for postgresql
 - [x] a docker-compose file to begin use of the tool
 - [x] use guid as identifiers to avoid id predictivity
-- [] bug: when a card is moved from a column A to a column B. The indexes of the remaining elements of column A must be reduced by 1.
+- [x] bug: when a card is moved from a column A to a column B. The indexes of the remaining elements of column A must be reduced by 1.
 - [] add a way to create/edit list
 - [] add controls to handle empty board / no boards case (starting page)
 - [] use side panel to create/edit cards

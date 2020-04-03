@@ -66,7 +66,7 @@ public class BoardController {
         if (moveCardAction.getFromList().equals(moveCardAction.getToList())) {
             cardRepository.updateIndexOfCardInList(UUID.fromString(moveCardAction.getFromList()), UUID.fromString(moveCardAction.getCard()), moveCardAction.getFrom(), moveCardAction.getTo());
         } else {
-            cardRepository.updateIndexAndMoveCard(UUID.fromString(moveCardAction.getToList()), UUID.fromString(moveCardAction.getCard()), moveCardAction.getTo());
+            cardRepository.updateIndexAndMoveCard(UUID.fromString(moveCardAction.getFromList()), UUID.fromString(moveCardAction.getToList()), UUID.fromString(moveCardAction.getCard()), moveCardAction.getFrom(), moveCardAction.getTo());
         }
         return ResponseEntity.ok().build();
     }
