@@ -1,0 +1,12 @@
+.card-details {
+    --card-bg-color: white;
+    overflow: hidden;
+    padding: 4px;
+    min-height: 60px;
+    background-color: var(--card-bg-color);
+    margin-bottom: 4px;
+    border-left: 2px solid var(--card-bg-color);
+}
+.card-selected {
+    border-left: 2px solid #1890ff;
+}

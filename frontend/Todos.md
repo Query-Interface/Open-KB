@@ -3,11 +3,12 @@
 - [x] add sync with backend for drap and drop (modify code to retrieve items ordered by index)
 - [x] add database support for postgresql
 - [x] a docker-compose file to begin use of the tool
-- [x] use guid as identifiers to avoid id predictivity
+- [x] refactoring: use guid as identifiers to avoid id predictivity
 - [x] bug: when a card is moved from a column A to a column B. The indexes of the remaining elements of column A must be reduced by 1.
-- [] add a way to create/edit list
-- [] add controls to handle empty board / no boards case (starting page)
-- [] use side panel to create/edit cards
-- [] refactor for introducing meaningful waiting panel
-- [] add more settings to Board component such as background image,...
-- [] add support for login screen / user handling
+- [x] feature: use side panel to create/edit cards
+- [] feature: add a way to create/edit list
+- [] feature: add controls to handle empty board / no boards case (starting page)
+- [] ux enhancement: refactor for introducing meaningful waiting panel
+- [] feature: add more settings to Board component such as background image,...
+- [] feature: add support for login screen / user handling
+- [] ux enhancement: ensure that the selected card (for edit) is fully visible when the edit panel is opened

@@ -8,7 +8,7 @@ module.exports = {
 				debug: true,
 					targets: {
 						//browsers: ['last 2 versions']
-						browsers: ['chrome>= 70', 'edge >= 17', 'ie >= 11', 'firefox >= 70']
+						browsers: ['chrome>= 70', 'edge >= 17', 'firefox >= 70']
 					}
 			}
 		],

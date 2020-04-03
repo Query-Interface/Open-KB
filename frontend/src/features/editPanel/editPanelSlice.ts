@@ -29,6 +29,9 @@ const editPanelSlice = createSlice({
         },
         toggleEditPanel(state): void {
             state.editPanelCollapsed = !state.editPanelCollapsed;
+            if (state.editPanelCollapsed) {
+                state.selectedCard = null;
+            }
         }
     }
 });

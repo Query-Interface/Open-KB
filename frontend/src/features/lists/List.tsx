@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../app/rootReducer';
-import { Card } from './Card';
+import { Card } from '../card/Card';
 import { List as ModelList, Card as ModelCard } from '../../api/openkbApi';
 import { fetchList, createCard } from './listSlice';
 import { Draggable, DraggableProvided, Droppable, DroppableProvided } from 'react-beautiful-dnd';
@@ -28,12 +28,12 @@ export const List: React.FC<ListProps> = ({boardId, listId, index}: ListProps) =
     const renderCardsWithDnd = (cards: Array<ModelCard>): React.ReactElement => {
         return <Droppable
              droppableId={`list-drop-${listId}`}
-             type="CARD"
-             direction="vertical"
+             type='CARD'
+             direction='vertical'
              ignoreContainerClipping={false}
              isCombineEnabled={false}>
              {(provided: DroppableProvided): React.ReactElement => (
-                 <div className="list-cards"
+                 <div className='list-cards'
                     ref={provided.innerRef} {...provided.droppableProps}>
                     {cards.map(function(card: ModelCard, index: number) {
                         return <Card card={Object.assign({}, card, {parentList: listId})} index={index} key={`card-${card.id}`} />
@@ -46,7 +46,7 @@ export const List: React.FC<ListProps> = ({boardId, listId, index}: ListProps) =
 
 
     const onAddCard = (event: React.MouseEvent): void => {
-        const newCard = {id: '', title: "New card", index: list.cards?.length ?? 1};
+        const newCard = {id: '', title: 'New card', index: list.cards?.length ?? 1};
         dispatch(createCard(boardId, listId, newCard));
         event.preventDefault();
     };
@@ -54,17 +54,17 @@ export const List: React.FC<ListProps> = ({boardId, listId, index}: ListProps) =
     const renderColumnWithDnD = (list: ModelList): React.ReactElement => {
         return <Draggable draggableId={`list-drag-${list.id}`} key={list.id} index={index}>
             {(provided: DraggableProvided): React.ReactElement => (
-                <div className="list-column"
+                <div className='list-column'
                     ref={provided.innerRef}
                     {...provided.draggableProps}>
-                    <div className="list-container">
-                        <div className="list-header" {...provided.dragHandleProps} >
-                            <span className="drag-handle"><SmallDashOutlined rotate={90} /></span>
+                    <div className='list-container'>
+                        <div className='list-header' {...provided.dragHandleProps} >
+                            <span className='drag-handle'><SmallDashOutlined rotate={90} /></span>
                             <span>{list.title}</span>
-                            <div className="btn btn-list-menu"><span><EllipsisOutlined /></span></div>
-                            <div className="btn btn-list-add" onClick={(event): void => onAddCard(event)}><span><PlusOutlined /></span></div>
+                            <div className='btn btn-list-menu'><span><EllipsisOutlined /></span></div>
+                            <div className='btn btn-list-add' onClick={(event): void => onAddCard(event)}><span><PlusOutlined /></span></div>
                         </div>
-                        <div className="list-content">
+                        <div className='list-content'>
                             {renderCardsWithDnd(list.cards || [])}
                         </div>
                     </div>
@@ -74,7 +74,7 @@ export const List: React.FC<ListProps> = ({boardId, listId, index}: ListProps) =
     };
 
 
-    let content = <div className="list-column" key={listId} ></div>;
+    let content = <div className='list-column' key={listId} ></div>;
     if (list) {
         content = renderColumnWithDnD(list);
     }
