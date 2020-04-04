@@ -4,11 +4,11 @@ WORKDIR /app
 # copy pom file
 COPY pom.xml .
 # install dependencies and plugins
-RUN mvn dependency:go-offline
+RUN mvn -Pdb-postgres dependency:go-offline
 # copy source code
 COPY src src/
 # build and package application
-RUN mvn package -DskipTests
+RUN mvn package -Pdb-postgres -DskipTests
 
 FROM adoptopenjdk/openjdk11:alpine-jre
 COPY --from=build /app/target/openkb-0.0.1-SNAPSHOT.jar /app/openkb-0.0.1-SNAPSHOT.jar
