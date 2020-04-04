@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "license": "MIT",
+  "author": "query-interface",
   "scripts": {
     "start": "webpack-dev-server --env.BUILD_MODE=development",
     "build": "webpack --env.BUILD_MODE=production",

@@ -1,0 +1,19 @@
+{
+  "name": "open-kb-desktop",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron ./src",
+    "build": ""
+  },
+  "author": "query-interface",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^8.2.0"
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "electron-log": "^4.1.1",
+    "tree-kill": "^1.2.2"
+  }
+}

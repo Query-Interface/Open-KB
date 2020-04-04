@@ -6,9 +6,13 @@
 - [x] refactoring: use guid as identifiers to avoid id predictivity
 - [x] bug: when a card is moved from a column A to a column B. The indexes of the remaining elements of column A must be reduced by 1.
 - [x] feature: use side panel to create/edit cards
+- [] bug: handle long card title (actually edit button is hidden, when title is too long)
+- [] bug: cannot edit two cards properties at the same time with editpanel
 - [] feature: add a way to create/edit list
 - [] feature: add controls to handle empty board / no boards case (starting page)
 - [] ux enhancement: refactor for introducing meaningful waiting panel
 - [] feature: add more settings to Board component such as background image,...
+- [] feature: add setting for accent-color ( document.documentElement.style.setProperty('--accent-color', "#new-color"))
 - [] feature: add support for login screen / user handling
 - [] ux enhancement: ensure that the selected card (for edit) is fully visible when the edit panel is opened
+- [] feature: build a desktop app with electron and a file DB for the backend
