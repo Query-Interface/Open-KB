@@ -1,3 +1,15 @@
+:root {
+    --accent-color: #1890ff;
+}
+/*Override ant style to use accent-color*/
+.ant-menu.ant-menu-dark .ant-menu-item-selected, .ant-menu-submenu-popup.ant-menu-dark .ant-menu-item-selected {
+    background-color: var(--accent-color);
+}
+.ant-menu-horizontal > .ant-menu-item:hover, .ant-menu-horizontal > .ant-menu-submenu:hover, .ant-menu-horizontal > .ant-menu-item-active, .ant-menu-horizontal > .ant-menu-submenu-active, .ant-menu-horizontal > .ant-menu-item-open, .ant-menu-horizontal > .ant-menu-submenu-open, .ant-menu-horizontal > .ant-menu-item-selected, .ant-menu-horizontal > .ant-menu-submenu-selected {
+    color: var(--accent-color);
+    border-bottom: 2px solid var(--accent-color);
+}
+/******/
 .App {
   text-align: center;
 }
@@ -16,7 +28,7 @@
     transition: color .3s;
   }
 .trigger:hover {
-    color: #1890ff;
+    color: var(--accent-color);
 }
 .right {
     float: right;
