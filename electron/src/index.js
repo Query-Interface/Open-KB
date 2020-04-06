@@ -27,7 +27,12 @@ function createWindow () {
 
 function startServer(port) {
     const serverJarPath = `${path.join(app.getAppPath(), '..', '..', 'backend', 'target', SERVER_JAR)}`;
-    backendProcess = require('child_process').spawn('java', [ '-jar', serverJarPath]);
+    backendProcess = require('child_process').spawn('java', ['-Dspring.profiles.active=dbHsql', '-jar', serverJarPath]);
+	backendProcess.stdout.on('data', function(data) {
+		const messages = data.toString().split('\n');
+		messages.forEach(msg => logger.info('server> ' + msg));
+		}
+	);
   
     if (backendProcess.pid) {
       baseUrl = `http://localhost:${port}`;
