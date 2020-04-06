@@ -1,4 +1,4 @@
-package com.queryinterface.opentrello.list;
+package com.queryinterface.openkb.list;
 
 public class MoveListAction {
 

@@ -1,6 +1,6 @@
-package com.queryinterface.opentrello.card;
+package com.queryinterface.openkb.card;
 
-import com.queryinterface.opentrello.list.List;
+import com.queryinterface.openkb.list.List;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;

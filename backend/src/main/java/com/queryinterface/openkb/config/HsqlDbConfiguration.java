@@ -1,4 +1,4 @@
-package com.queryinterface.opentrello.config;
+package com.queryinterface.openkb.config;
 
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
@@ -11,14 +11,14 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import javax.sql.DataSource;
 
 @Configuration
-@Profile("docker")
-public class DockerConfiguration {
+@Profile("dbHsql")
+public class HsqlDbConfiguration {
     @Bean
     public DataSource getDataSource() {
         DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();
-        dataSourceBuilder.driverClassName("org.postgresql.Driver");
-        dataSourceBuilder.url(getSystemProperty("DB_URI", "jdbc:postgresql://openkb-db:5432/postgres"));
-        dataSourceBuilder.username(getSystemProperty("DB_USER", "postgres"));
+        dataSourceBuilder.driverClassName("org.hsqldb.jdbc.JDBCDriver");
+        dataSourceBuilder.url(getSystemProperty("DB_URI", "jdbc:hsqldb:file:/db/openkb"));
+        dataSourceBuilder.username(getSystemProperty("DB_USER", "hsqldb"));
         dataSourceBuilder.password(getSystemProperty("DB_PASSWORD","Password1"));
         DataSource dataSource = dataSourceBuilder.build();
         return dataSource;
@@ -36,11 +36,11 @@ public class DockerConfiguration {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
         adapter.setGenerateDdl(true);
-        adapter.setDatabase(Database.POSTGRESQL);
+        adapter.setDatabase(Database.HSQL);
 
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(adapter);
-        factory.setPackagesToScan("com.queryinterface.opentrello");
+        factory.setPackagesToScan("com.queryinterface.openkb");
         factory.setDataSource(getDataSource());
         return factory;
     }

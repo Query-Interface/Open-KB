@@ -34,15 +34,18 @@ const App: React.FC = () => {
         dispatch(toggleEditPanel());
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const setBoard = (boardId: number): void => {
+    const setBoard = (boardId: string): void => {
         dispatch(setCurrentBoard(boardId));
     };
 
     const renderBoard = (boards: Array<BoardDetails>): JSX.Element => {
         if (boards.length > 0) {
-            let selectedBoard = boards.filter(b => b.id === boardSelected).pop();
+            let selectedBoard = boards.find(b => b.id === boardSelected);
             if (!selectedBoard) {
-                selectedBoard = boards[0];
+                selectedBoard = boards.find(b => b.title === "Kanban");
+                if (!selectedBoard) {
+                    selectedBoard = boards[0];
+                }
             }
 
             return <Board boardId={selectedBoard.id} />

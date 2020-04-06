@@ -1,4 +1,4 @@
-package com.queryinterface.opentrello.controller;
+package com.queryinterface.openkb.controller;
 
 import org.springframework.stereotype.Component;
 

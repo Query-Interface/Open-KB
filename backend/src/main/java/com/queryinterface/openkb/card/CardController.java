@@ -1,6 +1,6 @@
-package com.queryinterface.opentrello.card;
+package com.queryinterface.openkb.card;
 
-import com.queryinterface.opentrello.exception.ResourceNotFound;
+import com.queryinterface.openkb.exception.ResourceNotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

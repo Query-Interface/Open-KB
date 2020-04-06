@@ -30,7 +30,7 @@ const appDisplaySlice = createSlice({
         },
         getBoardsSuccess(state, action: PayloadAction<Array<BoardDetails>>): void {
             state.boards = action.payload;
-            state.boardId = state.boards.length > 0 ? state.boards[0].id : '';
+            //state.boardId = state.boards.length > 0 ? state.boards[0].id : '';
             state.error = null;
         },
         getBoardsFailed(state, action: PayloadAction<string>): void {

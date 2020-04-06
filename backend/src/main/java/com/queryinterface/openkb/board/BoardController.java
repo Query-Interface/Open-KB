@@ -1,12 +1,11 @@
-package com.queryinterface.opentrello.board;
+package com.queryinterface.openkb.board;
 
-import com.queryinterface.opentrello.exception.ResourceNotFound;
-import com.queryinterface.opentrello.card.Card;
-import com.queryinterface.opentrello.list.List;
-import com.queryinterface.opentrello.list.MoveListAction;
-import com.queryinterface.opentrello.card.MoveCardAction;
-import com.queryinterface.opentrello.card.CardRepository;
-import com.queryinterface.opentrello.list.ListRepository;
+import com.queryinterface.openkb.exception.ResourceNotFound;
+import com.queryinterface.openkb.list.List;
+import com.queryinterface.openkb.list.MoveListAction;
+import com.queryinterface.openkb.card.MoveCardAction;
+import com.queryinterface.openkb.card.CardRepository;
+import com.queryinterface.openkb.list.ListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

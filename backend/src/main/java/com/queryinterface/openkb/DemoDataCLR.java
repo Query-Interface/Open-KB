@@ -1,11 +1,11 @@
-package com.queryinterface.opentrello;
+package com.queryinterface.openkb;
 
-import com.queryinterface.opentrello.board.Board;
-import com.queryinterface.opentrello.card.Card;
-import com.queryinterface.opentrello.list.List;
-import com.queryinterface.opentrello.board.BoardRepository;
-import com.queryinterface.opentrello.card.CardRepository;
-import com.queryinterface.opentrello.list.ListRepository;
+import com.queryinterface.openkb.board.Board;
+import com.queryinterface.openkb.card.Card;
+import com.queryinterface.openkb.list.List;
+import com.queryinterface.openkb.board.BoardRepository;
+import com.queryinterface.openkb.card.CardRepository;
+import com.queryinterface.openkb.list.ListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;

@@ -1,38 +1,39 @@
-package com.queryinterface.opentrello.list;
+package com.queryinterface.openkb.card;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.queryinterface.opentrello.board.Board;
+import com.queryinterface.openkb.list.List;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.util.Optional;
 import java.util.UUID;
 
 @Entity
-public class List {
+public class Card {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @Column(columnDefinition = "BINARY(16)")
     private UUID id;
-
-    private String title;
-
     private int index;
+    private String title;
+    private String description;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "board_id", nullable = false)
+    @JoinColumn(name = "list_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
-    private Board board;
+    private List list;
 
-    List() {
+    Card() {
         // for JPA
     }
 
-    public List(final String title) {
+    public Card(final String title, final String description) {
         this.title = title;
+        this.description = description;
     }
 
     public UUID getId() {
@@ -47,12 +48,20 @@ public class List {
         this.title = title;
     }
 
-    public Board getBoard() {
-        return board;
+    public Optional<String> getDescription() {
+        return Optional.ofNullable(description);
     }
 
-    public void setBoard(final Board board) {
-        this.board = board;
+    public void setDescription(final String desc) {
+        this.description = desc;
+    }
+
+    public List getList() {
+        return list;
+    }
+
+    public void setList(List list) {
+        this.list = list;
     }
 
     public int getIndex() {
@@ -65,9 +74,10 @@ public class List {
 
     @Override
     public String toString() {
-        return "List{" +
+        return "Card{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
                 '}';
     }
 }

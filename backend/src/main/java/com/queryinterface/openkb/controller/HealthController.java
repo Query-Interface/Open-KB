@@ -1,4 +1,4 @@
-package com.queryinterface.opentrello.controller;
+package com.queryinterface.openkb.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,8 +1,8 @@
-package com.queryinterface.opentrello.list;
+package com.queryinterface.openkb.list;
 
-import com.queryinterface.opentrello.card.Card;
-import com.queryinterface.opentrello.card.CardRepository;
-import com.queryinterface.opentrello.exception.ResourceNotFound;
+import com.queryinterface.openkb.card.Card;
+import com.queryinterface.openkb.card.CardRepository;
+import com.queryinterface.openkb.exception.ResourceNotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

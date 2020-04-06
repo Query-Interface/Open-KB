@@ -1,4 +1,4 @@
-package com.queryinterface.opentrello.exception;
+package com.queryinterface.openkb.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

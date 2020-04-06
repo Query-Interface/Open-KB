@@ -1,4 +1,4 @@
-package com.queryinterface.opentrello.list;
+package com.queryinterface.openkb.list;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;

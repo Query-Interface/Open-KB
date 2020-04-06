@@ -1,4 +1,4 @@
-package com.queryinterface.opentrello.card;
+package com.queryinterface.openkb.card;
 
 import java.util.UUID;
 

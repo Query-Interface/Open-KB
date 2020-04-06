@@ -1,4 +1,4 @@
-package com.queryinterface.opentrello.board;
+package com.queryinterface.openkb.board;
 
 import org.hibernate.annotations.GenericGenerator;
 
