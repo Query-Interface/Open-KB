@@ -18,7 +18,7 @@ steps:
 - task: Maven@3
   displayName: 'Packaging backend for postgres'
   inputs:
-    mavenPomFile: 'pom.xml'
+    mavenPomFile: 'backend/pom.xml'
     mavenOptions: '-Xmx3072m'
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '1.11'
