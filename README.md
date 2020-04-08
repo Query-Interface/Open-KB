@@ -1,7 +1,11 @@
+# Status
+
+Frontend | Backend
+-------- | -------
+[![Frontend Build Status](https://dev.azure.com/adqueryinterface/openkb/_apis/build/status/Query-Interface.Open-KB?branchName=master)](https://dev.azure.com/adqueryinterface/openkb/_build/latest?definitionId=1&branchName=master) | [![Backend Build Status](https://dev.azure.com/adqueryinterface/openkb/_apis/build/status/Query-Interface.Open-KB%20Backend?branchName=master)](https://dev.azure.com/adqueryinterface/openkb/_build/latest?definitionId=4&branchName=master)
+
 # Open KB
 A Trello inspired webapp.
-
-[![Build Status](https://dev.azure.com/adqueryinterface/openkb/_apis/build/status/Query-Interface.Open-KB?branchName=master)](https://dev.azure.com/adqueryinterface/openkb/_build/latest?definitionId=1&branchName=master)
 
 Try on Azure: http://openkb.query-interface.com/
 
