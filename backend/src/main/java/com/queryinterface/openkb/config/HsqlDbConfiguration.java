@@ -17,7 +17,8 @@ public class HsqlDbConfiguration {
     public DataSource getDataSource() {
         DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();
         dataSourceBuilder.driverClassName("org.hsqldb.jdbc.JDBCDriver");
-        dataSourceBuilder.url(getSystemProperty("DB_URI", "jdbc:hsqldb:file:/db/openkb"));
+        dataSourceBuilder.url(getSystemProperty("DB_URI",
+                "jdbc:hsqldb:file:" + getSystemProperty("DB_FILE_PATH", "openkb")));
         dataSourceBuilder.username(getSystemProperty("DB_USER", "hsqldb"));
         dataSourceBuilder.password(getSystemProperty("DB_PASSWORD","Password1"));
         DataSource dataSource = dataSourceBuilder.build();
@@ -29,13 +30,13 @@ public class HsqlDbConfiguration {
         if (value == null) {
             return defaultValue;
         }
-        return defaultValue;
+        return value;
     }
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
-        adapter.setGenerateDdl(true);
+         adapter.setGenerateDdl(true);
         adapter.setDatabase(Database.HSQL);
 
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
