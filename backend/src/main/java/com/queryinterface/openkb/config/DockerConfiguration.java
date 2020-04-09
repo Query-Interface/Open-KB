@@ -29,7 +29,7 @@ public class DockerConfiguration {
         if (value == null) {
             return defaultValue;
         }
-        return defaultValue;
+        return value;
     }
 
     @Bean
