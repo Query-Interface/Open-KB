@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BoardDetails, getBoards } from '../api/openkbApi';
-import { AppThunk } from '../app/store';
+import { BoardDetails, getBoards } from 'Api/openkbApi';
+import { AppThunk } from 'App/store';
 
 interface CurrentDisplayState {
     sliderCollapsed: boolean;

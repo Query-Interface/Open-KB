@@ -8,6 +8,7 @@
 - [x] feature: use side panel to create/edit cards
 - [] bug: handle long card title (actually edit button is hidden, when title is too long)
 - [] bug: cannot edit two cards properties at the same time with editpanel
+- [] feature: add html-sanitizer to disable all XSS
 - [] feature: add a way to create/edit list
 - [] feature: add controls to handle empty board / no boards case (starting page)
 - [] ux enhancement: refactor for introducing meaningful waiting panel

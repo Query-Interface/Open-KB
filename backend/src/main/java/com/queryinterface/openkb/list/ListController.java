@@ -13,8 +13,8 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api")
 public class ListController {
-    final ListRepository listRepository;
-    final CardRepository cardRepository;
+    private final ListRepository listRepository;
+    private final CardRepository cardRepository;
 
     @Autowired
     public ListController(final ListRepository listRepo, final CardRepository cardRepo) {

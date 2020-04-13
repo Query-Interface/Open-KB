@@ -34,13 +34,17 @@ public class Board {
         return title;
     }
 
+    public void setTitle(final String title) {
+        this.title = title;
+    }
+
     public Optional<String> getDescription() {
         return Optional.ofNullable(description);
     }
 
-//    public java.util.List<List> getLists() {
-//        return lists;
-//    }
+    public void setDescription(final String description) {
+        this.description = description;
+    }
 
     @Override
     public String toString() {

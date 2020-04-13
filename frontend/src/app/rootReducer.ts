@@ -1,9 +1,9 @@
 import {combineReducers} from "@reduxjs/toolkit";
-import appDisplayReducer from '../features/appSlice';
-import boardDetailsReducer from '../features/board/boardsDetailSlice';
-import listsDetailsReducer from '../features/lists/listsSlice';
-import listDetailsReducer from '../features/lists/listSlice';
-import editPanelReducer from '../features/editPanel/editPanelSlice';
+import appDisplayReducer from 'Features/appSlice';
+import boardDetailsReducer from 'Features/board/boardsDetailSlice';
+import listsDetailsReducer from 'Features/lists/listsSlice';
+import listDetailsReducer from 'Features/lists/listSlice';
+import editPanelReducer from 'Features/editPanel/editPanelSlice';
 
 const rootReducer = combineReducers({
     appDisplay: appDisplayReducer,

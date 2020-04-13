@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AppThunk } from '../../app/store';
-import { Card, List, addCard, getList, getCards, updateCardIndexInTheSameList, updateCardIndexAndChangeList } from '../../api/openkbApi';
+import { AppThunk } from 'App/store';
+import { Card, List, addCard, getList, getCards, updateCardIndexInTheSameList, updateCardIndexAndChangeList } from 'Api/openkbApi';
 import { addListFailed } from './listsSlice';
 import { reorder } from './reorder';
 

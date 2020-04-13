@@ -1,16 +1,25 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AppThunk } from '../../app/store';
-import { List, getLists, addList, updateListIndex } from '../../api/openkbApi';
+import { AppThunk } from 'App/store';
+import { List, getLists, addList, updateListIndex } from 'Api/openkbApi';
 import { reorder } from './reorder';
 
 interface ListsDetailsState {
-    lists: Array<List> | null;
-    isLoading: boolean;
-    error: string | null;
+  listsById: Record<string, Array<List>>;
+  isLoading: boolean;
+  error: string | null;
+}
+
+interface GetListsResponse {
+  boardId: string;
+  lists: Array<List>;
+}
+interface AddListsResponse {
+  boardId: string;
+  list: List;
 }
 
 const initialState: ListsDetailsState = {
-    lists: null,
+    listsById: {},
     isLoading: false,
     error: null
 }
@@ -23,8 +32,8 @@ const listsDetails = createSlice({
       state.isLoading = true;
       state.error = null;
     },
-    getListsSuccess(state, action: PayloadAction<Array<List>>): void {
-      state.lists = action.payload;
+    getListsSuccess(state, action: PayloadAction<GetListsResponse>): void {
+      state.listsById[action.payload.boardId] = action.payload.lists;
       state.isLoading = false;
       state.error = null;
     },
@@ -32,17 +41,17 @@ const listsDetails = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     },
-    addListSuccess(state, action: PayloadAction<List>): void {
-      let lists = state.lists ?? [];
+    addListSuccess(state, action: PayloadAction<AddListsResponse>): void {
+      let lists = state.listsById[action.payload.boardId] ?? [];
       lists = lists.slice();
-      lists.push(action.payload);
-      state.lists = lists;
+      lists.push(action.payload.list);
+      state.listsById[action.payload.boardId] = lists;
     },
     addListFailed(state, action: PayloadAction<string>): void {
       state.error = action.payload
     },
-    updateListOrderSuccess(state, action: PayloadAction<Array<List>>): void {
-      state.lists = action.payload;
+    updateListOrderSuccess(state, action: PayloadAction<GetListsResponse>): void {
+      state.listsById[action.payload.boardId] = action.payload.lists;
     }
   }
 });
@@ -62,7 +71,7 @@ export const fetchLists = (boardId: string): AppThunk => async (dispatch): Promi
   try {
     dispatch(getListsStart());
     const lists = await getLists(boardId);
-    dispatch(getListsSuccess(lists));
+    dispatch(getListsSuccess({boardId, lists}));
   } catch (err) {
     dispatch(getListsFailed(err.toString()));
   }
@@ -71,7 +80,7 @@ export const fetchLists = (boardId: string): AppThunk => async (dispatch): Promi
 export const createList = (boardId: string, list: List): AppThunk => async (dispatch): Promise<void> => {
   try {
     const newList = await addList(boardId, list);
-    dispatch(addListSuccess(newList));
+    dispatch(addListSuccess({boardId, list: newList}));
   } catch (err) {
     dispatch(addListFailed(err.toString()));
   }
@@ -81,7 +90,7 @@ export const updateListOrder = (boardId: string, lists: Array<List>, startIndex:
   try {
       const movedList = lists[startIndex];
       const reordered = reorder(lists, startIndex, endIndex);
-      dispatch(updateListOrderSuccess(reordered));
+      dispatch(updateListOrderSuccess({boardId, lists: reordered}));
       // update backend asynchronously
       updateListIndex(boardId, movedList.id, startIndex, endIndex);
 

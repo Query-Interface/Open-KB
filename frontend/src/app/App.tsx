@@ -1,18 +1,19 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from './rootReducer';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Layout, Menu } from 'antd';
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
-import { SiderSubMenu } from '../components/SiderSubMenu/SiderSubMenu';
-import  Board  from '../components/Board/Board';
+import { SiderSubMenu } from 'Components/SiderSubMenu/SiderSubMenu';
+import HomePage from 'Pages/home/HomePage';
 import {
     setCurrentBoard,
     toggleSlider,
     fetchBoards
-  } from '../features/appSlice';
-import { toggleEditPanel } from '../features/editPanel/editPanelSlice';
-import { BoardDetails } from '../api/openkbApi';
-import EditPanel from '../features/editPanel/EditPanel';
+  } from 'Features/appSlice';
+import { toggleEditPanel } from 'Features/editPanel/editPanelSlice';
+import EditPanel from 'Features/editPanel/EditPanel';
+import BoardPage from 'Pages/board/BoardPage';
 
 const { Header, Content, Sider } = Layout;
 const PRODUCT_NAME = "Open KB";
@@ -38,27 +39,12 @@ const App: React.FC = () => {
         dispatch(setCurrentBoard(boardId));
     };
 
-    const renderBoard = (boards: Array<BoardDetails>): JSX.Element => {
-        if (boards.length > 0) {
-            let selectedBoard = boards.find(b => b.id === boardSelected);
-            if (!selectedBoard) {
-                selectedBoard = boards.find(b => b.title === "Kanban");
-                if (!selectedBoard) {
-                    selectedBoard = boards[0];
-                }
-            }
-
-            return <Board boardId={selectedBoard.id} />
-        }
-        return <div>&nbsp;</div>
-    }
-
     return (
         <Layout style={{ minHeight: '100vh'}}>
             <Sider
-            collapsible
-            collapsed={collapsed}
-            trigger={null}
+                collapsible
+                collapsed={collapsed}
+                trigger={null}
             >
                 <div className="logo" >{PRODUCT_NAME}</div>
                     <SiderSubMenu id="subBoards" title="Boards" icon="project" menuEntries={boards} selected={boardSelected??undefined} />
@@ -84,13 +70,20 @@ const App: React.FC = () => {
                 </div>
             </Header>
             <Layout>
-                <Content style={{
-                    marginTop:'24px', background: '#fff', minHeight: 280, position:'relative'}} >
-                        {renderBoard(boards)}
+                <Content style={{marginTop:'24px', background: '#fff', minHeight: 280, position:'relative'}} >
+                    <Router>
+                    <Switch>
+                        <Route exact path='/'>
+                            <HomePage />
+                        </Route>
+                        <Route path='/boards/'>
+                            <BoardPage />
+                        </Route>
+                        </Switch>
+                    </Router>
                 </Content>
                 <EditPanel />
             </Layout>
-
         </Layout>
       </Layout>
     );

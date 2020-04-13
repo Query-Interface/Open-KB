@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchBoardDetails } from '../../features/board/boardsDetailSlice';
-import { RootState } from '../../app/rootReducer';
+import { fetchBoardDetails } from 'Features/board/boardsDetailSlice';
+import { RootState } from 'App/rootReducer';
 import { Empty, Spin } from 'antd';
-import { fetchLists, createList, updateListOrder } from '../../features/lists/listsSlice';
-import { updateCardOrder, moveCard } from '../../features/lists/listSlice';
-import { List } from '../../api/openkbApi';
-import { List as UIList } from '../../features/lists/List';
+import { fetchLists, createList, updateListOrder } from 'Features/lists/listsSlice';
+import { updateCardOrder, moveCard } from 'Features/lists/listSlice';
+import { List } from 'Api/openkbApi';
+import { List as UIList } from 'Features/lists/List';
 import { Droppable, DroppableProvided, DragDropContext, DropResult, DraggableId, DroppableId } from 'react-beautiful-dnd';
 import { PlusOutlined } from '@ant-design/icons';
 
@@ -18,7 +18,7 @@ const Board: React.FC<BoardProps> = ({boardId}: BoardProps) => {
     const dispatch = useDispatch();
     const board = useSelector((state: RootState) => state.boards.boardsById[boardId]);
     const isLoading = useSelector((state: RootState) => state.boards.isLoading);
-    const lists = useSelector((state: RootState) => state.listsDetails.lists);
+    const lists = useSelector((state: RootState) => state.listsDetails.listsById[boardId]);
 
     useEffect(() => {
         if (!board) {
@@ -27,9 +27,8 @@ const Board: React.FC<BoardProps> = ({boardId}: BoardProps) => {
         if (!lists) {
             dispatch(fetchLists(boardId));
         }
-
     }, [boardId, dispatch]);
-
+    
     const getListByDroppableId = (lists: Array<List>, dropId: DroppableId): List | undefined => {
         let result: List | undefined;
         if (dropId) {

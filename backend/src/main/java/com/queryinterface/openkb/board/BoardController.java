@@ -17,9 +17,9 @@ import java.util.UUID;
 @RequestMapping("/api")
 public class BoardController {
 
-    final BoardRepository boardRepository;
-    final ListRepository listRepository;
-    final CardRepository cardRepository;
+    private final BoardRepository boardRepository;
+    private final ListRepository listRepository;
+    private final CardRepository cardRepository;
 
     @Autowired
     public BoardController(final BoardRepository boardRepo, final ListRepository listRepo, final CardRepository cardRepo) {
@@ -34,10 +34,24 @@ public class BoardController {
          return new ResponseEntity<>(boards, HttpStatus.OK);
     }
 
+    @RequestMapping(method = RequestMethod.POST, path = "/boards")
+    public ResponseEntity<Board> addBoard(final @RequestBody Board board) {
+        final Board newBoard = boardRepository.save(new Board(board.getTitle(), board.getDescription().isPresent() ? board.getDescription().get() : null));
+        return new ResponseEntity<>(newBoard, HttpStatus.OK);
+    }
+
     @RequestMapping(method= RequestMethod.GET, path = "/boards/{boardId}")
     public ResponseEntity<Board> getBoardById(final @PathVariable String boardId) {
         final Board board = boardRepository.findById(UUID.fromString(boardId)).orElseThrow(ResourceNotFound::new);
         return new ResponseEntity<>(board, HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, path = "/boards/{boardId}")
+    public ResponseEntity<Board> addBoard(final @PathVariable String boardId,final @RequestBody Board board) {
+        final Board boardToUpdate = boardRepository.findById(UUID.fromString(boardId)).orElseThrow(ResourceNotFound::new);
+        boardToUpdate.setTitle(board.getTitle());
+        boardToUpdate.setDescription(board.getDescription().isPresent() ? board.getDescription().get() : null);
+        return new ResponseEntity<>(boardRepository.save(boardToUpdate), HttpStatus.OK);
     }
 
     @RequestMapping(method= RequestMethod.GET, path = "/boards/{boardId}/lists")

@@ -14,7 +14,7 @@ import java.util.UUID;
 public class CardRepositoryCustomImpl implements CardRepositoryCustom {
 
     @PersistenceContext
-    EntityManager entityManager;
+    private EntityManager entityManager;
 
     @Override
     public void updateIndexOfCardInList(UUID listId, UUID cardId, int startIndex, int endIndex) {

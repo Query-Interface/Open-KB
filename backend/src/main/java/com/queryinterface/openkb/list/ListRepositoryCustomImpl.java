@@ -14,7 +14,7 @@ import java.util.UUID;
 public class ListRepositoryCustomImpl implements ListRepositoryCustom {
 
     @PersistenceContext
-    EntityManager entityManager;
+    private EntityManager entityManager;
 
     @Override
     @Modifying

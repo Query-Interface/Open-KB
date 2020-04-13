@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AppThunk } from '../../app/store';
-import { BoardDetails, getBoard } from '../../api/openkbApi';
+import { AppThunk } from 'App/store';
+import { BoardDetails, getBoard } from 'Api/openkbApi';
 
 interface BoardDetailsState {
   boardsById: Record<string, BoardDetails>;

@@ -4,7 +4,7 @@ import { ProjectOutlined } from '@ant-design/icons';
 const { SubMenu } = Menu;
 
 export interface MenuProps {
-    id: number;
+    id: string;
     icon?: string;
     title: string;
 }
@@ -14,7 +14,7 @@ export interface SiderMenuProps {
     icon?: string;
     title: string;
     menuEntries: Array<MenuProps>;
-    selected?: number;
+    selected?: string;
 }
 
 export class SiderSubMenu extends React.Component<SiderMenuProps, {}> {
@@ -24,13 +24,13 @@ export class SiderSubMenu extends React.Component<SiderMenuProps, {}> {
     }
 
     render(): JSX.Element {
-        const selectedKey = [this.props.selected?.toString()??""];
-        return <Menu theme="dark" selectedKeys={selectedKey} defaultOpenKeys={[this.props.id]} mode="inline">
+        const selectedKey = [this.props.selected?.toString()??''];
+        return <Menu theme="dark" selectedKeys={selectedKey} defaultOpenKeys={[this.props.id]} mode='inline'>
             <SubMenu key={this.props.id}
                 title={<span>{this.getIcon(this.props.icon)}<span>{this.props.title}</span></span>} >
                 {this.props.menuEntries.map(function(item) {
                     return <Menu.Item key={item.id} >
-                    {item.title}
+                        {item.title}
                     </Menu.Item>
                     })
                 }

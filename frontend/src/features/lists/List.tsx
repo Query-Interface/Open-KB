@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../app/rootReducer';
-import { Card } from '../card/Card';
-import { List as ModelList, Card as ModelCard } from '../../api/openkbApi';
+import { RootState } from 'App/rootReducer';
+import { Card } from 'Features/card/Card';
+import { List as ModelList, Card as ModelCard } from 'Api/openkbApi';
 import { fetchList, createCard } from './listSlice';
 import { Draggable, DraggableProvided, Droppable, DroppableProvided } from 'react-beautiful-dnd';
 import { EllipsisOutlined, PlusOutlined, SmallDashOutlined } from '@ant-design/icons';

@@ -12,7 +12,7 @@ import java.util.UUID;
 @RequestMapping("/api")
 public class CardController {
 
-    final CardRepository cardRepository;
+    private final CardRepository cardRepository;
 
     @Autowired
     public CardController(final CardRepository cardRepo) {

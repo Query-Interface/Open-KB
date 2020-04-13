@@ -1,9 +1,9 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { displayEditCardPanel } from '../editPanel/editPanelSlice';
-import { RootState } from '../../app/rootReducer';
+import { displayEditCardPanel } from 'Features/editPanel/editPanelSlice';
+import { RootState } from 'App/rootReducer';
 import { EditOutlined } from '@ant-design/icons';
-import { Card as ModelCard } from '../../api/openkbApi';
+import { Card as ModelCard } from 'Api/openkbApi';
 import { Draggable, DraggableProvided } from 'react-beautiful-dnd';
 import './style.css';
 

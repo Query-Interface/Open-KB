@@ -33,11 +33,19 @@ module.exports = (env) => {
       ]
     },
     resolve: {
-      extensions: [ '.tsx', '.ts', '.js' ]
+      extensions: [ '.tsx', '.ts', '.js' ],
+      alias: {
+        App: path.resolve(__dirname, 'src/app/'),
+        Api: path.resolve(__dirname, 'src/api/'),
+        Components: path.resolve(__dirname, 'src/components/'),
+        Features: path.resolve(__dirname, 'src/features/'),
+        Pages: path.resolve(__dirname, 'src/pages/'),
+      }
     },
     output: {
       path: path.resolve(__dirname, 'dist'),
       filename: '[name].[hash].js',
+      publicPath: '/',
     },
     optimization: {
       runtimeChunk: 'single',
@@ -67,7 +75,8 @@ module.exports = (env) => {
         "Access-Control-Max-Age": "3600"
       },
       port: 11080,
-      overlay: true
+      overlay: true,
+      historyApiFallback: true,
     },
     plugins
   };

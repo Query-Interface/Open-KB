@@ -1,0 +1,44 @@
+.home-board-container {
+    width: 80%;
+    margin: 0 auto;
+    padding-top: 50px;
+}
+.home-board-container a:hover {
+    color: rgba(0, 0, 0, 0.7);
+}
+.home-board-list {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.home-board-list > li {
+    width: 20%;
+    margin: 0 4px 4px 4px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.home-board-list > li:hover {
+    opacity: 0.8;
+}
+.home-board-item {
+    display: block;
+    background-color: #d9d9d9;
+    
+    color: rgba(0, 0, 0, 0.7);
+    font-weight: bold;
+    height: 80px; 
+}
+.home-board-item-text {
+    max-height: 40px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 4px;
+}
+.home-board-item-add {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+    height: inherit;
+    width: inherit;
+}
