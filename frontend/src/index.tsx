@@ -7,12 +7,12 @@ import App from './app/App';
 import './App.css';
 
 const render = (): void => {
-    ReactDOM.render(
-        <Provider store={store}>
-            <App />
-        </Provider>,
-        document.getElementById('container')
-    )
-}
+  ReactDOM.render(
+    <Provider store={store}>
+      <App />
+    </Provider>,
+    document.getElementById('container'),
+  );
+};
 
 render();

@@ -1,6 +1,6 @@
 export enum Content {
-    None,
-    EditCard,
-    EditList,
-    EditBoard
+  None,
+  EditCard,
+  EditList,
+  EditBoard,
 }

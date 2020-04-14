@@ -11,8 +11,8 @@ interface BoardDetailsState {
 const initialState: BoardDetailsState = {
   boardsById: {},
   isLoading: false,
-  error: null
-}
+  error: null,
+};
 
 const boardDetails = createSlice({
   name: 'boardDetails',
@@ -23,7 +23,7 @@ const boardDetails = createSlice({
       state.error = null;
     },
     getBoardDetailsSuccess(state, action: PayloadAction<BoardDetails>): void {
-      const {id} = action.payload;
+      const { id } = action.payload;
       state.boardsById[id] = action.payload;
       state.isLoading = false;
       state.error = null;
@@ -31,15 +31,11 @@ const boardDetails = createSlice({
     getBoardDetailsFailed(state, action: PayloadAction<string>): void {
       state.isLoading = false;
       state.error = action.payload;
-    }
-  }
+    },
+  },
 });
 
-export const {
-  getBoardDetailStart,
-  getBoardDetailsSuccess,
-  getBoardDetailsFailed,
-} = boardDetails.actions;
+export const { getBoardDetailStart, getBoardDetailsSuccess, getBoardDetailsFailed } = boardDetails.actions;
 
 export default boardDetails.reducer;
 
