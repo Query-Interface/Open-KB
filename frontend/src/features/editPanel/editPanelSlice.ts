@@ -63,6 +63,7 @@ export const editCardTitle = (card: Card, title: string): AppThunk => async (dis
   // TODO : add wait panel
   // update card state when finalize to trigger a redraw
   dispatch(editCardSuccess(newCard));
+  dispatch(setSelectedCard(newCard));
 };
 
 export const editCardDescription = (card: Card, desc: string): AppThunk => async (dispatch): Promise<void> => {
@@ -71,4 +72,5 @@ export const editCardDescription = (card: Card, desc: string): AppThunk => async
   // TODO : add wait panel
   // update card state when finalize to trigger a redraw
   dispatch(editCardSuccess(newCard));
+  dispatch(setSelectedCard(newCard));
 };

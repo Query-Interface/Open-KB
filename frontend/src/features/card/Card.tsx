@@ -29,13 +29,13 @@ export const Card: React.FC<CardProps> = ({ card, index }: CardProps) => {
           ref={provided.innerRef}
           {...provided.draggableProps}
         >
-          <div {...provided.dragHandleProps}>{card.title}</div>
-          <div style={{ position: 'relative' }}>
-            <div className="btn btn-card-edit" onClick={(event): void => onEditCard(event)}>
-              <span>
-                <EditOutlined />
-              </span>
-            </div>
+          <div {...provided.dragHandleProps}>
+            <div className="card-title">{card.title}</div>
+          </div>
+          <div className="btn btn-card-edit" onClick={(event): void => onEditCard(event)}>
+            <span>
+              <EditOutlined />
+            </span>
           </div>
         </div>
       )}

@@ -119,16 +119,10 @@
 .btn:hover {
     background-color: rgba(0, 0, 0, 0.32);
 }
-.btn-list-menu, .btn-list-add, .btn-card-edit {
+.btn-list-menu, .btn-list-add {
     position: absolute;
     top: 4px;
     right: 4px;
-}
-.btn-card-edit {
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    bottom: 4px;
 }
 .btn-list-add {
     right: 38px;
@@ -139,7 +133,7 @@
     margin: 0 4px;
     padding: 0 4px;
     min-height: 32px;
-    padding-bottom: 24px;
+    padding-bottom: 40px;
 }
 .list-footer {
     display: block;

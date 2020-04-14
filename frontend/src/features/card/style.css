@@ -2,11 +2,25 @@
     --card-bg-color: white;
     overflow: hidden;
     padding: 4px;
-    min-height: 60px;
+    min-height: 80px;
     background-color: var(--card-bg-color);
     margin-bottom: 4px;
     border-left: 2px solid var(--card-bg-color);
+    position: relative;
 }
 .card-selected {
     border-left: 2px solid var(--accent-color);
+}
+.btn-card-edit {
+    position: absolute;
+    right: 4px;
+    bottom: 4px;
+}
+.card-title {
+    max-height: 42px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -moz-box-orient: vertical;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
 }
