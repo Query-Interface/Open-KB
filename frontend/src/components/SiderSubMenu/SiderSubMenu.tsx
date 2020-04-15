@@ -1,7 +1,9 @@
-import * as React from 'react';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import { Menu } from 'antd';
-import { ProjectOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
 const { SubMenu } = Menu;
+import { setCurrentBoard } from 'Features/appSlice';
 
 export interface MenuProps {
   id: string;
@@ -17,41 +19,27 @@ export interface SiderMenuProps {
   selected?: string;
 }
 
-export class SiderSubMenu extends React.Component<SiderMenuProps, {}> {
-  constructor(props: SiderMenuProps) {
-    super(props);
-  }
+export const SiderSubMenu: React.FC<SiderMenuProps> = ({ id, title, menuEntries, selected }: SiderMenuProps) => {
+  const dispatch = useDispatch();
+  const selectedKey = [selected?.toString() ?? ''];
 
-  render(): JSX.Element {
-    const selectedKey = [this.props.selected?.toString() ?? ''];
-    return (
-      <Menu theme="dark" selectedKeys={selectedKey} defaultOpenKeys={[this.props.id]} mode="inline">
-        <SubMenu
-          key={this.props.id}
-          title={
-            <span>
-              {this.getIcon(this.props.icon)}
-              <span>{this.props.title}</span>
-            </span>
-          }
-        >
-          {this.props.menuEntries.map(function (item) {
-            return <Menu.Item key={item.id}>{item.title}</Menu.Item>;
-          })}
-        </SubMenu>
-      </Menu>
-    );
-  }
+  const selectBoard = (id: string): void => {
+    dispatch(setCurrentBoard(id));
+  };
 
-  private getIcon(name?: string): React.ReactElement | null {
-    if (name) {
-      switch (name) {
-        case 'project':
-          return <ProjectOutlined />;
-        default:
-          return null;
-      }
-    }
-    return null;
-  }
-}
+  return (
+    <Menu theme="dark" selectedKeys={selectedKey} defaultOpenKeys={[id]} mode="inline">
+      <SubMenu key={id} title={<span>{title}</span>}>
+        {menuEntries.map(function (item) {
+          return (
+            <Menu.Item key={item.id}>
+              <Link to={`/boards/${item.id}`} onClick={(): void => selectBoard(item.id)}>
+                {item.title}
+              </Link>
+            </Menu.Item>
+          );
+        })}
+      </SubMenu>
+    </Menu>
+  );
+};

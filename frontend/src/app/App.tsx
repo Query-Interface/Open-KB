@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from './rootReducer';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
 import { Layout, Menu } from 'antd';
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import { SiderSubMenu } from 'Components/SiderSubMenu/SiderSubMenu';
@@ -36,42 +36,44 @@ const App: React.FC = () => {
   };
 
   return (
-    <Layout style={{ minHeight: '100vh' }}>
-      <Sider collapsible collapsed={collapsed} trigger={null}>
-        <div className="logo">{PRODUCT_NAME}</div>
-        <SiderSubMenu
-          id="subBoards"
-          title="Boards"
-          icon="project"
-          menuEntries={boards}
-          selected={boardSelected ?? undefined}
-        />
-      </Sider>
-      <Layout>
-        <Header style={{ background: '#fff', padding: 0 }}>
-          <div>
-            {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-              className: 'trigger',
-              onClick: toggleMenu,
-            })}
-            <Menu
-              theme="light"
-              mode="horizontal"
-              defaultSelectedKeys={['2']}
-              style={{ lineHeight: '64px' }}
-              className="right"
-            >
-              <Menu.Item key="1">nav 1</Menu.Item>
-              <Menu.Item key="2">nav 2</Menu.Item>
-              <Menu.Item key="3" onClick={toggleRightPane}>
-                nav 3
-              </Menu.Item>
-            </Menu>
+    <Router>
+      <Layout style={{ minHeight: '100vh' }}>
+        <Sider collapsible collapsed={collapsed} trigger={null}>
+          <div className="logo">
+            <Link to="/">{PRODUCT_NAME}</Link>
           </div>
-        </Header>
+          <SiderSubMenu
+            id="subBoards"
+            title="Boards"
+            icon="project"
+            menuEntries={boards}
+            selected={boardSelected ?? undefined}
+          />
+        </Sider>
         <Layout>
-          <Content style={{ marginTop: '24px', background: '#fff', minHeight: 280, position: 'relative' }}>
-            <Router>
+          <Header style={{ background: '#fff', padding: 0 }}>
+            <div>
+              {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+                className: 'trigger',
+                onClick: toggleMenu,
+              })}
+              <Menu
+                theme="light"
+                mode="horizontal"
+                defaultSelectedKeys={['2']}
+                style={{ lineHeight: '64px' }}
+                className="right"
+              >
+                <Menu.Item key="1">nav 1</Menu.Item>
+                <Menu.Item key="2">nav 2</Menu.Item>
+                <Menu.Item key="3" onClick={toggleRightPane}>
+                  nav 3
+                </Menu.Item>
+              </Menu>
+            </div>
+          </Header>
+          <Layout>
+            <Content style={{ marginTop: '24px', background: '#fff', minHeight: 280, position: 'relative' }}>
               <Switch>
                 <Route exact path="/">
                   <HomePage />
@@ -80,12 +82,12 @@ const App: React.FC = () => {
                   <BoardPage />
                 </Route>
               </Switch>
-            </Router>
-          </Content>
-          <EditPanel />
+            </Content>
+            <EditPanel />
+          </Layout>
         </Layout>
       </Layout>
-    </Layout>
+    </Router>
   );
   /*<Footer style={{ textAlign: 'center' }}>
         {PRODUCT_NAME} ©2020 Created by Query-Interface

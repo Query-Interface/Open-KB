@@ -20,6 +20,10 @@
     text-transform: uppercase;
     font-weight: bold;
 }
+.logo > a {
+    text-decoration: none;
+    color: white;
+}
 .trigger {
     font-size: 18px;
     line-height: 64px;
