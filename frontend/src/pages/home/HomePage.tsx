@@ -43,7 +43,7 @@ const HomePage: React.FC = () => {
   }
 };
 
-const BoardButton: React.FC<BoardDetails> = ({ id, title }: BoardDetails) => {
+const BoardButton: React.FC<BoardDetails> = ({ id, title, description }: BoardDetails) => {
   const dispatch = useDispatch();
   const selectBoard = (event: React.MouseEvent, id: string): void => {
     dispatch(setCurrentBoard(id));
@@ -54,6 +54,7 @@ const BoardButton: React.FC<BoardDetails> = ({ id, title }: BoardDetails) => {
     <li onClick={(event): void => selectBoard(event, id)}>
       <Link to={`/boards/${id}`} className="home-board-item">
         <div className="home-board-item-text">{title}</div>
+        {description ? <div className="home-board-item-desc">{description}</div>:""}
       </Link>
     </li>
   );
