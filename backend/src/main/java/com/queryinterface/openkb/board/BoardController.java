@@ -6,7 +6,6 @@ import com.queryinterface.openkb.list.MoveListAction;
 import com.queryinterface.openkb.card.MoveCardAction;
 import com.queryinterface.openkb.card.CardRepository;
 import com.queryinterface.openkb.list.ListRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +20,6 @@ public class BoardController {
     private final ListRepository listRepository;
     private final CardRepository cardRepository;
 
-    @Autowired
     public BoardController(final BoardRepository boardRepo, final ListRepository listRepo, final CardRepository cardRepo) {
         this.boardRepository = boardRepo;
         this.listRepository = listRepo;
@@ -70,7 +68,11 @@ public class BoardController {
 
     @RequestMapping(method = RequestMethod.PUT, path = "/boards/{boardId}/lists/swapper")
     public ResponseEntity swapLists(final @PathVariable String boardId, final @RequestBody MoveListAction moveListAction) {
-        listRepository.updateIndexOfList(UUID.fromString(boardId), UUID.fromString(moveListAction.getList()), moveListAction.getFrom(), moveListAction.getTo());
+        listRepository.updateIndexOfList(
+                UUID.fromString(boardId),
+                UUID.fromString(moveListAction.getList()),
+                moveListAction.getFrom(),
+                moveListAction.getTo());
         return ResponseEntity.ok().build();
     }
 

@@ -1,0 +1,3 @@
+[
+  ["org.hibernate.query.spi.NativeQueryImplementor", "org.hibernate.query.spi.QueryImplementor"]
+]

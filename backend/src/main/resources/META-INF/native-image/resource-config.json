@@ -1,0 +1,6 @@
+{
+  "resources":[
+    {"pattern":"org/hsqldb/resources/information-schema.sql"},
+    {"pattern":"org/hsqldb/resources/lob-schema.sql"}
+  ]
+}

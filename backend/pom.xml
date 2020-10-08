@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.2.5.RELEASE</version>
+		<version>2.4.0-M3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.queryinterface</groupId>
@@ -16,6 +16,9 @@
 
 	<properties>
 		<java.version>11</java.version>
+		<start-class>com.queryinterface.openkb.OpenKbApplication</start-class>
+		<graalvm.version>20.2.0</graalvm.version>
+		<spring.graalvm.version>0.8.2-SNAPSHOT</spring.graalvm.version>
 	</properties>
 
 	<dependencies>
@@ -26,6 +29,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.tomcat.embed</groupId>
+					<artifactId>tomcat-embed-websocket</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -39,12 +48,13 @@
 			<scope>test</scope>
 		</dependency>
 		
-		<dependency>
+		<!--<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
+		-->
 	</dependencies>
 	<profiles>
 		<profile>
@@ -78,6 +88,100 @@
 				</dependency>
 			</dependencies>
 		</profile>
+		<profile>
+			<id>native</id>
+			<dependencies>
+				<dependency>
+					<groupId>org.hsqldb</groupId>
+					<artifactId>hsqldb</artifactId>
+					<version>2.5.0</version>
+					<scope>runtime</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-data-jpa</artifactId>
+					<exclusions>
+						<exclusion>
+							<groupId>net.bytebuddy</groupId>
+							<artifactId>byte-buddy</artifactId>
+						</exclusion>
+						<exclusion>
+							<groupId>org.javassist</groupId>
+							<artifactId>javassist</artifactId>
+						</exclusion>
+					</exclusions>
+				</dependency>
+
+				<dependency>
+					<groupId>org.springframework.experimental</groupId>
+					<artifactId>spring-graalvm-native</artifactId>
+					<version>${spring.graalvm.version}</version>
+				</dependency>
+
+				<dependency>
+				  <groupId>org.springframework</groupId>
+				  <artifactId>spring-context-indexer</artifactId>
+				</dependency>
+			</dependencies>
+			<build>
+				<resources>
+					<resource>
+						<directory>src/main/resources</directory>
+					</resource>
+					<resource>
+						<directory>src/main/config/native</directory>
+					</resource>
+				</resources>
+			  <plugins>
+				<plugin>
+					<groupId>org.hibernate.orm.tooling</groupId>
+					<artifactId>hibernate-enhance-maven-plugin</artifactId>
+					<version>${hibernate.version}</version>
+					<executions>
+						<execution>
+							<configuration>
+								<failOnError>true</failOnError>
+								<enableLazyInitialization>true</enableLazyInitialization>
+								<enableDirtyTracking>true</enableDirtyTracking>
+								<enableAssociationManagement>true</enableAssociationManagement>
+								<enableExtendedEnhancement>false</enableExtendedEnhancement>
+							</configuration>
+							<goals>
+								<goal>enhance</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.graalvm.nativeimage</groupId>
+					<artifactId>native-image-maven-plugin</artifactId>
+					<version>${graalvm.version}</version>
+					<configuration>
+						<buildArgs>
+						-H:IncludeResourceBundles=org.hsqldb.resources.sql-state-messages						
+						-Dspring.graal.remove-yaml-support=true
+						-Dspring.spel.ignore=true
+						-Dspring.graal.remove-unused-autoconfig=true
+						-Dspring.native.verbose=true
+						-Dspring.native.dump-config=dump.txt
+						</buildArgs>
+					</configuration>
+					<executions>
+						<execution>
+							<goals>
+								<goal>native-image</goal>
+							</goals>
+							<phase>package</phase>
+						</execution>
+					</executions>
+					</plugin>
+				<plugin>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+				</plugin>
+			  </plugins>
+			</build>
+	  </profile>
 	</profiles>
 
 	<build>
@@ -89,4 +193,56 @@
 		</plugins>
 	</build>
 
+	<repositories>
+		<repository>
+			<id>spring-release</id>
+			<name>Spring release</name>
+			<url>https://repo.spring.io/release</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>spring-snapshot</id>
+			<name>Spring Snapshots</name>
+			<url>https://repo.spring.io/snapshot</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>spring-milestone</id>
+			<name>Spring Milestone</name>
+			<url>https://repo.spring.io/milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>spring-release</id>
+			<name>Spring release</name>
+			<url>https://repo.spring.io/release</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+		<pluginRepository>
+			<id>spring-snapshot</id>
+			<name>Spring Snapshots</name>
+			<url>https://repo.spring.io/snapshot</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+		<pluginRepository>
+			<id>spring-milestone</id>
+			<name>Spring Milestone</name>
+			<url>https://repo.spring.io/milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+	  </pluginRepositories>
 </project>

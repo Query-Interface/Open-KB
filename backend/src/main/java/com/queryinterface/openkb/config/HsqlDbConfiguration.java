@@ -9,16 +9,16 @@ import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
 import javax.sql.DataSource;
+import java.util.Properties;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @Profile("dbHsql")
 public class HsqlDbConfiguration {
     @Bean
     public DataSource getDataSource() {
         DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();
         dataSourceBuilder.driverClassName("org.hsqldb.jdbc.JDBCDriver");
-        dataSourceBuilder.url(getSystemProperty("DB_URI",
-                "jdbc:hsqldb:file:" + getSystemProperty("DB_FILE_PATH", "openkb")));
+        dataSourceBuilder.url(getSystemProperty("DB_URI", "jdbc:hsqldb:file:" + getSystemProperty("DB_FILE_PATH", "openkb.dat")));
         dataSourceBuilder.username(getSystemProperty("DB_USER", "hsqldb"));
         dataSourceBuilder.password(getSystemProperty("DB_PASSWORD","Password1"));
         DataSource dataSource = dataSourceBuilder.build();
@@ -36,13 +36,20 @@ public class HsqlDbConfiguration {
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
-         adapter.setGenerateDdl(true);
+        adapter.setGenerateDdl(false);
         adapter.setDatabase(Database.HSQL);
 
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(adapter);
         factory.setPackagesToScan("com.queryinterface.openkb");
         factory.setDataSource(getDataSource());
+        /*Properties jpaProperties = new Properties();
+        jpaProperties.put("hibernate.bytecode.provider", "none");
+        jpaProperties.put("spring.datasource.initialization-mode", "always");
+        jpaProperties.put("spring.datasource.schema", "classpath*:db/schema.sql");
+        jpaProperties.put("spring.jpa.hibernate.ddl-auto", "none");
+        jpaProperties.put("spring.jpa.open-in-view", "false");
+        factory.setJpaProperties(jpaProperties);*/
         return factory;
     }
 }

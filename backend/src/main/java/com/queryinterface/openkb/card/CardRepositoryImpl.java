@@ -1,23 +1,23 @@
 package com.queryinterface.openkb.card;
 
 import com.queryinterface.openkb.list.List;
-import org.springframework.stereotype.Repository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
-import javax.transaction.Transactional;
 import java.util.UUID;
 
-@Repository
-@Transactional
-public class CardRepositoryCustomImpl implements CardRepositoryCustom {
+@Component
+public class CardRepositoryImpl implements CardRepositoryCustom {
 
-    @PersistenceContext
-    private EntityManager entityManager;
+    @Autowired
+    private EntityManagerFactory entityManagerFactory;
 
     @Override
     public void updateIndexOfCardInList(UUID listId, UUID cardId, int startIndex, int endIndex) {
+        final EntityManager entityManager = entityManagerFactory.createEntityManager();
         Query query;
         // updates indexes
         if (startIndex > endIndex) {
@@ -30,16 +30,22 @@ public class CardRepositoryCustomImpl implements CardRepositoryCustom {
             query.setParameter(3, endIndex);
         }
         query.setParameter(1, listId);
+
+        entityManager.getTransaction().begin();
         query.executeUpdate();
         // set new index of moved list
 
         Card toUpdate = entityManager.getReference(Card.class, cardId);
         toUpdate.setIndex(endIndex);
         entityManager.merge(toUpdate);
+        entityManager.getTransaction().commit();
+        entityManager.close();
     }
 
     @Override
     public void updateIndexAndMoveCard(final UUID fromListId, final UUID toListId, UUID cardId, final int startIndex, final int endIndex) {
+        final EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
         // update destination list
         Query updateDestinationQuery = entityManager.createNativeQuery("UPDATE card SET index = index+1 WHERE list_id = ? AND index >= ?");
         updateDestinationQuery.setParameter(1, toListId);
@@ -58,13 +64,20 @@ public class CardRepositoryCustomImpl implements CardRepositoryCustom {
         toUpdate.setList(newParentList);
         toUpdate.setIndex(endIndex);
         entityManager.merge(toUpdate);
+        entityManager.getTransaction().commit();
+        entityManager.close();
     }
 
     @Override
     public void updateIndexesAfterDelete(final UUID listId, final int startIndex) {
+        final EntityManager entityManager = entityManagerFactory.createEntityManager();
         Query query = entityManager.createNativeQuery("UPDATE card SET index = index-1 WHERE list_id = ? AND index > ?");
         query.setParameter(1, listId);
         query.setParameter(2, startIndex);
+
+        entityManager.getTransaction().begin();
         query.executeUpdate();
+        entityManager.getTransaction().commit();
+        entityManager.close();
     }
 }

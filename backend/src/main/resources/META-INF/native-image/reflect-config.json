@@ -1,0 +1,43 @@
+[
+	{
+	 "name":"org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl",
+	 "allDeclaredConstructors":true,
+	 "allDeclaredMethods":true
+	},
+	{
+	 "name": "org.hibernate.dialect.HSQLDialect",
+	 "allDeclaredFields": true,
+	 "allDeclaredConstructors": true,
+	 "allDeclaredMethods": true
+	},
+	{
+	 "name": "org.hsqldb.dbinfo.DatabaseInformationFull",
+	 "allDeclaredFields": true,
+	 "allDeclaredConstructors": true,
+	 "allDeclaredMethods": true
+	},
+	{
+	 "name": "org.apache.logging.log4j.Level",
+	 "allDeclaredFields": true,
+	 "allDeclaredConstructors": true,
+	 "allDeclaredMethods": true
+	},
+	{
+	 "name": "com.queryinterface.openkb.list.MoveListAction",
+	 "allDeclaredFields": true,
+	 "allDeclaredConstructors": true,
+	 "allDeclaredMethods": true
+	},
+	{
+	 "name": "com.queryinterface.openkb.card.MoveCardAction",
+	 "allDeclaredFields": true,
+	 "allDeclaredConstructors": true,
+	 "allDeclaredMethods": true
+	},
+	{
+	 "name": "java.util.concurrent.CopyOnWriteArrayList",
+	 "fields" : [
+	 	{ "name" : "lock", "allowWrite" : true }
+	 ]
+	}
+]
