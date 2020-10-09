@@ -1,0 +1,50 @@
+# Maven
+# Build your Java project and run tests with Apache Maven.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/java
+
+schedules:
+- cron: "0 0 * * *"
+  displayName: Daily midnight build
+  branches:
+    include:
+    - master
+
+strategy:
+  matrix:
+    linux:
+      imageName: 'ubuntu-20.04'
+    windows:
+      imageName: 'vs2017-win2016'
+
+pool:
+  vmImage: $(imageName)
+
+steps:
+- task: Bash@3 |
+    curl -s "https://get.sdkman.io" | bash
+    source "$HOME/.sdkman/bin/sdkman-init.sh"
+    sdk install java 20.2.0.r11-grl
+    gu install native-image
+    export JAVA_HOME=~/.sdkman/candidates/java/current
+    export GRAALVM_HOME=~/.sdkman/candidates/java/current
+    java -version
+  displayName: install graalvm on Linux
+  condition: eq( variables['Agent.OS'], 'Linux' )
+
+- task: PowerShell@2
+  displayName: install graalvm on windows
+  condition: eq( variables['Agent.OS'], 'Windows_NT' )
+
+- task: Maven@3
+  displayName: compile application with Maven
+  inputs:
+    mavenPomFile: 'backend/pom.xml'
+    mavenOptions: '-Xmx3072m'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.8'
+    jdkArchitectureOption: 'x64'
+    publishJUnitResults: true
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    goals: 'package'
+    options: '-Pnative -Dspring.profiles.active=dbHsql -DskipTests'
