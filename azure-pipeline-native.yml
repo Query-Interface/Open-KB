@@ -22,6 +22,8 @@ pool:
 
 steps:
 - task: Bash@3
+  displayName: install graalvm on Linux
+  condition: eq( variables['Agent.OS'], 'Linux' )
   inputs:
     targetType: 'inline'
     script: |
@@ -32,8 +34,6 @@ steps:
       export JAVA_HOME=~/.sdkman/candidates/java/current
       export GRAALVM_HOME=~/.sdkman/candidates/java/current
       java -version
-  displayName: install graalvm on Linux
-  condition: eq( variables['Agent.OS'], 'Linux' )
 
 - task: PowerShell@2
   displayName: install graalvm on windows
@@ -50,10 +50,10 @@ steps:
   inputs:
     mavenPomFile: 'backend/pom.xml'
     mavenOptions: '-Xmx3072m'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.8'
     jdkArchitectureOption: 'x64'
-    publishJUnitResults: true
+    publishJUnitResults: false
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    javaHomeOption: 'Path'
+    jdkDirectory: '~/.sdkman/candidates/java/current'
     goals: 'package'
     options: '-Pnative -Dspring.profiles.active=dbHsql -DskipTests'
