@@ -47,6 +47,7 @@ steps:
 
 - task: Maven@3
   displayName: compile application with Maven
+  condition: eq( variables['Agent.OS'], 'Linux' )
   inputs:
     mavenPomFile: 'backend/pom.xml'
     mavenOptions: '-Xmx3072m'
@@ -54,6 +55,6 @@ steps:
     publishJUnitResults: false
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     javaHomeOption: 'Path'
-    jdkDirectory: '~/.sdkman/candidates/java/current'
+    jdkDirectory: '/home/vsts/.sdkman/candidates/java/current'
     goals: 'package'
     options: '-Pnative -Dspring.profiles.active=dbHsql -DskipTests'
