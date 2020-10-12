@@ -13,9 +13,9 @@ schedules:
 strategy:
   matrix:
     linux:
-      imageName: 'ubuntu-20.04'
+      imageName: 'ubuntu-latest'
     windows:
-      imageName: 'vs2017-win2016'
+      imageName: 'windows-2019'
 
 pool:
   vmImage: $(imageName)
@@ -41,12 +41,15 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      # Write your PowerShell commands here.
-      
-      Write-Host "Hello World"
+      # Download from github
+      Invoke-WebRequest -Uri https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-20.2.0/graalvm-ce-java11-windows-amd64-20.2.0.zip -OutFile graalvm.zip
+      Expand-Archive -path 'graalvm.zip' -destinationpath '.'
+      # Install native-image binary
+      graalvm-ce-java11-20.2.0\bin\gu.cmd install native-image
+
 
 - task: Maven@3
-  displayName: compile application with Maven
+  displayName: (Linux) Compile application with Maven
   condition: eq( variables['Agent.OS'], 'Linux' )
   inputs:
     mavenPomFile: 'backend/pom.xml'
@@ -58,3 +61,14 @@ steps:
     jdkDirectory: '/home/vsts/.sdkman/candidates/java/current'
     goals: 'package'
     options: '-Pnative -Dspring.profiles.active=dbHsql -DskipTests'
+
+- task: PowerShell@2
+  displayName: (windows) Compile application on Windows
+  condition: eq( variables['Agent.OS'], 'Windows_NT' )
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Install path for VC tools 2019, see https://github.com/actions/virtual-environments/blob/main/images/win/Windows2019-Readme.md
+      # cd "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build"
+      $env:JAVA_HOME=./graalvm-ce-java11-20.2.0
+      call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat" ./backend/mvnw.cmd package -PNative "-Dspring.profiles.active=dbHsql"
