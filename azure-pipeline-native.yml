@@ -1,7 +1,4 @@
-# Maven
-# Build your Java project and run tests with Apache Maven.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/java
+# Nightly pipeline, used to compile a spring boot app to a native binary leveraging GraalVM substrateVM
 
 schedules:
 - cron: "0 0 * * *"
@@ -10,66 +7,77 @@ schedules:
     include:
     - master
 
-strategy:
-  matrix:
-    linux:
-      imageName: 'ubuntu-latest'
-    windows:
-      imageName: 'windows-2019'
-
-pool:
-  vmImage: $(imageName)
-
-steps:
-- task: Bash@3
-  displayName: install graalvm on Linux
-  condition: eq( variables['Agent.OS'], 'Linux' )
-  inputs:
-    targetType: 'inline'
-    script: |
-      curl -s "https://get.sdkman.io" | bash
-      source "$HOME/.sdkman/bin/sdkman-init.sh"
-      sdk install java 20.2.0.r11-grl
-      gu install native-image
-      export JAVA_HOME=~/.sdkman/candidates/java/current
-      export GRAALVM_HOME=~/.sdkman/candidates/java/current
-      java -version
-
-- task: PowerShell@2
-  displayName: install graalvm on windows
-  condition: eq( variables['Agent.OS'], 'Windows_NT' )
-  inputs:
-    targetType: 'inline'
-    script: |
-      # Download from github
-      $webClient = New-Object System.Net.WebClient
-      $webClient.DownloadFile("https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-20.2.0/graalvm-ce-java11-windows-amd64-20.2.0.zip", "graalvm.zip")
-      Expand-Archive -path 'graalvm.zip' -destinationpath '$(Agent.BuildDirectory)'
-      # Install native-image binary
-      $(Agent.BuildDirectory)\graalvm-ce-java11-20.2.0\bin\gu.cmd install native-image
-
-
-- task: Maven@3
-  displayName: (Linux) Compile application with Maven
-  condition: eq( variables['Agent.OS'], 'Linux' )
-  inputs:
-    mavenPomFile: 'backend/pom.xml'
-    mavenOptions: '-Xmx3072m'
-    jdkArchitectureOption: 'x64'
-    publishJUnitResults: false
-    testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    javaHomeOption: 'Path'
-    jdkDirectory: '/home/vsts/.sdkman/candidates/java/current'
-    goals: 'package'
-    options: '-Pnative -Dspring.profiles.active=dbHsql -DskipTests'
-
-- task: PowerShell@2
-  displayName: (windows) Compile application on Windows
-  condition: eq( variables['Agent.OS'], 'Windows_NT' )
-  inputs:
-    targetType: 'inline'
-    script: |
-      # Install path for VC tools 2019, see https://github.com/actions/virtual-environments/blob/main/images/win/Windows2019-Readme.md
-      # cd "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build"
-      $env:JAVA_HOME="$(Agent.BuildDirectory)\graalvm-ce-java11-20.2.0"
-      call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat" ./backend/mvnw.cmd package -PNative "-Dspring.profiles.active=dbHsql"
+jobs:
+- job: installGraalvmAndCompile
+  timeoutInMinutes: 100
+  strategy:
+    matrix:
+      linux:
+        imageName: 'ubuntu-latest'
+      windows:
+        imageName: 'windows-2019'
+  pool:
+    vmImage: $(imageName)
+  steps:
+  - task: Bash@3
+    displayName: install graalvm on Linux
+    condition: eq( variables['Agent.OS'], 'Linux' )
+    inputs:
+      targetType: 'inline'
+      script: |
+        curl -s "https://get.sdkman.io" | bash
+        source "$HOME/.sdkman/bin/sdkman-init.sh"
+        sdk install java 20.2.0.r11-grl
+        gu install native-image
+        export JAVA_HOME=~/.sdkman/candidates/java/current
+        export GRAALVM_HOME=~/.sdkman/candidates/java/current
+        java -version
+  - task: PowerShell@2
+    displayName: install graalvm on windows
+    condition: eq( variables['Agent.OS'], 'Windows_NT' )
+    inputs:
+      targetType: 'inline'
+      script: |
+        # Download from github
+        $webClient = New-Object System.Net.WebClient
+        $webClient.DownloadFile("https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-20.2.0/graalvm-ce-java11-windows-amd64-20.2.0.zip", "graalvm.zip")
+        Expand-Archive -path 'graalvm.zip' -destinationpath '$(Agent.BuildDirectory)'
+        # Install native-image binary
+        $(Agent.BuildDirectory)\graalvm-ce-java11-20.2.0\bin\gu.cmd install native-image
+  - task: Maven@3
+    displayName: (Linux) Compile application with Maven
+    condition: eq( variables['Agent.OS'], 'Linux' )
+    inputs:
+      mavenPomFile: 'backend/pom.xml'
+      mavenOptions: '-Xmx3072m'
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: false
+      testResultsFiles: '**/surefire-reports/TEST-*.xml'
+      javaHomeOption: 'Path'
+      jdkDirectory: '/home/vsts/.sdkman/candidates/java/current'
+      goals: 'package'
+      options: '-Pnative -Dspring.profiles.active=dbHsql -DskipTests'
+  - task: PowerShell@2
+    displayName: (windows) Compile application on Windows
+    condition: eq( variables['Agent.OS'], 'Windows_NT' )
+    inputs:
+      targetType: 'inline'
+      script: |
+        # Install path for VC tools 2019, see https://github.com/actions/virtual-environments/blob/main/images/win/Windows2019-Readme.md
+        # set JAVA_HOME and graal native executable path
+        $env:JAVA_HOME="$(Agent.BuildDirectory)\graalvm-ce-java11-20.2.0"
+        $env:Path += ";$(Agent.BuildDirectory)\graalvm-ce-java11-20.2.0\bin"
+        $env:MAVEN_OPTS="-Xmx3072m"
+        # set C++ required env variables for lib, includes,...
+        pushd 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build'    
+        cmd /c "vcvars64.bat&set" |
+        foreach {
+          if ($_ -match "=") {
+            $v = $_.split("="); set-item -force -path "ENV:\$($v[0])"  -value "$($v[1])"
+          }
+        }
+        popd
+        write-host "`nVisual Studio 2019 Command Prompt variables set." -ForegroundColor Yellow
+        #launch maven
+        cd $(Agent.BuildDirectory)\s\backend
+        .\mvnw.cmd package -Pnative "-Dspring.profiles.active=dbHsql"
