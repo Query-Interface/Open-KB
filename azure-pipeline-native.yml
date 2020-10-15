@@ -80,4 +80,4 @@ jobs:
         write-host "`nVisual Studio 2019 Command Prompt variables set." -ForegroundColor Yellow
         #launch maven
         cd $(Agent.BuildDirectory)\s\backend
-        .\mvnw.cmd package -Pnative "-Dspring.profiles.active=dbHsql"
+        .\mvnw.cmd package -Pnative "-Dspring.profiles.active=dbHsql" "-Dmaven.wagon.httpconnectionManager.ttlSeconds=200"
