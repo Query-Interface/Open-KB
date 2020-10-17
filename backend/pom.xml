@@ -3,22 +3,19 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.4.0-M3</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<groupId>com.queryinterface</groupId>
+		<artifactId>openkb</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+        <relativePath>..</relativePath>
 	</parent>
 	<groupId>com.queryinterface</groupId>
-	<artifactId>openkb</artifactId>
+	<artifactId>openkb-back</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>openkb</name>
-	<description>Demo project for Spring Boot</description>
+	<name>openkb-backend</name>
+	<description>OpenKB backend</description>
 
 	<properties>
-		<java.version>11</java.version>
 		<start-class>com.queryinterface.openkb.OpenKbApplication</start-class>
-		<graalvm.version>20.2.0</graalvm.version>
-		<spring.graalvm.version>0.8.2-SNAPSHOT</spring.graalvm.version>
 	</properties>
 
 	<dependencies>
@@ -192,57 +189,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<repositories>
-		<repository>
-			<id>spring-release</id>
-			<name>Spring release</name>
-			<url>https://repo.spring.io/release</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>spring-snapshot</id>
-			<name>Spring Snapshots</name>
-			<url>https://repo.spring.io/snapshot</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>spring-milestone</id>
-			<name>Spring Milestone</name>
-			<url>https://repo.spring.io/milestone</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>spring-release</id>
-			<name>Spring release</name>
-			<url>https://repo.spring.io/release</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</pluginRepository>
-		<pluginRepository>
-			<id>spring-snapshot</id>
-			<name>Spring Snapshots</name>
-			<url>https://repo.spring.io/snapshot</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</pluginRepository>
-		<pluginRepository>
-			<id>spring-milestone</id>
-			<name>Spring Milestone</name>
-			<url>https://repo.spring.io/milestone</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</pluginRepository>
-	  </pluginRepositories>
 </project>

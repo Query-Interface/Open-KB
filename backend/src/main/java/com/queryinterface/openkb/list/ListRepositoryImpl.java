@@ -14,6 +14,7 @@ public class ListRepositoryImpl implements ListRepositoryCustom {
 
     // This factory is used to workaround @Transactional issue.
     // Without @Transactional, the following exception is raised transaction is required : javax.persistence.TransactionRequiredException executing an update/delete query
+    // @Transactional not usable, since Proxy can only be created on Interface (see https://github.com/spring-projects-experimental/spring-graalvm-native/issues/197)
     // When using EntityManager provided by Spring to begin a transaction: java.lang.IllegalStateException: Not allowed to create transaction on shared EntityManager - use Spring transactions or EJB CMT instead
     @Autowired
     private EntityManagerFactory entityManagerFactory;

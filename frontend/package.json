@@ -7,6 +7,7 @@
   "scripts": {
     "start": "webpack-dev-server --env.BUILD_MODE=development",
     "build": "webpack --env.BUILD_MODE=production",
+    "clean": "rm -rf node_modules dist",
     "lint": "eslint . --ext .ts,.tsx --fix",
     "typeChecking": "tsc --noEmit"
   },
