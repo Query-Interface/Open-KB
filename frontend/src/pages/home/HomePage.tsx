@@ -1,10 +1,10 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'App/rootReducer';
-import { setCurrentBoard } from 'Features/appSlice';
+import { createBoard, setCurrentBoard } from 'Features/appSlice';
 import { displayEditBoardPanel } from 'Features/editPanel/editPanelSlice';
 import { BoardDetails } from 'Api/openkbApi';
-import { Empty } from 'antd';
+import { Button, Empty } from 'antd';
 import { Link } from 'react-router-dom';
 import { PlusOutlined } from '@ant-design/icons';
 import './style.css';
@@ -13,7 +13,8 @@ const HomePage: React.FC = () => {
   const dispatch = useDispatch();
   const boards = useSelector((state: RootState) => state.appDisplay.boards);
 
-  const createBoard = (event: React.MouseEvent): void => {
+  const onCreateBoard = (event: React.MouseEvent): void => {
+    dispatch(createBoard());
     dispatch(displayEditBoardPanel(null));
     event.preventDefault();
   };
@@ -28,7 +29,7 @@ const HomePage: React.FC = () => {
           <li
             className="home-board-item"
             onClick={(event: React.MouseEvent): void => {
-              createBoard(event);
+              onCreateBoard(event);
             }}
           >
             <div className="home-board-item-add">
@@ -39,7 +40,14 @@ const HomePage: React.FC = () => {
       </div>
     );
   } else {
-    return <Empty />;
+    return <Empty imageStyle={{
+                  paddingTop: "50px",
+                }}
+                description={
+                  <span>Hey! Why not creating your first board ?</span>
+                }>
+            <Button type="primary" onClick={(event: React.MouseEvent): void => onCreateBoard(event)}>Create Now</Button>
+      </Empty>;
   }
 };
 

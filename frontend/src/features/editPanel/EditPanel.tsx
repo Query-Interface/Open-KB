@@ -45,7 +45,8 @@ export const EditPanel: React.FC = () => {
         title = 'Edit card';
         break;
       case Content.EditBoard:
-        title = board ? 'Edit board' : 'Create a board';
+        //title = board ? 'Edit board' : 'Create a board';
+        title = 'Edit board';
         break;
       default:
         break;

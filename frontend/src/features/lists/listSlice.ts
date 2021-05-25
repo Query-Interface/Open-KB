@@ -10,6 +10,7 @@ import {
   updateCardIndexAndChangeList,
 } from 'Api/openkbApi';
 import { addListFailed } from './listsSlice';
+import { setSelectedCard } from '../editPanel/editPanelSlice';
 import { reorder } from './reorder';
 
 interface ListDetailsState {
@@ -144,6 +145,7 @@ export const createCard = (boardId: string, listId: string, card: Card): AppThun
     dispatch(addCardStart());
     const newCard = await addCard(listId, card);
     dispatch(addCardSuccess({ boardId, listId, card: newCard }));
+    dispatch(setSelectedCard(newCard));
   } catch (err) {
     dispatch(addListFailed(err));
   }

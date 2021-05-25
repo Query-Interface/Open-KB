@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BoardDetails, getBoards } from 'Api/openkbApi';
+import { addBoard, BoardDetails, getBoards } from 'Api/openkbApi';
 import { AppThunk } from 'App/store';
 
 interface CurrentDisplayState {
@@ -37,10 +37,21 @@ const appDisplaySlice = createSlice({
       state.error = action.payload;
       state.boards = [];
     },
+    addBoardStart(state): void {
+      state.error = null;
+    },
+    addBoardSuccess(state, action: PayloadAction<BoardDetails>): void {
+      state.boards.push(action.payload);
+      state.error = null;
+      state.boardId = action.payload.id;
+    },
+    addBoardFailed(state, action: PayloadAction<string>): void {
+      state.error = action.payload;
+    }
   },
 });
 
-export const { setCurrentBoard, toggleSlider, getBoardsSuccess, getBoardsFailed } = appDisplaySlice.actions;
+export const { setCurrentBoard, toggleSlider, getBoardsSuccess, getBoardsFailed, addBoardStart, addBoardFailed, addBoardSuccess } = appDisplaySlice.actions;
 
 export default appDisplaySlice.reducer;
 
@@ -51,5 +62,18 @@ export const fetchBoards = (): AppThunk => async (dispatch): Promise<void> => {
     dispatch(getBoardsSuccess(boards));
   } catch (err) {
     dispatch(getBoardsFailed(err.toString()));
+  }
+};
+
+export const createBoard = (): AppThunk => async (
+  dispatch,
+): Promise<void> => {
+  try {
+    dispatch(addBoardStart());
+    const board: BoardDetails = {id: '', title: 'New board'};
+    const newBoard = await addBoard(board);
+    dispatch(addBoardSuccess(newBoard));
+  } catch (err) {
+    dispatch(addBoardFailed(err));
   }
 };

@@ -50,6 +50,7 @@ export const EditArea: React.FC<EditAreaProps> = ({ content, placeholder, saveCa
         defaultValue={text}
         placeholder={placeholder}
         onChange={(event: React.ChangeEvent<HTMLInputElement>): void => setText(event.target.value)}
+        autoFocus={true}
       />,
     );
     elements.push(

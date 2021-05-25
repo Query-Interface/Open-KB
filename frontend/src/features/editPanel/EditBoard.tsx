@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'App/rootReducer';
 import { Collapse } from 'antd';
-//import { editBoardTitle, editBoardDescription } from './editPanelSlice';
+import { editBoardTitle, editBoardDescription } from './editPanelSlice';
 import { EditArea } from './EditArea';
 const { Panel } = Collapse;
 import './style.css';
@@ -11,7 +11,7 @@ export const EditBoard: React.FC = () => {
   const dispatch = useDispatch();
   const board = useSelector((state: RootState) => state.editPanel.selectedBoard);
 
-  /*const onSaveTitle = (title: string): void => {
+  const onSaveTitle = (title: string): void => {
         if (board) {
             dispatch(editBoardTitle(board, title));
         }
@@ -21,7 +21,7 @@ export const EditBoard: React.FC = () => {
         if (board) {
             dispatch(editBoardDescription(board, desc));
         }
-    }*/
+    }
 
   return (
     <Collapse defaultActiveKey={['1', '2']} expandIconPosition="right">

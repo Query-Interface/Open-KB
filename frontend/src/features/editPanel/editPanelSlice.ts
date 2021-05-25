@@ -53,7 +53,9 @@ export const displayEditCardPanel = (card: Card): AppThunk => async (dispatch): 
 };
 
 export const displayEditBoardPanel = (board: BoardDetails | null): AppThunk => async (dispatch): Promise<void> => {
-  dispatch(setSelectedBoard(board));
+  if (board) {
+    dispatch(setSelectedBoard(board));
+  }
   dispatch(displayEditPanel(Content.EditBoard));
 };
 
@@ -73,4 +75,12 @@ export const editCardDescription = (card: Card, desc: string): AppThunk => async
   // update card state when finalize to trigger a redraw
   dispatch(editCardSuccess(newCard));
   dispatch(setSelectedCard(newCard));
+};
+
+export const editBoardTitle = (board: BoardDetails | null, title: string): AppThunk => async (dispatch): Promise<void> => {
+  const newBoard = Object.assign({}, board ?? { id: '', title: 'my board'});
+};
+
+export const editBoardDescription = (board: BoardDetails | null, desc: string): AppThunk => async (dispatch): Promise<void> => {
+
 };
